@@ -48,7 +48,8 @@ namespace team8finalproject.Models
             {
                 Dispute = new List<Dispute>();
             }
-            TransactionStatus = TransactionStatus.Approved;
+
+  
         }
     }
 }
