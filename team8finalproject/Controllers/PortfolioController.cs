@@ -34,7 +34,7 @@ namespace team8finalproject.Controllers
             }
 
             var portfolio = await _context.Portfolios
-                .FirstOrDefaultAsync(m => m.StandardAccountID == id);
+                .FirstOrDefaultAsync(m => m.PortfolioID == id);
             if (portfolio == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PortfolioID,CashValue,StockValue,CurrentStockValue,Gains,Bonuses,Fees,AvailableCash,PortfolioStatus,StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] Portfolio portfolio)
+        public async Task<IActionResult> Create([Bind("PortfolioID,CashValue,StockValue,CurrentStockValue,Gains,Bonuses,Fees,AvailableCash,PortfolioStatus,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] Portfolio portfolio)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PortfolioID,CashValue,StockValue,CurrentStockValue,Gains,Bonuses,Fees,AvailableCash,PortfolioStatus,StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] Portfolio portfolio)
+        public async Task<IActionResult> Edit(int id, [Bind("PortfolioID,CashValue,StockValue,CurrentStockValue,Gains,Bonuses,Fees,AvailableCash,PortfolioStatus,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] Portfolio portfolio)
         {
-            if (id != portfolio.StandardAccountID)
+            if (id != portfolio.PortfolioID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace team8finalproject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PortfolioExists(portfolio.StandardAccountID))
+                    if (!PortfolioExists(portfolio.PortfolioID))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace team8finalproject.Controllers
             }
 
             var portfolio = await _context.Portfolios
-                .FirstOrDefaultAsync(m => m.StandardAccountID == id);
+                .FirstOrDefaultAsync(m => m.PortfolioID == id);
             if (portfolio == null)
             {
                 return NotFound();
@@ -147,7 +147,7 @@ namespace team8finalproject.Controllers
 
         private bool PortfolioExists(int id)
         {
-            return _context.Portfolios.Any(e => e.StandardAccountID == id);
+            return _context.Portfolios.Any(e => e.PortfolioID == id);
         }
     }
 }

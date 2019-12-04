@@ -64,7 +64,6 @@ namespace team8finalproject.Models
 
         public Portfolio()
         {
-            AccountBalance = TotalValue;
             if (PortfolioDetail == null)
             {
                 PortfolioDetail = new List<PortfolioDetail>();

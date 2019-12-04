@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace team8finalproject.Models
 {
     public enum TransactionTypes { Deposit, Withdrawal, Fee, Transfer, [Display(Name = "Stock Purchase")] StockPurchase }
+    public enum TransactionStatus { Pending, Approved, Denied }
 
     public class Transaction
     { 
@@ -33,6 +34,9 @@ namespace team8finalproject.Models
         [Display(Name = "Account")]
         public StandardAccount Account { get; set; }
 
+        [Display(Name = "Transaction Status")]
+        public TransactionStatus TransactionStatus { get; set; }
+
         public AppUser AppUser { get; set; }
         public Payee Payee { get; set;  }
         public List<Dispute> Dispute { get; set; }
@@ -43,6 +47,8 @@ namespace team8finalproject.Models
             {
                 Dispute = new List<Dispute>();
             }
+
+            TransactionStatus = TransactionStatus.Approved;
         }
     }
 }

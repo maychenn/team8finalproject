@@ -28,6 +28,7 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Payee/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +47,7 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Payee/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             return View();

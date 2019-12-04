@@ -8,12 +8,12 @@
 
 <h1>Welcome to the Bevo's Bank and Trust!</h1>
 
-<h4>Products We Offer:</h4>
+<h4>Apply for a product:</h4>
 <a asp-action="Create" asp-controller="StandardAccount" asp-route-AccountType="Checking" class="btn btn-success">Checkings</a>
 <a asp-action="Create" asp-controller="StandardAccount" asp-route-AccountType="Savings" class="btn btn-success">Savings</a>
 <a asp-action="Create" asp-controller="Portfolio" class="btn btn-success">Stock Portfolio</a>
 <a asp-action="Create" asp-controller="IRA" class="btn btn-success">Individual Retirement Accounts (IRAs)</a>
-
+<p></p>
 @if (User.Identity.IsAuthenticated != true)
 {
     <a asp-action="Register" asp-controller="Account" class="btn btn-success">Make an Account</a>
