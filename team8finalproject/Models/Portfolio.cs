@@ -8,7 +8,7 @@ namespace team8finalproject.Models
 {
     public enum PortfolioStatus { Balanced, Unbalanced }
 
-    public class Portfolio 
+    public class Portfolio : Product
     {
         public Int32 PortfolioID { get; set; }
 
@@ -52,6 +52,7 @@ namespace team8finalproject.Models
         */
 
         public List<PortfolioDetail> PortfolioDetail { get; set; }
+        public Product Product { get; set; }
 
         [Display(Name = "Total Stock Portfolio Value: ")]
         [DisplayFormat(DataFormatString = "{0:C}")]
