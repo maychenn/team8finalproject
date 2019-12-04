@@ -10,22 +10,22 @@ using team8finalproject.Models;
 
 namespace team8finalproject.Controllers
 {
-    public class DisputeController : Controller
+    public class PayBillController : Controller
     {
         private readonly AppDbContext _context;
 
-        public DisputeController(AppDbContext context)
+        public PayBillController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Dispute
+        // GET: PayBill
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Disputes.ToListAsync());
+            return View(await _context.PayBills.ToListAsync());
         }
 
-        // GET: Dispute/Details/5
+        // GET: PayBill/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace team8finalproject.Controllers
                 return NotFound();
             }
 
-            var dispute = await _context.Disputes
-                .FirstOrDefaultAsync(m => m.DisputeID == id);
-            if (dispute == null)
+            var payBill = await _context.PayBills
+                .FirstOrDefaultAsync(m => m.PayBillID == id);
+            if (payBill == null)
             {
                 return NotFound();
             }
 
-            return View(dispute);
+            return View(payBill);
         }
 
-        // GET: Dispute/Create
+        // GET: PayBill/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Dispute/Create
+        // POST: PayBill/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DisputeID,NewAmount,Description,Delete,ManagerComment,DisputeStatus")] Dispute dispute)
+        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date")] PayBill payBill)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dispute);
+                _context.Add(payBill);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispute);
+            return View(payBill);
         }
 
-        // GET: Dispute/Edit/5
+        // GET: PayBill/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace team8finalproject.Controllers
                 return NotFound();
             }
 
-            var dispute = await _context.Disputes.FindAsync(id);
-            if (dispute == null)
+            var payBill = await _context.PayBills.FindAsync(id);
+            if (payBill == null)
             {
                 return NotFound();
             }
-            return View(dispute);
+            return View(payBill);
         }
 
-        // POST: Dispute/Edit/5
+        // POST: PayBill/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DisputeID,NewAmount,Description,Delete,ManagerComment,DisputeStatus")] Dispute dispute)
+        public async Task<IActionResult> Edit(int id, [Bind("PayBillID,PaymentAmount,Date")] PayBill payBill)
         {
-            if (id != dispute.DisputeID)
+            if (id != payBill.PayBillID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace team8finalproject.Controllers
             {
                 try
                 {
-                    _context.Update(dispute);
+                    _context.Update(payBill);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DisputeExists(dispute.DisputeID))
+                    if (!PayBillExists(payBill.PayBillID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace team8finalproject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(dispute);
+            return View(payBill);
         }
 
-        // GET: Dispute/Delete/5
+        // GET: PayBill/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace team8finalproject.Controllers
                 return NotFound();
             }
 
-            var dispute = await _context.Disputes
-                .FirstOrDefaultAsync(m => m.DisputeID == id);
-            if (dispute == null)
+            var payBill = await _context.PayBills
+                .FirstOrDefaultAsync(m => m.PayBillID == id);
+            if (payBill == null)
             {
                 return NotFound();
             }
 
-            return View(dispute);
+            return View(payBill);
         }
 
-        // POST: Dispute/Delete/5
+        // POST: PayBill/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dispute = await _context.Disputes.FindAsync(id);
-            _context.Disputes.Remove(dispute);
+            var payBill = await _context.PayBills.FindAsync(id);
+            _context.PayBills.Remove(payBill);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DisputeExists(int id)
+        private bool PayBillExists(int id)
         {
-            return _context.Disputes.Any(e => e.DisputeID == id);
+            return _context.PayBills.Any(e => e.PayBillID == id);
         }
     }
 }
