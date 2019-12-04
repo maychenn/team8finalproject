@@ -9,7 +9,7 @@ using team8finalproject.DAL;
 using team8finalproject.Models;
 using team8finalproject.Models.ViewModels;
 
-namespace Ali_Shayan_HW6.Controllers
+namespace team8finalproject.Controllers
 {
     //TODO: Uncomment this line once you have roles working correctly
     [Authorize(Roles = "Admin")]

@@ -68,6 +68,7 @@
     <Folder Include="Seeding\" />
     <Folder Include="Utilities\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\RoleAdmin\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\ErrorViewModel.cs" />
