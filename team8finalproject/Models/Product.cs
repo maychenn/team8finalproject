@@ -36,9 +36,16 @@ namespace team8finalproject.Models
 
         public Product()
         {
-            // default status
+            // defaults
             AccountStatus = AccountStatus.Inactive;
-
+            if (ProductType == ProductTypes.Checking && AccountName == null)
+            {
+                AccountName = "Longhorn Checking";
+            }
+            if (ProductType == ProductTypes.Savings && AccountName == null)
+            {
+                AccountName = "Longhorn Savings";
+            }
         }
     }
 }
