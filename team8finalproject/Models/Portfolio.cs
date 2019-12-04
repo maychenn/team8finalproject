@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.ComponentModel.DataAnnotations;
-
 
 namespace team8finalproject.Models
 {
@@ -49,6 +51,8 @@ namespace team8finalproject.Models
         Any other transactions that affect the cash-value portion of the portfolio.
         */
 
+        public List<PortfolioDetail> PortfolioDetail { get; set; }
+
         [Display(Name = "Total Stock Portfolio Value: ")]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Decimal TotalValue
@@ -60,8 +64,11 @@ namespace team8finalproject.Models
 
         public Portfolio()
         {
-
             AccountBalance = TotalValue;
+            if (PortfolioDetail == null)
+            {
+                PortfolioDetail = new List<PortfolioDetail>();
+            }
         }
     }
 }
