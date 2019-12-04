@@ -20,9 +20,14 @@ namespace team8finalproject.Controllers
         }
 
         // GET: PortfolioDetail
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Int32 stockID)
         {
-            return View(await _context.PortfolioDetails.ToListAsync());
+            List<PortfolioDetail> Pdt = _context.PortfolioDetails
+                .Include(Pd =>Pd.Stock)
+                .Where(P => P.Product.Transaction. == stockID).ToList();
+            return View(Pdt);
+
+            //return View(await _context.PortfolioDetails.ToListAsync());
         }
 
         // GET: PortfolioDetail/Details/5
@@ -33,19 +38,60 @@ namespace team8finalproject.Controllers
                 return NotFound();
             }
 
-            var portfolioDetail = await _context.PortfolioDetails
-                .FirstOrDefaultAsync(m => m.PortfolioDetailID == id);
-            if (portfolioDetail == null)
-            {
-                return NotFound();
-            }
+            //var portfolioDetail = await _context.PortfolioDetails
+            //    .FirstOrDefaultAsync(m => m.PortfolioDetailID == id);
+            //if (portfolioDetail == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //foreach (var s in _context.Stocks)
+            //{
+            //    s.Price = s.Price;
+            //}
+            //foreach (var p in _context.Transactions)
+            //{
+            //    p. = p.Stock.CurrentPrice * p.NumberOfShares;
+            //}
+            //if (stockPortfolio.StockPurchases.Count != 0)
+            //{
+            //    stockPortfolio.StockPortionValue = 0;
+            //    foreach (var v in stockPortfolio.StockPurchases)
+            //    {
+            //        stockPortfolio.StockPortionValue += v.TotalStockValue;
+            //        v.ChangeInPrice = v.Stock.CurrentPrice - v.InitialSharePrice;
+            //        v.TotalChange = v.TotalStockValue - (v.NumberOfShares * v.InitialSharePrice);
+            //        v.StockPurchaseDisplay = v.Stock.StockName + ", Current Price: " + v.Stock.CurrentPrice.ToString("c") + ", Number of shares: " + v.NumberOfShares;
+            //    }
+            //}
+            //db.SaveChanges();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             return View(portfolioDetail);
         }
 
         // GET: PortfolioDetail/Create
-        public IActionResult Create()
+        public IActionResult Create(Int32 stockID)
         {
+
+            PortfolioDetail Pdt = new PortfolioDetail();
+            Pdt.
+
+
+
+
             return View();
         }
 
