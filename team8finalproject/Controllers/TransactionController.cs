@@ -46,7 +46,7 @@ namespace team8finalproject.Controllers
             return View(transactions);
         }
         // quick search??
-        public IActionResult Index(string SearchString)
+        /*public IActionResult Index(string SearchString)
         {
             var query = from t in _context.Transactions
                         select t;
@@ -66,7 +66,7 @@ namespace team8finalproject.Controllers
 
             return View(SelectedTransactions.OrderByDescending(t => t.Number));
 
-        }
+        }*/
 
         // GET: Transaction/Details
         public IActionResult Details(int? id)

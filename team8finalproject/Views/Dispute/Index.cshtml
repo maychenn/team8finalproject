@@ -1,0 +1,55 @@
+@model team8finalproject.Models.Dispute
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Index</h1>
+
+<h4>Dispute</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DisputeID" class="control-label"></label>
+                <input asp-for="DisputeID" class="form-control" />
+                <span asp-validation-for="DisputeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NewAmount" class="control-label"></label>
+                <input asp-for="NewAmount" class="form-control" />
+                <span asp-validation-for="NewAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Delete" /> @Html.DisplayNameFor(model => model.Delete)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ManagerComment" class="control-label"></label>
+                <input asp-for="ManagerComment" class="form-control" />
+                <span asp-validation-for="ManagerComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DisputeStatus" class="control-label"></label>
+                <input asp-for="DisputeStatus" class="form-control" />
+                <span asp-validation-for="DisputeStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

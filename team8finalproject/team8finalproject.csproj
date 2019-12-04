@@ -12,15 +12,48 @@
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Views\Home\Privacy.cshtml" />
     <Content Remove="Properties\launchSettings.json" />
-    <Content Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <Content Remove="wwwroot\lib\jquery-validate\jquery.validate.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ar.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ar.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_az.js" />
+    <Content Remove="libman.json" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bg.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bg.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_az.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bn_BD.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bn_BD.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ca.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ca.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_cs.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_cs.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_da.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_da.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_de.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_de.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_el.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_el.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_es.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_es.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_es_AR.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_es_PE.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_es_PE.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_et.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_eu.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_fa.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_fi.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_fi.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_fr.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_fr.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ge.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ge.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_gl.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_gl.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validate\localization\messages_he.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Home\" />
@@ -31,6 +64,7 @@
     <Folder Include="DAL\" />
     <Folder Include="Seeding\" />
     <Folder Include="Utilities\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\ErrorViewModel.cs" />
