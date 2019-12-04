@@ -14,11 +14,19 @@
     <h4>Stock Portfolio</h4>
     <h4>Individual Retirement Accounts (IRAs)</h4>
 
-    <a asp-action="Register" asp-controller="Account" class="btn btn-success">Make an Account</a>
+    <a asp-action="Register" asp-controller="Account" class="btn btn-success">Register Here</a>
 }
+@if (User.IsInRole("New Customer"))
+{
+    <h4>Products We Offer:</h4>
+    <h4>Checkings</h4>
+    <h4>Savings</h4>
+    <h4>Stock Portfolio</h4>
+    <h4>Individual Retirement Accounts (IRAs)</h4>
 
-
-@if (User.Identity.IsAuthenticated)
+    <a asp-action="Apply" asp-controller="Product" class="btn btn-success">Apply for an Account</a>
+}
+@if (User.IsInRole("Customer"))
 {
     <a asp-action="Index" asp-controller="Account" class="btn btn-success">View Accounts</a>
 }

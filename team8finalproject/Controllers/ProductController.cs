@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace team8finalproject.Controllers
 {
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public ProductController(AppDbContext context)
+        public ProductController(AppDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _roleManager = roleManager;
         }
 
         // GET: Product

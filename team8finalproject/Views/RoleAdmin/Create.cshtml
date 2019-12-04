@@ -1,5 +1,4 @@
-﻿@using team8finalproject.Models.ViewModels 
-@model string
+﻿@model string
 @{
     ViewBag.Title = "Create Role";
 }
@@ -8,14 +7,13 @@
 
 @Html.ValidationSummary(true)
 
-<form>
-{ 
+<div class="bg-primary m-1 p-1"><h4>Create Role</h4></div>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="Create" method="post">
     <div class="form-group">
-        <label>Name</label>
-        <input name="name" value="@Model" class="form-control" />
+        <label for="name"></label>
+        <input name="name" class="form-control" />
     </div>
-    
-    <button type="submit" class="btn btn-primary">Create</button>
-    
-    <a asp-action="Index" class="btn btn-danger">Cancel</a>
+    <button type="submit"  asp-route-name="@Model" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>

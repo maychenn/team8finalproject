@@ -61,7 +61,7 @@ namespace team8finalproject.Controllers
                 if (result.Succeeded)
                 {
                     //TODO: Add user to desired role. This example adds the user to the customer role
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    await _userManager.AddToRoleAsync(user, "New Customer");
 
                     Microsoft.AspNetCore.Identity.SignInResult result2 = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
                     return RedirectToAction("Apply", "Product");

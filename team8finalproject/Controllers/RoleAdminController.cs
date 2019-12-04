@@ -50,11 +50,13 @@ namespace team8finalproject.Controllers
             return View(roles);
         }
 
+        //GET: Create
         public ActionResult Create()
         {
             return View();
         }
 
+        //POST: Create
         [HttpPost]
         public async Task<ActionResult> Create([Required] string name)
         {
