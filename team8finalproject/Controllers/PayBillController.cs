@@ -61,7 +61,7 @@ namespace team8finalproject.Controllers
         public IActionResult Create()
         {
             ViewBag.AllPayees = GetAllPayees();
-            ViewBag.AllAccounts = GetAllAccounts();
+            ViewBag.Accounts = FindAccounts();
 
             return View();
         }
@@ -179,11 +179,16 @@ namespace team8finalproject.Controllers
             return payeeSelection;
         }
 
-        private SelectList GetAllAccounts()
+        public SelectList FindAccounts()
         {
+            var query = from p in _context.Products
+                        select p;
+            {
+                query = query.Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings);
+            }
 
-            List<Product> accountList = _context.Products.ToList();
-            SelectList accountSelection = new SelectList(accountList.OrderBy(m => m.ProductID), "ProductID", "AccountName", "AccountBalance");
+            List<Product> accountList = query.ToList();
+            SelectList accountSelection = new SelectList(accountList, "AccountName", "AccountBalance");
             return accountSelection;
         }
     }
