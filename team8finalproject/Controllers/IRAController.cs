@@ -37,7 +37,7 @@ namespace team8finalproject.Controllers
             }
 
             var iRA = await _context.IRAs
-                .FirstOrDefaultAsync(m => m.StandardAccountID == id);
+                .FirstOrDefaultAsync(m => m.IRAID == id);
             if (iRA == null)
             {
                 return NotFound();
@@ -105,7 +105,7 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Contribute([Bind("IRAID,ContributionsThisYear,StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] IRA iRA)
         {
 
-            AppUser user = _context.Users.Find(iRA.StandardAccount.StandardAccountID);
+            AppUser user = _context.Users.Find(iRA.Product.ProductID);
             iRA.Customer = user;
 
             if (user.IRA != null)
@@ -143,10 +143,10 @@ namespace team8finalproject.Controllers
                         transaction.TransactionStatus = TransactionStatus.Approved;
                     }
 
-                    if (iRA.StandardAccount.Customer.Age > 65)
+                    if (iRA.Product.Customer.Age > 65)
                     {
                         iRA.IRAStatus = true;
-                        ViewBag.StatusMessage = 
+                        ViewBag.StatusMessage = "You are qualified to transfer money.";
 
                     }
 
@@ -163,17 +163,6 @@ namespace team8finalproject.Controllers
             }
             return View(iRA);
         }
-
-    }
-
-}
-
-
-
-
-
-
-
 
         // GET: IRA/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -198,7 +187,7 @@ namespace team8finalproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IRAID,ContributionsThisYear,StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] IRA iRA)
         {
-            if (id != iRA.StandardAccountID)
+            if (id != iRA.ProductID)
             {
                 return NotFound();
             }
@@ -212,7 +201,7 @@ namespace team8finalproject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!IRAExists(iRA.StandardAccountID))
+                    if (!IRAExists(iRA.ProductID))
                     {
                         return NotFound();
                     }
@@ -235,7 +224,7 @@ namespace team8finalproject.Controllers
             }
 
             var iRA = await _context.IRAs
-                .FirstOrDefaultAsync(m => m.StandardAccountID == id);
+                .FirstOrDefaultAsync(m => m.ProductID == id);
             if (iRA == null)
             {
                 return NotFound();
@@ -257,7 +246,7 @@ namespace team8finalproject.Controllers
 
         private bool IRAExists(int id)
         {
-            return _context.IRAs.Any(e => e.StandardAccountID == id);
+            return _context.IRAs.Any(e => e.IRAID == id);
         }
     }
 }
