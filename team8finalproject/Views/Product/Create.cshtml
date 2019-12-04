@@ -24,23 +24,14 @@
                 <input asp-for="InitialDeposit" class="form-control" />
                 <span asp-validation-for="InitialDeposit" class="text-danger"></span>
                 <div class="form-group">
-                    <input type="submit" value="Create" asp-route-initialDeposit="@ProductTypes.Checking" class="btn btn-primary" />
+                    <input type="submit" value="Create" asp-route-ProductType="@ProductTypes.Checking" class="btn btn-primary" />
                 </div>
             </div>
             }
             @if(Model.ProductType == ProductTypes.Portfolio) {
 
             }
-            <div class="form-group">
-                <label asp-for="AccountName" class="control-label"></label>
-                <input asp-for="AccountName" class="form-control" />
-                <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccountStatus" class="control-label"></label>
-                <select asp-for="AccountStatus" class="form-control"></select>
-                <span asp-validation-for="AccountStatus" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

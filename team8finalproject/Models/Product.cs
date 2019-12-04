@@ -16,7 +16,7 @@ namespace team8finalproject.Models
 		public ProductTypes ProductType { get; set; }
 
 		[Display(Name = "Account Number")]
-		public Int32 AccountNumber { get; }
+		public Int32 AccountNumber { get; set; }
 
 		[Required(ErrorMessage = "Account Name is required.")]
 		[Display(Name = "Account Name: ")]
@@ -24,6 +24,9 @@ namespace team8finalproject.Models
 
 		[Display(Name = "Account Status: ")]
         public AccountStatus AccountStatus { get; set; }
+
+        [Display(Name = "Account Balance: ")]
+        public Decimal AccountBalance { get; set; }
 
         [Display(Name = "Initial Deposit: ")]
         public Decimal InitialDeposit { get; set; }
