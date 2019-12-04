@@ -6,30 +6,33 @@
 
 <h1>Edit</h1>
 
-<h4>Product</h4>
+<h4>Account: @Model.AccountName</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ProductID" />
-            <div class="form-group">
-                <label asp-for="AccountName" class="control-label"></label>
-                <input asp-for="AccountName" class="form-control" />
-                <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-            @if(User.IsInRole("Admin"))
+            @if (User.IsInRole("Customer"))
             {
-            <div class="form-group">
-                <label asp-for="AccountStatus" class="control-label"></label>
-                <select asp-for="AccountStatus" class="form-control"></select>
-                <span asp-validation-for="AccountStatus" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="AccountName" class="control-label"></label>
+                    <input asp-for="AccountName" class="form-control" />
+                    <span asp-validation-for="AccountName" class="text-danger"></span>
+                </div>
             }
-          
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    <label asp-for="AccountStatus" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.AccountStatus, new SelectList(ViewBag.SelectStatus), new { @class = "form-control" })
+                    <span asp-validation-for="AccountStatus" class="text-danger"></span>
+                </div>
+            }
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
         </form>
     </div>
 </div>
