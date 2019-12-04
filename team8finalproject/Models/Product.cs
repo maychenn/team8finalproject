@@ -28,6 +28,9 @@ namespace team8finalproject.Models
         public AccountStatus AccountStatus { get; set; }
 
         public AppUser Customer { get; set; }
+        public List<StandardAccount> StandardAccount { get; set;}
+        public IRA IRA { get; set; }
+        public Portfolio Portfolio { get; set; }
 
         public Product()
         {

@@ -117,8 +117,6 @@ namespace team8finalproject.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
-
                     iRA.AccountName = "Longhorn IRA";
 
                     decimal MaxContribution = 5000;
