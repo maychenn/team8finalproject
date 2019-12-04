@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace team8finalproject.Controllers
 {
@@ -54,18 +55,29 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] StandardAccount standardAccount)
+        public async Task<IActionResult> Create([Bind("StandardAccountID,AccountType,AccountName,AccountBalance,InitialDeposit,Overdraft,AccountStatus")] StandardAccount standardAccount)
         {
+            //when you apply for an account
+            if (standardAccount.InitialDeposit > 5000)
+            {
+                ViewBag.AccountStatus = "Your application must be approved by a manager.";
+            }
+            else
+            {
+                ViewBag.AccountStatus = "You've successfully applied for an account!";
+                standardAccount.AccountStatus = AccountStatus.Active;
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(standardAccount);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "StandardAccount");
             }
             return View(standardAccount);
         }
 
         // GET: StandardAccount/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
