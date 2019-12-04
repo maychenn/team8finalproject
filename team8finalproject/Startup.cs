@@ -56,7 +56,7 @@ namespace team8finalproject
                     defaults: new { controller = "Home", action = "Index" });
             });
 
-            //Seeding.SeedIdentity.AddAdmin(service).Wait();
+            Seeding.SeedIdentity.AddAdmin(service).Wait();
             //Seeding.SeedUsers.SeedAllUsers(service).Wait();
             //Seeding.SeedCustomers.SeedAllCustomers(service).Wait();       
             //Seeding.SeedPayees.SeedAllPayees(service).Wait();

@@ -40,15 +40,10 @@ namespace team8finalproject.Models
         [Required(ErrorMessage = "Payee type is required")]
         public PayeeType Selection { get; set; }
 
-        public List<Transaction> Transaction { get; set; }
         public List<PayBill> PayBill { get; set; }
 
         public Payee()
         {
-            if (Transaction == null)
-            {
-                Transaction = new List<Transaction>();
-            }
             if (PayBill == null)
             {
                 PayBill = new List<PayBill>();
