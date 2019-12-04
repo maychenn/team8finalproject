@@ -50,23 +50,20 @@ namespace team8finalproject.Models
                 DateTime now = DateTime.Today;
                 Int32 age = now.Year - Birthdate.Year;
                 return age;
-         } }
-
-        public List<StandardAccount> StandardAccount { get; set; }
-        public Portfolio Portfolio { get; set; }
-        public IRA IRA { get; set; }
+            } }
+        public List<Product> Product { get; set; }
         public List<PayBill> PayBill { get; set; }
 
         public AppUser()
         {
             // new user
-            if (StandardAccount == null)
+            if (Product == null)
             {
-                StandardAccount = new List<StandardAccount>();
+                Product = new List<Product>();
                 New = true;
             }
             // user with no accounts
-            else if (StandardAccount.Count == 0)
+            else if (Product.Count == 0)
             {
                 New = true;
             }
