@@ -23,14 +23,18 @@ namespace team8finalproject.Controllers
         private readonly UserManager<AppUser> _userManager;
 
         //GetAllAccounts
-        public SelectList GetAllAccounts(StandardAccount standardAccount)
+        public SelectList GetAllAccounts()
         {
-            var query = from a in _context.StandardAccounts
+            // gets all accounts in database
+            var query = from a in _context.Products
                         select a;
-            query = query.Where(a => a.Customer.Id == standardAccount.Customer.Id);
-            query = query.Where(a => a.AccountType != AccountTypes.Portfolio);
-            List<StandardAccount> allAccounts = query.ToList();
-            SelectList list = new SelectList(allAccounts, "StandardAccountId", "AccountName", standardAccount.StandardAccountID);
+            query = query.Where(a => a.ProductType != ProductTypes.Portfolio);
+            // gets all checking, savings, IRA accounts for a user
+            if (User.IsInRole("Customer")) {
+                query = query.Where(a => a.Customer.UserName == User.Identity.Name);
+            }
+            List<Product> allAccounts = query.ToList();
+            SelectList list = new SelectList(allAccounts.OrderBy(m => m.ProductID), "ProductID", "AccountName");
             return list;
         }
 
@@ -70,12 +74,12 @@ namespace team8finalproject.Controllers
             {
                 return NotFound();
             }
-            ViewBag.AllAccounts = GetAllAccounts(standardAccount);
+            ViewBag.AllAccounts = GetAllAccounts();
             ViewBag.String = id;
             return View();
         }
 
-
+        //POST: Deposit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, Int32 StandardAccountID)
@@ -84,7 +88,7 @@ namespace team8finalproject.Controllers
             {
 
                 StandardAccount standardAccount = _context.StandardAccounts.Find(StandardAccountID);
-                ViewBag.AllAccounts = GetAllAccounts(standardAccount);
+                ViewBag.AllAccounts = GetAllAccounts();
                 if (transaction.Amount <= 0)
                 {
                     ViewBag.Error = "Amount must be greater than $0.00.";
@@ -251,19 +255,6 @@ namespace team8finalproject.Controllers
             svm.SelectedAccountID = 0;    //SelectedAccount is an ID number
 
             return View("DetailedSearch");
-        }
-
-        // GET: All Acounts
-        private SelectList GetAllAccounts()
-        {
-            List<StandardAccount> AccountList = _context.StandardAccounts.ToList();
-
-            StandardAccount SelectNone = new StandardAccount() { StandardAccountID = 0, AccountName = "All Accounts" }; AccountList.Add(SelectNone);
-
-
-            SelectList AccountSelectList = new SelectList(AccountList.OrderBy(m => m.StandardAccountID), "StandardAccountID", "AccountName");
-
-            return AccountSelectList;
         }
         // should be employees & managers only
         public IActionResult DisplaySearchResults(SearchViewModel svm)

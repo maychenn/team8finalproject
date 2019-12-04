@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace team8finalproject.Models
 {
-    public class IRA: StandardAccount
+    public class IRA: Product
     {
         public Int32 IRAID { get; set; }
 
@@ -20,8 +20,23 @@ namespace team8finalproject.Models
         [Display(Name = "IRA Status: ")]
         public Boolean IRAStatus { get; set; }
 
+        [Required(ErrorMessage = "Initial Deposit is required.")]
+        [Display(Name = "Initial Deposit: ")]
+        public Decimal InitialDeposit { get; set; }
 
-        public StandardAccount StandardAccount { get; set;}
+        [Display(Name = "Account Balance: ")]
+        public Decimal AccountBalance { get; set; }
 
+        public List<Transaction> Transaction { get; set; }
+        public Product Product { get; set; }
+
+        public IRA()
+        {
+            // initialize
+            if (Transaction == null)
+            {
+                Transaction = new List<Transaction>();
+            }
+        }
     }
 }
