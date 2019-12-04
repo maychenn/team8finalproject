@@ -33,13 +33,13 @@ namespace team8finalproject.Models
         public TransactionTypes TransactionType { get; set; }
 
         [Display(Name = "Account")]
-        public StandardAccount Account { get; set; }
+        public Product Product { get; set; }
 
         [Display(Name = "Transaction Status")]
         public TransactionStatus TransactionStatus { get; set; }
 
         public AppUser AppUser { get; set; }
-        public Payee Payee { get; set; }
+
         public List<Dispute> Dispute { get; set; }
 
         public Transaction()

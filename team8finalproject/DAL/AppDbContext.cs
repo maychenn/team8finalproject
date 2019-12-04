@@ -13,9 +13,6 @@ namespace team8finalproject.DAL
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
-        public DbSet<StandardAccount> StandardAccounts { get; set; } 
-        public DbSet<IRA> IRAs { get; set; }
-        public DbSet<Portfolio> Portfolios { get; set; }
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Dispute> Disputes { get; set; }

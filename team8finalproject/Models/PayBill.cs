@@ -8,8 +8,9 @@ namespace team8finalproject.Models
 {
     public class PayBill
     {
+        public Int32 PayBillID { get; set; }
         public Payee Payee { get; set; }
-        public StandardAccount StandardAccount { get; set; }
+        public Product Product { get; set; }
 
         [Display(Name = "Payment Amount:")]
         public Decimal PaymentAmount { get; set; }

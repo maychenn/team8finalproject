@@ -12,6 +12,9 @@
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +24,6 @@
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ar.min.js" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_ar.js" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_az.js" />
-    <Content Remove="libman.json" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bg.min.js" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_bg.js" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_az.min.js" />
