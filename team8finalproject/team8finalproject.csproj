@@ -69,6 +69,7 @@
     <Folder Include="Utilities\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\RoleAdmin\" />
+    <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\ErrorViewModel.cs" />

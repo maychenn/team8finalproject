@@ -64,7 +64,7 @@ namespace team8finalproject.Controllers
                     await _userManager.AddToRoleAsync(user, "Customer");
 
                     Microsoft.AspNetCore.Identity.SignInResult result2 = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
-                    return RedirectToAction("Create", "StandardAccount");
+                    return RedirectToAction("Create", "Product");
                 }
                 else
                 {
