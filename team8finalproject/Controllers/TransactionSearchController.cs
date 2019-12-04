@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace team8finalproject.Controllers
 {
-    public class TransactionController : Controller
+    public class TransactionSearchController : Controller
     {
         //Create an instance of the db_context
         private readonly AppDbContext _context;
@@ -24,7 +24,7 @@ namespace team8finalproject.Controllers
 
 
         //Create the constructor so that we get an instance of AppDbContext
-        public TransactionController(AppDbContext context, IServiceProvider service)
+        public TransactionSearchController(AppDbContext context, IServiceProvider service)
         {
             _context = context;
             _userManager = service.GetRequiredService<UserManager<AppUser>>();
