@@ -41,8 +41,7 @@ namespace team8finalproject.Models
         public PayeeType Selection { get; set; }
 
         public List<Transaction> Transactions { get; set; }
-
-        public AppUser Customer { get; set; }
+        public List<PayBill> PayBills { get; set; }
 
         public Payee()
         {

@@ -56,6 +56,7 @@ namespace team8finalproject.Models
         public List<StandardAccount> StandardAccount { get; set; }
         public Portfolio Portfolio { get; set; }
         public IRA IRA { get; set; }
+        public List<PayBill> PayBill { get; set; }
 
         public AppUser()
         {
