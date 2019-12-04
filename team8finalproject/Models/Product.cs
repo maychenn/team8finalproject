@@ -16,7 +16,7 @@ namespace team8finalproject.Models
 		public ProductTypes ProductType { get; set; }
 
 		[Display(Name = "Account Number")]
-		public Int32 AccountNumber { get; }
+		public Int32 AccountNumber { get; set; }
 
 		[Required(ErrorMessage = "Account Name is required.")]
 		[Display(Name = "Account Name: ")]

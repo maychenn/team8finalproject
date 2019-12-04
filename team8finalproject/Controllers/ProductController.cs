@@ -82,9 +82,27 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Product/Create
-        public IActionResult Create()
+        public IActionResult Create(String productType)
         {
-            return View();
+            Product pd = new Product();
+
+            if (productType == "Checking")
+            {
+                pd.ProductType = ProductTypes.Checking;
+            }
+            else if(productType == "Savings")
+            {
+                pd.ProductType = ProductTypes.Savings;
+            }
+            else if (productType == "IRA")
+            {
+                pd.ProductType = ProductTypes.IRA;
+            }
+            else
+            {
+                pd.ProductType = ProductTypes.Portfolio;
+            }
+            return View(pd);
         }
 
         // POST: Product/Create
@@ -92,17 +110,16 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,ProductType,AccountName,AccountStatus")] Product product, Decimal initalDeposit)
+        public async Task<IActionResult> Create([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
         {
             Product pd = new Product();
-            if (product.ProductType == ProductTypes.Checking)
+            if (product.ProductType == ProductTypes.Checking || product.ProductType == ProductTypes.Savings)
             {
-                pd.ProductType = ProductTypes.Checking;
+                pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+                pd.AccountName = product.AccountName;
+                pd.InitialDeposit = product.InitialDeposit;
             }
-            if (product.ProductType == ProductTypes.Savings)
-            {
-                pd.ProductType = ProductTypes.Checking;
-            }
+            
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
