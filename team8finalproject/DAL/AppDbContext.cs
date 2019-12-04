@@ -17,6 +17,7 @@ namespace team8finalproject.DAL
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<Payee> Payees { get; set; }
+        public DbSet<PayBill> PayBills { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Dispute> Disputes { get; set; }
         public DbSet<PortfolioDetail> PortfolioDetails { get; set; }

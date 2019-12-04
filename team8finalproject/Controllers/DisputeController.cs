@@ -46,7 +46,10 @@ namespace team8finalproject.Controllers
         // GET: Dispute/Create
         public IActionResult Create()
         {
-            return View();
+            Dispute dispute = new Dispute();
+            dispute.Delete = false;
+            dispute.DisputeStatus = DisputeStatus.Submitted;
+            return View(dispute);
         }
 
         // POST: Dispute/Create
@@ -54,13 +57,14 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DisputeID,NewAmount,Description,ManagerComment,DisputeStatus")] Dispute dispute)
+        public async Task<IActionResult> Create([Bind("TransactionID,DisputeID,NewAmount,Description,Delete,DisputeStatus")] Dispute dispute)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(dispute);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Transaction", new { transactionID = dispute.Transaction.TransactionID });
             }
             return View(dispute);
         }

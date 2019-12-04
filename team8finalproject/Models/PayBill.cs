@@ -18,5 +18,8 @@ namespace team8finalproject.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
+        public PayBill()
+        {
+        }
     }
 }

@@ -17,8 +17,11 @@ namespace team8finalproject.Models
         [Display(Name = "Correct Transaction Amount: ")]
         public Decimal NewAmount { get; set; }
 
-        [Display(Name = "Dispute Description: ")]
+        [Display(Name = "Dispute Comment: ")]
         public String Description { get; set; }
+
+        [Required(ErrorMessage = "Select an option below.")]
+        public bool Delete { get; set; }
 
         [Display(Name = "Manager Comment: ")]
         public String ManagerComment { get; set; }
@@ -26,5 +29,12 @@ namespace team8finalproject.Models
         [Display(Name = "Dispute Status: ")]
         public DisputeStatus DisputeStatus { get; set; }
 
+        public Dispute()
+        {
+            if (Delete == true)
+            {
+                NewAmount = 0.00m;
+            }
+        }
     }
 }
