@@ -43,6 +43,40 @@ namespace team8finalproject.Controllers
             return View(product);
         }
 
+        // GET: Product/Apply
+        public IActionResult Apply()
+        {
+            return View();   
+        }
+
+        // POST: Product/Apply
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Apply(String productType)
+        {
+            Product pd = new Product();
+            if (productType == "Checking")
+            {
+                pd.ProductType = ProductTypes.Checking;
+            }
+            if (productType == "Savings")
+            {
+                pd.ProductType = ProductTypes.Savings;
+            }
+            if (productType == "Portfolio")
+            {
+                pd.ProductType = ProductTypes.Portfolio;
+            }
+            if (productType == "IRA")
+            {
+                pd.ProductType = ProductTypes.IRA;
+            }
+            return View("Create", pd);
+
+        }
+
         // GET: Product/Create
         public IActionResult Create()
         {
@@ -54,11 +88,20 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,ProductType,AccountName,AccountStatus")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductID,ProductType,AccountName,AccountStatus")] Product product, Decimal initalDeposit)
         {
+            Product pd = new Product();
+            if (product.ProductType == ProductTypes.Checking)
+            {
+                pd.ProductType = ProductTypes.Checking;
+            }
+            if (product.ProductType == ProductTypes.Savings)
+            {
+                pd.ProductType = ProductTypes.Checking;
+            }
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                _context.Add(pd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

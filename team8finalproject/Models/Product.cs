@@ -25,6 +25,9 @@ namespace team8finalproject.Models
 		[Display(Name = "Account Status: ")]
         public AccountStatus AccountStatus { get; set; }
 
+        [Display(Name = "Initial Deposit: ")]
+        public Decimal InitialDeposit { get; set; }
+
         //navigational properties
         public AppUser Customer { get; set; }
         public List<Transaction> Transaction { get; set; }

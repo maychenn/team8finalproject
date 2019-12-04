@@ -76,20 +76,6 @@ namespace team8finalproject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PortfolioDetails",
-                columns: table => new
-                {
-                    PortfolioDetailID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    NumShares = table.Column<int>(nullable: false),
-                    StockPrice = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PortfolioDetails", x => x.PortfolioDetailID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
@@ -221,6 +207,7 @@ namespace team8finalproject.Migrations
                     ProductType = table.Column<int>(nullable: false),
                     AccountName = table.Column<string>(nullable: false),
                     AccountStatus = table.Column<int>(nullable: false),
+                    InitialDeposit = table.Column<decimal>(nullable: false),
                     CustomerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -270,6 +257,34 @@ namespace team8finalproject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PortfolioDetails",
+                columns: table => new
+                {
+                    PortfolioDetailID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NumShares = table.Column<int>(nullable: false),
+                    StockPrice = table.Column<decimal>(nullable: false),
+                    ProductID = table.Column<int>(nullable: true),
+                    StockID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PortfolioDetails", x => x.PortfolioDetailID);
+                    table.ForeignKey(
+                        name: "FK_PortfolioDetails_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PortfolioDetails_Stocks_StockID",
+                        column: x => x.StockID,
+                        principalTable: "Stocks",
+                        principalColumn: "StockID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -282,8 +297,7 @@ namespace team8finalproject.Migrations
                     TransactionType = table.Column<int>(nullable: false),
                     ProductID = table.Column<int>(nullable: true),
                     TransactionStatus = table.Column<int>(nullable: false),
-                    AppUserId = table.Column<string>(nullable: true),
-                    PayeeID = table.Column<int>(nullable: true)
+                    AppUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -293,12 +307,6 @@ namespace team8finalproject.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Payees_PayeeID",
-                        column: x => x.PayeeID,
-                        principalTable: "Payees",
-                        principalColumn: "PayeeID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Transactions_Products_ProductID",
@@ -392,6 +400,16 @@ namespace team8finalproject.Migrations
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PortfolioDetails_ProductID",
+                table: "PortfolioDetails",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PortfolioDetails_StockID",
+                table: "PortfolioDetails",
+                column: "StockID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CustomerId",
                 table: "Products",
                 column: "CustomerId");
@@ -400,11 +418,6 @@ namespace team8finalproject.Migrations
                 name: "IX_Transactions_AppUserId",
                 table: "Transactions",
                 column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_PayeeID",
-                table: "Transactions",
-                column: "PayeeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_ProductID",
@@ -439,9 +452,6 @@ namespace team8finalproject.Migrations
                 name: "PortfolioDetails");
 
             migrationBuilder.DropTable(
-                name: "Stocks");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -449,6 +459,9 @@ namespace team8finalproject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payees");
+
+            migrationBuilder.DropTable(
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Products");

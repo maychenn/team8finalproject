@@ -323,6 +323,8 @@ namespace team8finalproject.Migrations
 
                     b.Property<string>("CustomerId");
 
+                    b.Property<decimal>("InitialDeposit");
+
                     b.Property<int>("ProductType");
 
                     b.HasKey("ProductID");

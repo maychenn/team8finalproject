@@ -10,8 +10,8 @@ using team8finalproject.DAL;
 namespace team8finalproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191204074445_Models1")]
-    partial class Models1
+    [Migration("20191204082251_Setup")]
+    partial class Setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -324,6 +324,8 @@ namespace team8finalproject.Migrations
                     b.Property<int>("AccountStatus");
 
                     b.Property<string>("CustomerId");
+
+                    b.Property<decimal>("InitialDeposit");
 
                     b.Property<int>("ProductType");
 

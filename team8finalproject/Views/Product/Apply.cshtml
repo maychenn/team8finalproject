@@ -1,0 +1,21 @@
+﻿@model team8finalproject.Models.Product
+@{
+    ViewData["Title"] = "Apply";
+}
+
+<h1>Select a Product to Apply For</h1>
+
+
+@if (User.Identity.IsAuthenticated != true)
+{
+    <a asp-action="Register" asp-controller="Account" class="btn btn-success">Make an Account</a>
+}
+@if (User.Identity.IsAuthenticated == true)
+{
+    <h4>Apply for a product:</h4>
+    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="@ProductTypes.Checking" class="btn btn-success">Checkings</a>
+    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="@ProductTypes.Savings" class="btn btn-success">Savings</a>
+    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="@ProductTypes.Portfolio" class="btn btn-success">Stock Portfolio</a>
+    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="@ProductTypes.IRA" class="btn btn-success">Individual Retirement Accounts (IRAs)</a>
+    <p></p>
+}
