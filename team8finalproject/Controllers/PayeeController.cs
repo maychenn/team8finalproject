@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace team8finalproject.Controllers
 {
@@ -20,6 +21,7 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Payee
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Payees.ToListAsync());
