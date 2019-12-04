@@ -22,6 +22,17 @@ namespace team8finalproject.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
+        //GetAllAccounts
+        public SelectList GetAllAccounts(StandardAccount standardAccount)
+        {
+            var query = from a in _context.StandardAccounts
+                        select a;
+            query = query.Where(a => a.Customer.Id == standardAccount.Customer.Id);
+            query = query.Where(a => a.AccountType != AccountTypes.Portfolio);
+            List<StandardAccount> allAccounts = query.ToList();
+            SelectList list = new SelectList(allAccounts, "StandardAccountId", "AccountName", standardAccount.StandardAccountID);
+            return list;
+        }
 
         //Create the constructor so that we get an instance of AppDbContext
         public TransactionController(AppDbContext context, IServiceProvider service)
@@ -45,47 +56,163 @@ namespace team8finalproject.Controllers
 
             return View(transactions);
         }
-        // quick search??
-        /*public IActionResult Index(string SearchString)
+
+
+        //Get: Deposit
+        public ActionResult Deposit(int? id)
         {
-            var query = from t in _context.Transactions
-                        select t;
-
-
-            if (SearchString != null && SearchString != "")
-
+            if (id == null)
             {
-                query = query.Where(t => t.Description.Contains(SearchString));
-
+                return NotFound();
             }
+            StandardAccount standardAccount = _context.StandardAccounts.Find(id);
+            if (standardAccount == null)
+            {
+                return NotFound();
+            }
+            ViewBag.AllAccounts = GetAllAccounts(standardAccount);
+            ViewBag.String = id;
+            return View();
+        }
 
-            List<Transaction> SelectedTransactions = query.Include(t => t.Account).ToList();
 
-            ViewBag.AllTransactionCount = _context.Transactions.Count();
-            ViewBag.SelectedTransactionCount = SelectedTransactions.Count();
-
-            return View(SelectedTransactions.OrderByDescending(t => t.Number));
-
-        }*/
-
-        // GET: Transaction/Details
-        public IActionResult Details(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, Int32 StandardAccountID)
         {
-            if (id == null) //transaction ID not specified
+            if (ModelState.IsValid)
             {
-                return View("Error", new String[] { "TransactionID not specified - which transaction do you want to view?" });
+
+                StandardAccount standardAccount = _context.StandardAccounts.Find(StandardAccountID);
+                ViewBag.AllAccounts = GetAllAccounts(standardAccount);
+                if (transaction.Amount <= 0)
+                {
+                    ViewBag.Error = "Amount must be greater than $0.00.";
+                    return View(transaction);
+                }
+
+
+                if(transaction.Amount >= 5000)
+                {
+
+                    transaction.TransactionStatus = TransactionStatus.Pending;
+                    ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+
+                }
+
+
             }
 
-            Transaction transaction = _context.Transactions.Include(t => t.Number).FirstOrDefault(t => t.TransactionID == id);
-
-            if (transaction == null) //Book does not exist in database
-            {
-                return View("Error", new String[] { "Transaction not found in database" });
-            }
-
-            //if code gets this far, all is well
             return View(transaction);
         }
+
+
+        [HttpGet]
+        public ActionResult Withdrawal(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            StandardAccount standardAccount = _context.StandardAccounts.Find(id);
+            if (standardAccount == null)
+            {
+                return NotFound();
+            }
+            ViewBag.String = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Withdrawal([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, Int32 StandardAccountID)
+        {
+            if (ModelState.IsValid)
+            {
+                if (transaction.Amount == 0)
+                {
+                    ViewBag.Error = "Withdrawal amount cannot be $0!";
+                    return View(transaction);
+                }
+                if (transaction.Amount > 0)
+                {
+                    transaction.Amount = -transaction.Amount;
+                }
+                StandardAccount standardAccount = _context.StandardAccounts.Find(StandardAccountID);
+                transaction.Account = standardAccount;
+                transaction.TransactionType = Models.TransactionTypes.Withdrawal;
+                standardAccount.AccountBalance = standardAccount.AccountBalance+ transaction.Amount;
+                if (standardAccount.AccountBalance < 0)
+                {
+                    if (standardAccount.AccountBalance < -50)
+                    {
+                        ViewBag.Message = "Transaction exceeds $50 overdraft limit";
+                        standardAccount.AccountBalance -= transaction.Amount;
+                        ModelState.Remove("Amount");
+                        transaction.Amount = 50 + standardAccount.AccountBalance;
+                        return View(transaction);
+                    }
+                    Transaction fee = new Transaction();
+                    fee.Amount = -30;
+                    fee.Description = "Overdraft fee";
+                    fee.Date = transaction.Date;
+                    fee.Account = standardAccount;
+                    fee.TransactionType = Models.TransactionTypes.Fee;
+                    _context.Transactions.Add(fee);
+                    standardAccount.AccountBalance += fee.Amount;
+                }
+                _context.Entry(standardAccount).State = EntityState.Modified;
+                _context.Transactions.Add(transaction);
+                _context.SaveChanges();
+                return RedirectToAction("Index", new { id = transaction.Account.StandardAccountID });
+            }
+            return View(transaction);
+        }
+
+
+
+        // quick search??
+        public IActionResult Index(string SearchString)
+
+            {
+                var query = from t in _context.Transactions
+                            select t;
+
+
+                if (SearchString != null && SearchString != "")
+
+                {
+                    query = query.Where(t => t.Description.Contains(SearchString));
+
+                }
+
+                List<Transaction> SelectedTransactions = query.Include(t => t.Account).ToList();
+
+                ViewBag.AllTransactionCount = _context.Transactions.Count();
+                ViewBag.SelectedTransactionCount = SelectedTransactions.Count();
+
+                return View(SelectedTransactions.OrderByDescending(t => t.Number));
+
+            }
+
+            // GET: Transaction/Details
+            public IActionResult Details(int? id)
+            {
+                if (id == null) //transaction ID not specified
+                {
+                    return View("Error", new String[] { "TransactionID not specified - which transaction do you want to view?" });
+                }
+
+                Transaction transaction = _context.Transactions.Include(t => t.Number).FirstOrDefault(t => t.TransactionID == id);
+
+                if (transaction == null) //Book does not exist in database
+                {
+                    return View("Error", new String[] { "Transaction not found in database" });
+                }
+
+                //if code gets this far, all is well
+                return View(transaction);
+            }
         // GET: Transaction/Create
         [Authorize(Roles = "Customer")]
         public IActionResult Create()
