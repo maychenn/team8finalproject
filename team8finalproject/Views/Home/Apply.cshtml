@@ -1,21 +1,19 @@
-﻿@model team8finalproject.Models.StandardAccount
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Index ";
+    ViewData["Title"] = "Apply";
 }
 
 <h1>Welcome to the Bevo's Bank and Trust!</h1>
-
-<h4>Products We Offer:</h4>
-<a asp-action="Create" asp-controller="StandardAccount" asp-route-AccountType="Checking" class="btn btn-success">Checkings</a>
-<a asp-action="Create" asp-controller="StandardAccount" asp-route-AccountType="Savings" class="btn btn-success">Savings</a>
-<a asp-action="Create" asp-controller="Portfolio" class="btn btn-success">Stock Portfolio</a>
-<a asp-action="Create" asp-controller="IRA" class="btn btn-success">Individual Retirement Accounts (IRAs)</a>
-
 @if (User.Identity.IsAuthenticated != true)
 {
+    <h4>Products We Offer:</h4>
+    <h4>Checkings</h4>
+    <h4>Savings</h4>
+    <h4>Stock Portfolio</h4>
+    <h4>Individual Retirement Accounts (IRAs)</h4>
+
     <a asp-action="Register" asp-controller="Account" class="btn btn-success">Make an Account</a>
 }
 
@@ -28,4 +26,3 @@
 {
     <a asp-action="Index" asp-controller="RoleAdmin" class="btn btn-success">Manage Users</a>
 }
-

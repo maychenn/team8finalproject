@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
 using Microsoft.AspNetCore.Authorization;
-using team8finalproject.Email;
 
 namespace team8finalproject.Controllers
 {

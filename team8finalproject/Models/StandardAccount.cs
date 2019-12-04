@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace team8finalproject.Models
 {
-    public enum AccountTypes { Checking, Savings, IRA, Portfolio }
-    public enum AccountStatus { Active, Inactive}
+    public enum AccountTypes { Checking, Savings }
+    public enum AccountStatus { Active, Inactive }
 
     public class StandardAccount
     {

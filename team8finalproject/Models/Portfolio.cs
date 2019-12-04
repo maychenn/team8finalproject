@@ -8,7 +8,7 @@ namespace team8finalproject.Models
 {
     public enum PortfolioStatus { Balanced, Unbalanced }
 
-    public class Portfolio : StandardAccount
+    public class Portfolio 
     {
         public Int32 PortfolioID { get; set; }
 

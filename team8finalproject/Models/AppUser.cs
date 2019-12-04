@@ -52,7 +52,6 @@ namespace team8finalproject.Models
                 return age;
          } }
 
-        public List<Transaction> Transactions { get; set; }
         public List<StandardAccount> StandardAccount { get; set; }
         public Portfolio Portfolio { get; set; }
         public IRA IRA { get; set; }
