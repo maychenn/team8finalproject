@@ -116,8 +116,10 @@ namespace team8finalproject.Controllers
 
                 }
             }
+			string LastFour = transaction.Product.AccountNumber.ToString().Substring(transaction.Product.AccountNumber.Length - 4, 4);
+			ViewBag.Last4Digits = "XXXXXX" + LastFour.ToString();
 
-            return View(transaction);
+			return View(transaction);
         }
 
         [HttpGet]
