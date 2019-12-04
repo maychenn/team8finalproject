@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace team8finalproject.Controllers
 {
@@ -79,7 +80,6 @@ namespace team8finalproject.Controllers
             }
     
 
-
             else
 
             {
@@ -89,6 +89,86 @@ namespace team8finalproject.Controllers
             }
 
         }
+
+
+
+        // GET: IRA/Contribute
+        public IActionResult Contribute()
+        {
+            return View();
+        }
+
+
+        //Post: IRA/Contribute
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contribute([Bind("IRAID,ContributionsThisYear,StandardAccountID,AccountType,AccountName,AccountBalance,Overdraft,AccountStatus")] IRA iRA)
+        {
+
+            AppUser user = _context.Users.Find(iRA.StandardAccount.StandardAccountID);
+            iRA.Customer = user;
+
+            if (user.IRA != null)
+            {
+                return View("Error", new string[] { "You have already created an IRAccount." });
+            }
+
+            else
+            {
+                if (ModelState.IsValid)
+                {
+
+
+                    iRA.AccountName = "Longhorn IRA";
+
+                    decimal MaxContribution = 5000;
+
+                    Transaction transaction = new Transaction();
+                    transaction.TransactionType = TransactionTypes.Deposit;
+                    transaction.Amount = iRA.IRABalance;
+                    MaxContribution = MaxContribution - transaction.Amount;
+                    transaction.Description = "Initial deposit into" + iRA.AccountNumber;
+
+
+                    if(iRA.AccountBalance >5000)
+                    {
+                        transaction.TransactionStatus = TransactionStatus.Pending;
+                        iRA.AccountBalance = 0;
+
+
+                    }
+
+                    else
+                    {
+                        transaction.TransactionStatus = TransactionStatus.Approved;
+                    }
+
+                    if (iRA.StandardAccount.Customer.Age > 65)
+                    {
+                        iRA.IRAStatus = true;
+                        ViewBag.StatusMessage = 
+
+                    }
+
+
+                    iRA.IRAStatus = false;
+
+                    _context.Transactions.Add(transaction);
+                    iRA.Transaction = new List<Transaction>();
+                    iRA.Transaction.Add(transaction);
+                    _context.IRAs.Add(iRA);
+                    _context.SaveChanges();
+                    return RedirectToAction("Details", "Account");
+                }
+            }
+            return View(iRA);
+        }
+
+    }
+
+}
+
+
 
 
 
