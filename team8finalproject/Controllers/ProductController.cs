@@ -116,8 +116,11 @@ namespace team8finalproject.Controllers
             if (product.ProductType == ProductTypes.Checking || product.ProductType == ProductTypes.Savings)
             {
                 pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
-                pd.AccountName = product.AccountName;
                 pd.InitialDeposit = product.InitialDeposit;
+                if(product.AccountName != null)
+                {
+                    pd.AccountName = product.AccountName;
+                }
             }
             
             if (ModelState.IsValid)

@@ -18,7 +18,6 @@ namespace team8finalproject.Models
 		[Display(Name = "Account Number")]
 		public Int32 AccountNumber { get; set; }
 
-		[Required(ErrorMessage = "Account Name is required.")]
 		[Display(Name = "Account Name: ")]
 		public string AccountName { get; set; }
 
