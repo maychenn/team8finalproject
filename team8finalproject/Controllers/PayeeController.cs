@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using team8finalproject.DAL;
 using team8finalproject.Models;
 
@@ -44,6 +45,7 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Payee/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace team8finalproject.Controllers
         // POST: Payee/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PayeeID,Name,Address,City,State,Zip,PhoneNumber,Selection")] Payee payee)
@@ -60,7 +63,7 @@ namespace team8finalproject.Controllers
             {
                 _context.Add(payee);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Payee");
             }
             return View(payee);
         }

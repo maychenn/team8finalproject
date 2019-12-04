@@ -11,6 +11,7 @@ namespace team8finalproject.Models
         public Int32 PayBillID { get; set; }
         public Payee Payee { get; set; }
         public Product Product { get; set; }
+        public AppUser User { get; set; }
 
         [Display(Name = "Payment Amount:")]
         public Decimal PaymentAmount { get; set; }

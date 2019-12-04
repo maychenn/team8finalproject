@@ -5,14 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace team8finalproject.Controllers
 {
     public class PayBillController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
         public PayBillController(AppDbContext context)
         {
@@ -22,7 +26,17 @@ namespace team8finalproject.Controllers
         // GET: PayBill
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PayBills.ToListAsync());
+            List<PayBill> PayBills = new List<PayBill>();
+            if (User.IsInRole("Admin"))
+            {
+                PayBills = _context.PayBills.Include(r => r.Payee).ToList();
+            }
+            else //user is customer
+            {
+                PayBills = _context.PayBills.Where(r => r.User.UserName == User.Identity.Name).Include(r => r.Payee).ToList();
+            }
+
+            return View(PayBills);
         }
 
         // GET: PayBill/Details/5
@@ -46,6 +60,9 @@ namespace team8finalproject.Controllers
         // GET: PayBill/Create
         public IActionResult Create()
         {
+            ViewBag.AllPayees = GetAllPayees();
+            ViewBag.AllAccounts = GetAllAccounts();
+
             return View();
         }
 
@@ -54,8 +71,11 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date")] PayBill payBill)
+        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name")] PayBill payBill, int SelectedPayee)
         {
+
+            payBill.User = await _userManager.FindByNameAsync(User.Identity.Name);
+
             if (ModelState.IsValid)
             {
                 _context.Add(payBill);
@@ -148,6 +168,23 @@ namespace team8finalproject.Controllers
         private bool PayBillExists(int id)
         {
             return _context.PayBills.Any(e => e.PayBillID == id);
+        }
+
+
+        private SelectList GetAllPayees()
+        {
+            List<Payee> payeeList = _context.Payees.ToList();
+
+            SelectList payeeSelection = new SelectList(payeeList.OrderBy(m => m.PayeeID), "PayeeID","Name");
+            return payeeSelection;
+        }
+
+        private SelectList GetAllAccounts()
+        {
+
+            List<Product> accountList = _context.Products.ToList();
+            SelectList accountSelection = new SelectList(accountList.OrderBy(m => m.ProductID), "ProductID", "AccountName", "AccountBalance");
+            return accountSelection;
         }
     }
 }

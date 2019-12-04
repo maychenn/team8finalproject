@@ -12,7 +12,7 @@ namespace team8finalproject.Models
         public Int32 ProductID { get; set; }
 
 		[Required(ErrorMessage = "Product Type is required.")]
-		[Display(Name = "Product Type: ")]
+		[Display(Name = "Account Type: ")]
 		public ProductTypes ProductType { get; set; }
 
 		[Display(Name = "Account Number")]
@@ -27,6 +27,9 @@ namespace team8finalproject.Models
 
         [Display(Name = "Initial Deposit: ")]
         public Decimal InitialDeposit { get; set; }
+
+        [Display(Name = "Total Balance: ")]
+        public Decimal AccountBalance { get; set; }
 
         //navigational properties
         public AppUser Customer { get; set; }

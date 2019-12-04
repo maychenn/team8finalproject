@@ -1,7 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "team8finalproject", "team8finalproject\team8finalproject.csproj", "{9CD73822-CCC8-4ECF-B273-CC6FEBE38909}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "team8finalproject", "team8finalproject\team8finalproject.csproj", "{E6BDF4E5-6436-4C76-BD0E-C6FAD32F8EB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "team8finalproject", "team8finalproject\team8finalproject.csproj", "{BF9ABF69-7E5E-4A53-8DB9-4F0F14C7A1D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,9 +11,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9CD73822-CCC8-4ECF-B273-CC6FEBE38909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CD73822-CCC8-4ECF-B273-CC6FEBE38909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CD73822-CCC8-4ECF-B273-CC6FEBE38909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CD73822-CCC8-4ECF-B273-CC6FEBE38909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BDF4E5-6436-4C76-BD0E-C6FAD32F8EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BDF4E5-6436-4C76-BD0E-C6FAD32F8EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BDF4E5-6436-4C76-BD0E-C6FAD32F8EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BDF4E5-6436-4C76-BD0E-C6FAD32F8EB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF9ABF69-7E5E-4A53-8DB9-4F0F14C7A1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF9ABF69-7E5E-4A53-8DB9-4F0F14C7A1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF9ABF69-7E5E-4A53-8DB9-4F0F14C7A1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF9ABF69-7E5E-4A53-8DB9-4F0F14C7A1D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
