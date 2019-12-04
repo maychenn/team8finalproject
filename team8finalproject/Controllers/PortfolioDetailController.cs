@@ -20,12 +20,12 @@ namespace team8finalproject.Controllers
         }
 
         // GET: PortfolioDetail
-        public async Task<IActionResult> Index(Int32 stockID)
-        {
-            List<PortfolioDetail> Pdt = _context.PortfolioDetails
-                .Include(Pd =>Pd.Stock)
-                .Where(P => P.Product.Transaction. == stockID).ToList();
-            return View(Pdt);
+        //public async Task<IActionResult> Index(Int32 stockID)
+        //{
+        //    List<PortfolioDetail> Pdt = _context.PortfolioDetails
+        //        .Include(Pd =>Pd.Stock)
+        //        .Where(P => P.Product.Transaction. == stockID).ToList();
+        //    return View(Pdt);
 
             //return View(await _context.PortfolioDetails.ToListAsync());
         }
