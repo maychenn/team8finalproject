@@ -30,7 +30,12 @@
 {
     <a asp-action="Index" asp-controller="Product" class="btn btn-success">View Accounts</a>
 }
-@if (User.IsInRole("Admin"))
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 {
     <a asp-action="Index" asp-controller="RoleAdmin" class="btn btn-success">Manage Users</a>
+    <h4>Pending Tasks</h4>
+    <h3>Awaiting Action!!!</h3>
+
+    <a asp-action="Edit" asp-controller="Dispute" class="btn btn-success">Click Here to Manage Disputes</a>
+
 }
