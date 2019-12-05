@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
-using team8finalproject.Models.ViewModels;
 
 namespace team8finalproject.Controllers
 {
@@ -116,9 +115,16 @@ namespace team8finalproject.Controllers
                     ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
 
                 }
+
+                else
+				{
+
+					product.AccountBalance = product.AccountBalance + transaction.Amount;
+
+				}
             }
-			string LastFour = transaction.Product.AccountNumber.ToString().Substring(transaction.Product.AccountNumber.Length - 4, 4);
-			ViewBag.Last4Digits = "XXXXXX" + LastFour.ToString();
+			//string LastFour = transaction.Product.AccountNumber.ToString().Substring(transaction.Product.AccountNumber.Length - 4, 4);
+			//ViewBag.Last4Digits = "XXXXXX" + LastFour.ToString();
 
 			return View(transaction);
         }
