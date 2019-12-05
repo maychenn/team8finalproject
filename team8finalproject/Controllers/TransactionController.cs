@@ -94,14 +94,24 @@ namespace team8finalproject.Controllers
         //POST: Deposit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, Int32 ProductID)
+        public async Task<IActionResult> Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, Int32 ProductID)
         {
-            if (ModelState.IsValid)
-            {
+			transaction.Number = Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context); //Generates next Transaction #
+			transaction.Date = DateTime.Now; //Sets current date
 
-                Product product = _context.Products.Find(ProductID);
-                ViewBag.AllProducts = GetAllProducts();
-                if (transaction.Amount <= 0)
+			Product product = _context.Products.Find(ProductID);
+			transaction.Product = product;
+
+			ViewBag.AllProducts = GetAllProducts();
+
+			if (ModelState.IsValid)
+            {
+				_context.Add(transaction);
+				await _context.SaveChangesAsync();
+				return RedirectToAction("Index", "Product", new { id = transaction.Product.ProductID });
+
+
+				if (transaction.Amount <= 0)
                 {
                     ViewBag.Error = "Amount must be greater than $0.00.";
                     return View(transaction);
