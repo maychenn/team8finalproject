@@ -10,7 +10,7 @@ using team8finalproject.DAL;
 namespace team8finalproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191205054118_Setup")]
+    [Migration("20191205070416_Setup")]
     partial class Setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
