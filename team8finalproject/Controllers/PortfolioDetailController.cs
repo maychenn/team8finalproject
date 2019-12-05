@@ -82,7 +82,7 @@ namespace team8finalproject.Controllers
         //POST: PortfolioDetail/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PortfolioDetailID,NumShares,StockPrice")] PortfolioDetail portfolioDetail, int SelectedStock)
+        public async Task<IActionResult> Create([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice")] PortfolioDetail portfolioDetail, int SelectedStock)
         {
             //find selected stock
             Stock stock = _context.Stocks.Find(SelectedStock);
@@ -93,10 +93,10 @@ namespace team8finalproject.Controllers
             portfolioDetail.Product = product;
 
             // set stock price
-            portfolioDetail.Stock.Price = stock.Price;
+            portfolioDetail.StockPrice = stock.Price;
 
             //set stock Price*Quantity
-            portfolioDetail.StockPrice = portfolioDetail.Stock.Price * portfolioDetail.NumShares;
+            portfolioDetail.ExtendedPrice = portfolioDetail.StockPrice * portfolioDetail.NumShares;
 
             if (ModelState.IsValid)
             {
@@ -130,7 +130,7 @@ namespace team8finalproject.Controllers
         //POST: PortfolioDetail/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("PortfolioDetailID,NumShares,StockPrice")] PortfolioDetail portfolioDetail)
+        public IActionResult Edit(int id, [Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice")] PortfolioDetail portfolioDetail)
         {
             PortfolioDetail dbPD = _context.PortfolioDetails
                 .Include(p => p.Stock)

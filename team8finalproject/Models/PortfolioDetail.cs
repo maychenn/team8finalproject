@@ -20,6 +20,11 @@ namespace team8finalproject.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Decimal StockPrice { get; set; }
 
+        [Required(ErrorMessage = "Total Price of Stocks")]
+        [Display(Name = "Extended Stock Price")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public Decimal ExtendedPrice { get; set; }
+
         public Product Product { get; set; }
         public Stock Stock { get; set; }
     }
