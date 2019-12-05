@@ -374,7 +374,7 @@ namespace team8finalproject.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("Number");
+                    b.Property<long>("Number");
 
                     b.Property<int?>("ProductID");
 
