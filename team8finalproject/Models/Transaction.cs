@@ -15,7 +15,7 @@ namespace team8finalproject.Models
         public Int32 TransactionID { get; set; }
 
         [Display(Name = "Transaction Number")]
-        public Int64 Number { get; set; }
+        public Int32 Number { get; set; }
 
         [Display(Name = "Transaction Description")]
         public String Description { get; set; }
