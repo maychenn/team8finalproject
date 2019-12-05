@@ -10,8 +10,8 @@ using team8finalproject.DAL;
 namespace team8finalproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191205223446_Setup")]
-    partial class Setup
+    [Migration("20191205235608_ExtendedPrice")]
+    partial class ExtendedPrice
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -294,6 +294,8 @@ namespace team8finalproject.Migrations
                     b.Property<int>("PortfolioDetailID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("ExtendedPrice");
 
                     b.Property<int>("NumShares");
 

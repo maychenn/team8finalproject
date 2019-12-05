@@ -293,6 +293,8 @@ namespace team8finalproject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("ExtendedPrice");
+
                     b.Property<int>("NumShares");
 
                     b.Property<int?>("ProductID");

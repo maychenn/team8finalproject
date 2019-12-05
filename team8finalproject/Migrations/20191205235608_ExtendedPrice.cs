@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace team8finalproject.Migrations
 {
-    public partial class Setup : Migration
+    public partial class ExtendedPrice : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -267,6 +267,7 @@ namespace team8finalproject.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     NumShares = table.Column<int>(nullable: false),
                     StockPrice = table.Column<decimal>(nullable: false),
+                    ExtendedPrice = table.Column<decimal>(nullable: false),
                     ProductID = table.Column<int>(nullable: true),
                     StockID = table.Column<int>(nullable: true)
                 },
