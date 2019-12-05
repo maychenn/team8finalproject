@@ -40,9 +40,13 @@ namespace team8finalproject.Models
         [Required(ErrorMessage = "Fee is required.")]
         [Display(Name = "Stock Fee")]
         public Decimal Fee { get; set; }
-
+        public List<PortfolioDetail> PortfolioDetail { get; set; }
         public Stock()
         {
+            if (PortfolioDetail == null)
+            {
+                PortfolioDetail = new List<PortfolioDetail>();
+            }
         }
     }
 }

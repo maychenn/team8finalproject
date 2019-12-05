@@ -63,6 +63,10 @@ namespace team8finalproject.Models
                 Product = new List<Product>();
                 New = true;
             }
+            if (PayBill == null)
+            {
+                PayBill = new List<PayBill>();
+            }
             // user with no accounts
             else if (Product.Count == 0)
             {

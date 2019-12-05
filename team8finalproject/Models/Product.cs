@@ -33,6 +33,7 @@ namespace team8finalproject.Models
         //navigational properties
         public AppUser Customer { get; set; }
         public List<Transaction> Transaction { get; set; }
+        public List<PortfolioDetail> PortfolioDetail { get; set; }
 
         public Product()
         {
@@ -45,6 +46,14 @@ namespace team8finalproject.Models
             if (ProductType == ProductTypes.Savings && AccountName == null)
             {
                 AccountName = "Longhorn Savings";
+            }
+            if (Transaction == null)
+            {
+                Transaction = new List<Transaction>();
+            }
+            if (PortfolioDetail == null)
+            {
+                PortfolioDetail = new List<PortfolioDetail>();
             }
         }
     }

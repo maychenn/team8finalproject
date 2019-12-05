@@ -22,6 +22,5 @@ namespace team8finalproject.Models
 
         public Product Product { get; set; }
         public Stock Stock { get; set; }
-
     }
 }

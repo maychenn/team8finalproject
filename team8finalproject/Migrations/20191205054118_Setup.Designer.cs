@@ -10,7 +10,7 @@ using team8finalproject.DAL;
 namespace team8finalproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191204231307_Setup")]
+    [Migration("20191205054118_Setup")]
     partial class Setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -463,11 +463,11 @@ namespace team8finalproject.Migrations
             modelBuilder.Entity("team8finalproject.Models.PortfolioDetail", b =>
                 {
                     b.HasOne("team8finalproject.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("PortfolioDetail")
                         .HasForeignKey("ProductID");
 
                     b.HasOne("team8finalproject.Models.Stock", "Stock")
-                        .WithMany()
+                        .WithMany("PortfolioDetail")
                         .HasForeignKey("StockID");
                 });
 

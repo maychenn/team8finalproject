@@ -461,11 +461,11 @@ namespace team8finalproject.Migrations
             modelBuilder.Entity("team8finalproject.Models.PortfolioDetail", b =>
                 {
                     b.HasOne("team8finalproject.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("PortfolioDetail")
                         .HasForeignKey("ProductID");
 
                     b.HasOne("team8finalproject.Models.Stock", "Stock")
-                        .WithMany()
+                        .WithMany("PortfolioDetail")
                         .HasForeignKey("StockID");
                 });
 

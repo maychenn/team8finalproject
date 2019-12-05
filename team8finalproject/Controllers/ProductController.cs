@@ -78,10 +78,10 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateChecking([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        public async Task<IActionResult> CreateChecking([Bind("ProductID,ProductType,AccountNumber,AccountName,InitialDeposit,AccountBalance,AccountStatus")] Product product)
         {
             Product pd = new Product();
-            pd.ProductType = product.ProductType;
+            pd.ProductType = ProductTypes.Checking;
             pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
             pd.InitialDeposit = product.InitialDeposit;
             pd.AccountBalance = product.InitialDeposit;
@@ -103,14 +103,22 @@ namespace team8finalproject.Controllers
             {
                 pd.AccountName = product.AccountName;
             }
+            if (product.InitialDeposit < 0)
+            {
+                return View(product);
 
+            }
+            _context.Add(pd);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            /*
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
-            }
-            return View(product);
+            }*/
+            
         }
         
         // GET: Product/CreateSavings
