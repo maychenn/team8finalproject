@@ -71,11 +71,11 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,PayeeName")] PayBill payBill, int SelectedPayee, int SelectedAccount)
+        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,PayeeName")] PayBill payBill, int SelectedPayee, int SelectedAccount, Transaction transaction)
         {
 
-            //find the correct payee 
-            Payee payee = _context.Payees.Find(SelectedPayee);
+			//find the correct payee 
+			Payee payee = _context.Payees.Find(SelectedPayee);
             payBill.Payee = payee;
 
             //find the correct account
@@ -84,18 +84,37 @@ namespace team8finalproject.Controllers
 
             //subtract bill from account balance 
             payBill.Product.AccountBalance = payBill.Product.AccountBalance - payBill.PaymentAmount;
-            if (payBill.Product.AccountBalance < 50)
-            {
-                payBill.Product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
-                ViewBag.Error = TempData["error"];
-                return View(payBill);
-            }
+			if (payBill.Product.AccountBalance < 0)
+			{
+				if (payBill.Product.AccountBalance < -50)
+				{
+					ViewBag.Message = "Transaction exceeds $50 overdraft limit";
+					payBill.Product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
+					return RedirectToAction("Index","PayBill");
+				}
+				Transaction fee = new Transaction();
+				fee.Amount = -30;
+				fee.Description = "Overdraft fee";
+				fee.Date = transaction.Date;
+				fee.Number = transaction.Number;
+				fee.TransactionType = TransactionTypes.Fee;
+				fee.Product = transaction.Product;
+				_context.Transactions.Add(fee);
+				payBill.Product.AccountBalance += fee.Amount;
+				_context.Transactions.Add(transaction);
+				_context.Add(payBill);
+				await _context.SaveChangesAsync();
+				ViewBag.Message = "Successful payment with overdraft fee.";
+
+				return RedirectToAction("Index", "PayBill", new { id = payBill.PayBillID });
+			}
 
             if (ModelState.IsValid)
             {
-                _context.Add(payBill);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index","PayBill");
+                _context.PayBills.Add(payBill);
+                _context.SaveChangesAsync();
+				ViewBag.Message = "Successful payment with overdraft fee.";
+				return RedirectToAction("Index","PayBill", new { id = payBill.PayBillID });
             }
             return View(payBill);
         }
@@ -201,10 +220,18 @@ namespace team8finalproject.Controllers
             {
                 query = query.Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings);
             }
-
+            
             List<Product> accountList = query.ToList();
-            SelectList accountSelection = new SelectList(accountList, "AccountName", "AccountBalance");
-            return accountSelection;
+			IEnumerable<SelectListItem> selectList = from p in query
+													 select new SelectListItem
+													 {
+														 Value = p.ProductID.ToString(),
+														 Text = p.AccountName + " -- " + p.AccountBalance.ToString()
+													 };
+			SelectList accountSelection = new SelectList(selectList, "Value", "Text");
+			return accountSelection;
+			/*SelectList accountSelection = new SelectList(accountList, "ProductID", "Text");
+            return accountSelection;*/
         }
     }
 }
