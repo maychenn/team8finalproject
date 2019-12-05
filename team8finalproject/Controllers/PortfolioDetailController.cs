@@ -24,7 +24,7 @@ namespace team8finalproject.Controllers
         {
             List<PortfolioDetail> Pdt = _context.PortfolioDetails
                 .Include(Pd => Pd.Stock)
-                .Where(P => P.Product.Transaction. == stockID).ToList();
+                .Where(P => P.Product.ProductID == stockID).ToList();
             return View(Pdt);
 
         }
