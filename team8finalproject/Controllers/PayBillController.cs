@@ -71,7 +71,7 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,PayeeName")] PayBill payBill, int SelectedPayee, int SelectedAccount, Transaction transaction)
+        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,AccountName")] PayBill payBill, int SelectedPayee, int SelectedAccount, Transaction transaction)
         {
 
 			//find the correct payee 
@@ -84,7 +84,8 @@ namespace team8finalproject.Controllers
 
             //subtract bill from account balance 
             payBill.Product.AccountBalance = payBill.Product.AccountBalance - payBill.PaymentAmount;
-			if (payBill.Product.AccountBalance < 0)
+
+            if (payBill.Product.AccountBalance < 0)
 			{
 				if (payBill.Product.AccountBalance < -50)
 				{
@@ -102,8 +103,8 @@ namespace team8finalproject.Controllers
 				_context.Transactions.Add(fee);
 				payBill.Product.AccountBalance += fee.Amount;
 				_context.Transactions.Add(transaction);
-				_context.Add(payBill);
-				await _context.SaveChangesAsync();
+				_context.PayBills.Add(payBill);
+			    _context.SaveChangesAsync();
 				ViewBag.Message = "Successful payment with overdraft fee.";
 
 				return RedirectToAction("Index", "PayBill", new { id = payBill.PayBillID });
@@ -113,8 +114,8 @@ namespace team8finalproject.Controllers
             {
                 _context.PayBills.Add(payBill);
                 _context.SaveChangesAsync();
-				ViewBag.Message = "Successful payment with overdraft fee.";
-				return RedirectToAction("Index","PayBill", new { id = payBill.PayBillID });
+				//ViewBag.Message = "Successful payment with overdraft fee.";
+				return RedirectToAction("Details","PayBill", new { id = payBill.PayBillID });
             }
             return View(payBill);
         }
