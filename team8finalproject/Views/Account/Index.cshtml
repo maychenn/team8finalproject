@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model team8finalproject.Models.ViewModels.ChangeInfoViewModel
+@model team8finalproject.Models.ViewModels.IndexViewModel
 @{
     ViewBag.Title = "Change Password";
 }
-
+@if (this.User.IsInRole("Customer") && Model.New == false)
 {
     <h2>@ViewBag.Title.</h2>
 
@@ -17,38 +17,7 @@
             <dt>Email:</dt>
             <dd>@Model.Email</dd>
 
-     
             <dt>Password:</dt>
-
-            <dt>First Name:</dt>
-            <dd>@Model.FirstName</dd>
-
-            <dt>Last Name:</dt>
-            <dd>@Model.LastName</dd>
-
-            <dt>Middle Initial:</dt>
-            <dd>@Model.MiddleInitial</dd>
-
-            <dt>Street Address:</dt>
-            <dd>@Model.StreetAddress</dd>
-
-            <dt>City:</dt>
-            <dd>@Model.City</dd>
-
-            <dt>State:</dt>
-            <dd>@Model.State</dd>
-
-            <dt>Zip Code:</dt>
-            <dd>@Model.ZipCode</dd>
-
-            <dt>Phone Number:</dt>
-            <dd>@Model.PhoneNumber</dd>
-
-            <dt>Birth Date:</dt>
-            <dd>@Model.Birthdate</dd>
-
-
-
             <dd>
                 [
                 @if (Model.HasPassword)
