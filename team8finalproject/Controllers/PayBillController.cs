@@ -74,20 +74,22 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,AccountName")] PayBill payBill, int SelectedPayee, int SelectedAccount, Transaction transaction)
         {
 
+			PayBill pb = new PayBill();
 			//find the correct payee 
 			Payee payee = _context.Payees.Find(SelectedPayee);
-            payBill.Payee = payee;
+			payBill.Payee = payee;
+            pb.Payee.Name = payee.Name;
 
             //find the correct account
             Product product = _context.Products.Find(SelectedAccount);
-            payBill.Product = product;
+			payBill.Product = product;
+			//subtract bill from account balance 
+			pb.Product.AccountBalance = product.AccountBalance - pb.PaymentAmount;
+			pb.Product.AccountName = product.AccountName;
 
-            //subtract bill from account balance 
-            payBill.Product.AccountBalance = payBill.Product.AccountBalance - payBill.PaymentAmount;
-
-            if (payBill.Product.AccountBalance < 0)
+            if (pb.Product.AccountBalance < 0)
 			{
-				if (payBill.Product.AccountBalance < -50)
+				if (pb.Product.AccountBalance < -50)
 				{
 					ViewBag.Message = "Transaction exceeds $50 overdraft limit";
 					payBill.Product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
@@ -112,10 +114,10 @@ namespace team8finalproject.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.PayBills.Add(payBill);
+                _context.Add(pb);
                 _context.SaveChangesAsync();
-				//ViewBag.Message = "Successful payment with overdraft fee.";
-				return RedirectToAction("Details","PayBill", new { id = payBill.PayBillID });
+				ViewBag.Message = "Successful payment with overdraft fee.";
+				return RedirectToAction("Details","PayBill", new { id = pb.PayBillID });
             }
             return View(payBill);
         }
