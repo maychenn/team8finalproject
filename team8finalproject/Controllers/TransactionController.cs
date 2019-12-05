@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using team8finalproject.Models.ViewModels;
 
 namespace team8finalproject.Controllers
 {
