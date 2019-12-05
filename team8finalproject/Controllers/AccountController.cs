@@ -124,13 +124,23 @@ namespace team8finalproject.Controllers
             String id = User.Identity.Name;
             AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
 
-            //populate the view model
-            ivm.Email = user.Email;		
-            ivm.HasPassword = true;           
-            ivm.UserName = user.UserName;
+			//populate the view model
+			ivm.Email = user.Email;
+			ivm.Birthdate = user.Birthdate;
+			ivm.City = user.City;
+			ivm.LastName = user.LastName;
+			ivm.FirstName = user.FirstName;
+			ivm.State = user.State;
+			ivm.MiddleInitial = user.MiddleInitial;
+			ivm.StreetAddress = user.StreetAddress;
+			ivm.ZipCode = user.ZipCode;
+			ivm.PhoneNumber = user.PhoneNumber;
+			ivm.HasPassword = true;
+			ivm.UserID = user.Id;
+			ivm.UserName = user.UserName;
 
-            //send data to the view
-            return View(ivm);
+			//send data to the view
+			return View(ivm);
         }
 
 		public ActionResult Edit()
@@ -152,15 +162,10 @@ namespace team8finalproject.Controllers
 			evm.StreetAddress = user.StreetAddress;
 			evm.ZipCode = user.ZipCode;
 			evm.PhoneNumber = user.PhoneNumber;
-			evm.HasPassword = true;
-			evm.UserID = user.Id;
-			evm.UserName = user.UserName;
 
 			//send data to the view
 			return View(evm);
 		}
-
-
 
 
 

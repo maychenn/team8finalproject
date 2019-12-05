@@ -1,6 +1,6 @@
 ﻿@model team8finalproject.Models.ViewModels.EditViewModel
 @{
-    ViewBag.Title = "Edit Information";
+    ViewBag.Title = "Edit";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -74,9 +74,10 @@
             @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
         </div>
     </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-primary" value="Submit" />
+            <input type="submit" class="btn btn-primary" value="Save" />
         </div>
     </div>
 }
