@@ -110,7 +110,7 @@ namespace team8finalproject.Controllers
             }
             _context.Add(pd);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            return RedirectToAction("Details", "Product", new { id = pd.ProductID });
             /*
             if (ModelState.IsValid)
             {
