@@ -16,9 +16,9 @@ namespace team8finalproject.Controllers
     public class TransactionController : Controller
     {
         private readonly AppDbContext _context;
-		private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-		public TransactionController(AppDbContext context, IServiceProvider service)
+        public TransactionController(AppDbContext context, IServiceProvider service)
         {
             _context = context;
             _userManager = service.GetRequiredService<UserManager<AppUser>>();
@@ -66,7 +66,7 @@ namespace team8finalproject.Controllers
         public IActionResult CreateDeposit(int id)
         {
             //finds user's accounts
-            ViewBag.SelectAccount = GetUserProducts();     
+            ViewBag.SelectAccount = GetCSIRAProducts();
 
             return View();
         }
@@ -83,15 +83,16 @@ namespace team8finalproject.Controllers
             //find the correct product
             var userProducts = _context.Products
                 .Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings || p.ProductType == ProductTypes.IRA)
                 .OrderBy(x => x.ProductID).ToList();
 
             Product product = userProducts[SelectedProduct];
-                
+
             ts.Product = product;
 
             // updates the values from user input
             ts.TransactionType = TransactionTypes.Deposit;
-            ts.Number = (int) Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+            ts.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
             ts.Date = DateTime.Now;
             if (transaction.Description != null)
             {
@@ -100,7 +101,7 @@ namespace team8finalproject.Controllers
 
             if (transaction.Amount < 0)
             {
-                ViewBag.SelectAccount = GetUserProducts();
+                ViewBag.SelectAccount = GetCSIRAProducts();
                 return View(product);
 
             }
@@ -117,11 +118,11 @@ namespace team8finalproject.Controllers
             {
                 ViewBag.StatusUpdate = "You've successfully deposited " + ts.Amount.ToString() + " into your account.";
                 ts.TransactionStatus = TransactionStatus.Approved;
-                ts.Product.AccountBalance = product.AccountBalance + ts.Amount;
+                ts.Product.AccountBalance = ts.Product.AccountBalance + ts.Amount;
             }
-            
 
-            
+
+
             _context.Add(ts);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Transaction", new { id = ts.TransactionID });
@@ -136,10 +137,10 @@ namespace team8finalproject.Controllers
         }
 
         // GET: Transaction/CreateWithdrawal
-        public IActionResult CreateWithdrawl(int id)
+        public IActionResult CreateWithdrawal(int id)
         {
             //finds user's accounts
-            ViewBag.SelectAccount = GetUserProducts();
+            ViewBag.SelectAccount = GetCSIRAProducts();
 
             return View();
         }
@@ -154,8 +155,34 @@ namespace team8finalproject.Controllers
             Transaction ts = new Transaction();
 
             //find the correct product
-            Product product = _context.Products.Find(SelectedProduct+1);
+            var userProducts = _context.Products
+                .Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings || p.ProductType == ProductTypes.IRA)
+                .OrderBy(x => x.ProductID).ToList();
+
+            Product product = userProducts[SelectedProduct];
             ts.Product = product;
+
+            // 1. cannot overdraft -> error
+            if (product.AccountBalance < 0 || (product.AccountBalance - transaction.Amount < -50))
+            {
+                ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+                return View(transaction);
+            }
+            // 2. can overdraft -> $30 overdraft fee
+            if ((product.AccountBalance - transaction.Amount) < 0)
+            {
+                Transaction fee = new Transaction();
+                fee.Amount = -30.00m;
+                fee.Description = "An overdraft fee of $30 has been applied";
+                fee.Date = transaction.Date;
+                fee.Number = transaction.Number;
+                fee.TransactionType = TransactionTypes.Fee;
+                fee.Product = transaction.Product;
+                _context.Transactions.Add(fee);
+
+                product.AccountBalance += fee.Amount;
+            }
 
             // updates the values from user input
             ts.TransactionType = TransactionTypes.Withdrawal;
@@ -165,34 +192,6 @@ namespace team8finalproject.Controllers
             if (transaction.Description != null)
             {
                 ts.Description = transaction.Description;
-            }
-
-            // checks for overdraft
-            if (product.AccountBalance < 0)
-            {
-                // cannot overdraft
-                if (product.AccountBalance < -50)
-                {
-                    ViewBag.OverdraftMessage = "Transaction exceeds $50 overdraft limit";
-                    product.AccountBalance -= transaction.Amount;
-                    ModelState.Remove("Amount");
-                    transaction.Amount = 50 + product.AccountBalance;
-                    return View(transaction);
-                }
-                // add overdraft fee
-                else
-                {
-                    Transaction fee = new Transaction();
-                    fee.Amount = -30;
-                    fee.Description = "Overdraft fee";
-                    fee.Date = transaction.Date;
-                    fee.Number = transaction.Number;
-                    fee.TransactionType = TransactionTypes.Fee;
-                    fee.Product = transaction.Product;
-                    _context.Transactions.Add(fee);
-                    product.AccountBalance += fee.Amount;
-                }
-                
             }
 
             //checks if the deposit is > 5000, updates the status
@@ -205,7 +204,7 @@ namespace team8finalproject.Controllers
             {
                 ViewBag.StatusUpdate = "You've successfully withdrawn " + ts.Amount.ToString() + " into your account.";
                 ts.TransactionStatus = TransactionStatus.Approved;
-                product.AccountBalance = product.AccountBalance + transaction.Amount;
+                ts.Product.AccountBalance = ts.Product.AccountBalance - transaction.Amount;
             }
 
             // invalid amount entered
@@ -241,58 +240,58 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Create([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus")] Transaction transaction, int SelectedProduct, int SelectedTransaction)
         {
 
-			//Find the Selected Transaction
-			//Transaction trans = _context.Transactions.Find(SelectedTransaction);
-			//trans.Transactions = trans;
+            //Find the Selected Transaction
+            //Transaction trans = _context.Transactions.Find(SelectedTransaction);
+            //trans.Transactions = trans;
 
-			//Find the selected Account
-			Product product = _context.Products.Find(SelectedProduct);
-			transaction.Product = product;
-
-
-			transaction.TransactionType = TransactionTypes.Deposit;
-
-			transaction.Product.AccountBalance = transaction.Product.AccountBalance + transaction.Amount;
-
-			if (transaction.Amount <= 0)
-			{
-				ViewBag.Error = "Amount must be greater than $0.00.";
-				return View(transaction);
-			}
+            //Find the selected Account
+            Product product = _context.Products.Find(SelectedProduct);
+            transaction.Product = product;
 
 
-			if (transaction.Amount >= 5000)
-			{
+            transaction.TransactionType = TransactionTypes.Deposit;
 
-				transaction.TransactionStatus = TransactionStatus.Pending;
-				ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+            transaction.Product.AccountBalance = transaction.Product.AccountBalance + transaction.Amount;
 
-			}
-
-			else
-			{
-
-				product.AccountBalance = product.AccountBalance + transaction.Amount;
-
-			}
-
-			Transaction deposit = new Transaction();
-			deposit.Description = "New Desposit";
-			deposit.Date = transaction.Date;
-			deposit.Number = transaction.Number;
-			deposit.TransactionType = TransactionTypes.Deposit;
-			deposit.Product = transaction.Product;
-			_context.Transactions.Add(deposit);
-			transaction.Product.AccountBalance += deposit.Amount;
-			_context.Transactions.Add(transaction);
-			_context.SaveChangesAsync();
-			ViewBag.Message = "Successful Deposit";
-
-			return RedirectToAction("Index", "Transaction", new { id = transaction.TransactionID});
-		
+            if (transaction.Amount <= 0)
+            {
+                ViewBag.Error = "Amount must be greater than $0.00.";
+                return View(transaction);
+            }
 
 
-			if (ModelState.IsValid)
+            if (transaction.Amount >= 5000)
+            {
+
+                transaction.TransactionStatus = TransactionStatus.Pending;
+                ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+
+            }
+
+            else
+            {
+
+                product.AccountBalance = product.AccountBalance + transaction.Amount;
+
+            }
+
+            Transaction deposit = new Transaction();
+            deposit.Description = "New Desposit";
+            deposit.Date = transaction.Date;
+            deposit.Number = transaction.Number;
+            deposit.TransactionType = TransactionTypes.Deposit;
+            deposit.Product = transaction.Product;
+            _context.Transactions.Add(deposit);
+            transaction.Product.AccountBalance += deposit.Amount;
+            _context.Transactions.Add(transaction);
+            _context.SaveChangesAsync();
+            ViewBag.Message = "Successful Deposit";
+
+            return RedirectToAction("Index", "Transaction", new { id = transaction.TransactionID });
+
+
+
+            if (ModelState.IsValid)
             {
                 _context.Add(transaction);
                 await _context.SaveChangesAsync();
@@ -349,16 +348,16 @@ namespace team8finalproject.Controllers
                 }
 
                 else
-				{
+                {
 
-					product.AccountBalance = product.AccountBalance + transaction.Amount;
+                    product.AccountBalance = product.AccountBalance + transaction.Amount;
 
-				}
+                }
             }
-			//string LastFour = transaction.Product.AccountNumber.ToString().Substring(transaction.Product.AccountNumber.Length - 4, 4);
-			//ViewBag.Last4Digits = "XXXXXX" + LastFour.ToString();
+            //string LastFour = transaction.Product.AccountNumber.ToString().Substring(transaction.Product.AccountNumber.Length - 4, 4);
+            //ViewBag.Last4Digits = "XXXXXX" + LastFour.ToString();
 
-			return View(transaction);
+            return View(transaction);
         }
 
         [HttpGet]
@@ -439,50 +438,39 @@ namespace team8finalproject.Controllers
 
         }
 
-		public SelectList GetUserProducts()
-		{
-            //get a list of all products from the database
-            List<Product> AllProducts = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+        public SelectList GetCSIRAProducts()
+        {
+            //get a list of all Checking, Savings, and IRA accounts from the database
+            List<Product> AllProducts = _context.Products
+                .Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings || p.ProductType == ProductTypes.IRA)
                 .OrderBy(x => x.ProductID).ToList();
 
 
             //convert this to a select list
-            //note that ProductID and ProductName are the names of fields in the Product model class
             SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
 
             //return the select list
             return products;
-
-
-            // query all accounts for this user
-            var query = from p in _context.Products
-						select p;
-			query = query.Where(p => p.Customer.UserName == User.Identity.Name);
-
-
-            SelectList accounts = new SelectList(AllProducts, "ProductID", "ProductName");
-
-            // make the query into a list displaying the accountname and balance
-            /*
-			List<Product> accountList = query.ToList();
-			IEnumerable<SelectListItem> selectList = from p in query
-													 select new SelectListItem
-													 {
-														 Value = p.ProductID.ToString(),
-														 Text = p.AccountName + " -- " + p.AccountBalance.ToString()
-													 };
-                                                     
-
-            // pass in a select list of the user's accounts
-            SelectList accountSelection = new SelectList(selectList, "Value", "Text");
-			return accountSelection;*/
 		}
+        public SelectList GetUserProducts()
+        {
+            //get a list of all of the user's accounts from the database
+            List<Product> AllProducts = _context.Products
+                .Where(p => p.Customer.UserName == User.Identity.Name)
+                .OrderBy(x => x.ProductID).ToList();
+
+            //convert this to a select list
+            SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
+
+            //return the select list
+            return products;
+        }
 
 
 
 
-
-	}
+    }
 
 }
 
