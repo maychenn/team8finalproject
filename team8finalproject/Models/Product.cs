@@ -16,7 +16,8 @@ namespace team8finalproject.Models
 		public ProductTypes ProductType { get; set; }
 
 		[Display(Name = "Account Number")]
-		public Int32 AccountNumber { get; set; }
+        [DisplayFormat(DataFormatString = "XXXXXX####")]
+        public Int32 AccountNumber { get; set; }
 
 		[Display(Name = "Account Name: ")]
 		public string AccountName { get; set; }
