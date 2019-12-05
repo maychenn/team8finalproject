@@ -13,9 +13,10 @@
 @if (User.Identity.IsAuthenticated == true)
 {
     <h4>Apply for a product:</h4>
-    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="Checking" class="btn btn-success">Checkings</a>
-    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="Savings" class="btn btn-success">Savings</a>
-    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="Portfolio" class="btn btn-success">Stock Portfolio</a>
-    <a asp-action="Create" asp-controller="Product" asp-route-ProductType="IRA" class="btn btn-success">Individual Retirement Accounts (IRAs)</a>
+    <a asp-action="CreateChecking" asp-controller="Product" class="btn btn-success">Checkings</a>
+    <a asp-action="CreateSavings" asp-controller="Product" class="btn btn-success">Savings</a>
+    <a asp-action="CreateIRA" asp-controller="Product" class="btn btn-success">Individual Retirement Accounts (IRAs)</a>
+    <a asp-action="CreatePortfolio" asp-controller="Product" class="btn btn-success">Stock Portfolio</a>
+
     <p></p>
 }

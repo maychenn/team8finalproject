@@ -16,7 +16,7 @@
 
     <a asp-action="Register" asp-controller="Account" class="btn btn-success">Register Here</a>
 }
-@if (User.IsInRole("New Customer"))
+@if (User.IsInRole("New Customer") || User.IsInRole("Customer"))
 {
     <h4>Products We Offer:</h4>
     <h4>Checkings</h4>

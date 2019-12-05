@@ -9,18 +9,21 @@ using team8finalproject.DAL;
 using team8finalproject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace team8finalproject.Controllers
 {
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
 
-        public ProductController(AppDbContext context, RoleManager<IdentityRole> roleManager)
+        public ProductController(AppDbContext context, RoleManager<IdentityRole> roleManager, IServiceProvider service)
         {
             _context = context;
             _roleManager = roleManager;
+            _userManager = service.GetRequiredService<UserManager<AppUser>>();
         }
 
         // GET: Product
@@ -46,7 +49,7 @@ namespace team8finalproject.Controllers
 
             return View(product);
         }
-
+        
         // GET: Product/Apply
         public IActionResult Apply()
         {
@@ -58,72 +61,134 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Apply(String productType)
+        public IActionResult Apply(String dummy)
         {
-            Product pd = new Product();
-            if (productType == "Checking")
-            {
-                pd.ProductType = ProductTypes.Checking;
-            }
-            if (productType == "Savings")
-            {
-                pd.ProductType = ProductTypes.Savings;
-            }
-            if (productType == "Portfolio")
-            {
-                pd.ProductType = ProductTypes.Portfolio;
-            }
-            if (productType == "IRA")
-            {
-                pd.ProductType = ProductTypes.IRA;
-            }
-            return View("Create", pd);
+            return View();
 
         }
-
-        // GET: Product/Create
-        public IActionResult Create(String productType)
+        
+        // GET: Product/CreateChecking
+        public IActionResult CreateChecking()
         {
-            Product pd = new Product();
-
-            if (productType == "Checking")
-            {
-                pd.ProductType = ProductTypes.Checking;
-            }
-            else if(productType == "Savings")
-            {
-                pd.ProductType = ProductTypes.Savings;
-            }
-            else if (productType == "IRA")
-            {
-                pd.ProductType = ProductTypes.IRA;
-            }
-            else
-            {
-                pd.ProductType = ProductTypes.Portfolio;
-            }
-            return View(pd);
+            return View("CreateChecking");
         }
 
-        // POST: Product/Create
+        // POST: Product/CreateChecking
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        public async Task<IActionResult> CreateChecking([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
         {
             Product pd = new Product();
-            if (product.ProductType == ProductTypes.Checking || product.ProductType == ProductTypes.Savings)
+            pd.ProductType = product.ProductType;
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+            pd.InitialDeposit = product.InitialDeposit;
+            pd.AccountBalance = product.InitialDeposit;
+
+            pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            //checks if the initial deposit is > 5000, updates the status
+            if (product.InitialDeposit > 5000)
             {
-                pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
-                pd.InitialDeposit = product.InitialDeposit;
-                pd.AccountBalance = product.AccountBalance + product.InitialDeposit;
-                if(product.AccountName != null)
-                {
-                    pd.AccountName = product.AccountName;
-                }
+                ViewBag.StatusUpdate = "Your application must be approved by a manager.";
             }
-            
+            else
+            {
+                ViewBag.StatusUpdate = "You've successfully applied for an account!";
+                pd.AccountStatus = AccountStatus.Active;
+            }
+
+            if (product.AccountName != null)
+            {
+                pd.AccountName = product.AccountName;
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(pd);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            }
+            return View(product);
+        }
+        
+        // GET: Product/CreateSavings
+        public IActionResult CreateSavings()
+        {
+            return View();
+        }
+
+        // POST: Product/CreateSavings
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSavings([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        {
+            Product pd = new Product();
+
+            //checks if the initial depo is > 5000, updates the status
+            if (product.InitialDeposit > 5000)
+            {
+                ViewBag.StatusUpdate = "Your application must be approved by a manager.";
+            }
+            else
+            {
+                ViewBag.StatusUpdate = "You've successfully applied for a Savings Account!";
+                pd.AccountStatus = AccountStatus.Active;
+            }
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+            pd.InitialDeposit = product.InitialDeposit;
+            pd.AccountBalance = product.AccountBalance + product.InitialDeposit;
+
+            if (product.AccountName != null)
+            {
+                pd.AccountName = product.AccountName;
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(pd);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
+        // GET: Product/CreateIRA
+        public IActionResult CreateIRA()
+        {
+            return View();
+        }
+
+        // POST: Product/CreatePortfolio
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePortfolio([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        {
+            Product pd = new Product();
+
+            //checks if the initial depo is > 5000, updates the status
+            if (product.InitialDeposit > 5000)
+            {
+                ViewBag.StatusUpdate = "Your application must be approved by a manager.";
+            }
+            else
+            {
+                ViewBag.StatusUpdate = "You've successfully applied for an IRA!";
+                pd.AccountStatus = AccountStatus.Active;
+            }
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+            pd.InitialDeposit = product.InitialDeposit;
+            pd.AccountBalance = product.AccountBalance + product.InitialDeposit;
+
+            if (product.AccountName != null)
+            {
+                pd.AccountName = product.AccountName;
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
