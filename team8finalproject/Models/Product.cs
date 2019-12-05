@@ -28,6 +28,9 @@ namespace team8finalproject.Models
         [Display(Name = "Initial Deposit: ")]
         public Decimal InitialDeposit { get; set; }
 
+        [Display(Name = "Total Contribution: ")]
+        public Decimal Contribution { get; set; }
+
         [Display(Name = "Total Balance: ")]
         public Decimal AccountBalance { get; set; }
 

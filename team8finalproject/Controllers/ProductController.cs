@@ -103,6 +103,10 @@ namespace team8finalproject.Controllers
             {
                 pd.AccountName = product.AccountName;
             }
+            else
+            {
+                pd.AccountName = "Longhorn Checking";
+            }
             if (product.InitialDeposit < 0)
             {
                 return View(product);
@@ -127,7 +131,7 @@ namespace team8finalproject.Controllers
             return View("CreateSavings");
         }
 
-        // POST: Product/CreateChecking
+        // POST: Product/CreateSavings
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -157,6 +161,10 @@ namespace team8finalproject.Controllers
             {
                 pd.AccountName = product.AccountName;
             }
+            else
+            {
+                pd.AccountName = "Longhorn Savings";
+            }
             if (product.InitialDeposit < 0)
             {
                 return View(product);
@@ -177,19 +185,26 @@ namespace team8finalproject.Controllers
         // GET: Product/CreateIRA
         public IActionResult CreateIRA()
         {
-            return View();
+            return View("CreateIRA");
         }
 
-        // POST: Product/CreatePortfolio
+        // POST: Product/CreateIRA
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePortfolio([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        public async Task<IActionResult> CreateIRA([Bind("ProductID,ProductType,AccountNumber,AccountName,InitialDeposit,AccountBalance,AccountStatus")] Product product)
         {
             Product pd = new Product();
+            pd.ProductType = ProductTypes.IRA;
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+            pd.InitialDeposit = product.InitialDeposit;
+            pd.AccountBalance = product.InitialDeposit;
+            //contribution = initial deposit
 
-            //checks if the initial depo is > 5000, updates the status
+            pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            //checks if the initial deposit is > 5000, updates the status
             if (product.InitialDeposit > 5000)
             {
                 ViewBag.StatusUpdate = "Your application must be approved by a manager.";
@@ -199,9 +214,6 @@ namespace team8finalproject.Controllers
                 ViewBag.StatusUpdate = "You've successfully applied for an IRA!";
                 pd.AccountStatus = AccountStatus.Active;
             }
-            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
-            pd.InitialDeposit = product.InitialDeposit;
-            pd.AccountBalance = product.AccountBalance + product.InitialDeposit;
 
             if (product.AccountName != null)
             {
@@ -209,17 +221,68 @@ namespace team8finalproject.Controllers
             }
             else
             {
-                pd.AccountName = "Longhorn Savings";
+                pd.AccountName = "Longhorn IRA";
             }
+            if (product.InitialDeposit < 0)
+            {
+                return View(product);
+
+            }
+            _context.Add(pd);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "Product", new { id = pd.ProductID });
+            /*
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
+                return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            }*/
+
+        }
+        // GET: Product/CreatePortfolio
+        public IActionResult CreatePortfolio()
+        {
+            return View("CreatePortfolio");
         }
 
+        // POST: Product/CreateIRA
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePortfolio([Bind("ProductID,ProductType,AccountNumber,AccountName,InitialDeposit,AccountBalance,AccountStatus")] Product product)
+        {
+            Product pd = new Product();
+            pd.ProductType = ProductTypes.Portfolio;
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+
+            pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            //checks if the initial deposit is > 5000, updates the status
+            ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
+            pd.AccountStatus = AccountStatus.Active;
+
+            if (product.AccountName != null)
+            {
+                pd.AccountName = product.AccountName;
+            }
+            else
+            {
+                pd.AccountName = "Longhorn Portfolio";
+            }
+            _context.Add(pd);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Create", "PortfolioDetail", new { id = pd.ProductID });
+            /*
+            if (ModelState.IsValid)
+            {
+                _context.Add(pd);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            }*/
+
+        }
         // GET: Product/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
