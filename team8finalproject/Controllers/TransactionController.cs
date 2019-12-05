@@ -81,8 +81,14 @@ namespace team8finalproject.Controllers
             Transaction ts = new Transaction();
 
             //find the correct product
-            Product product = _context.Products.Find(SelectedProduct+1);
-            
+            var userProducts = _context.Products
+                .Where(p => p.Customer.UserName == User.Identity.Name)
+                .OrderBy(x => x.ProductID).ToList();
+
+            Product product = userProducts[SelectedProduct];
+                
+            ts.Product = product;
+
             // updates the values from user input
             ts.TransactionType = TransactionTypes.Deposit;
             ts.Number = (int) Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
@@ -99,9 +105,6 @@ namespace team8finalproject.Controllers
 
             }
             ts.Amount = transaction.Amount;
-
-            // connects the product to the transaction
-            ts.Product = product;
 
             //checks if the deposit is > 5000, updates the status
             if (transaction.Amount > 5000)
@@ -439,7 +442,8 @@ namespace team8finalproject.Controllers
 		public SelectList GetUserProducts()
 		{
             //get a list of all products from the database
-            List<Product> AllProducts = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name).ToList();
+            List<Product> AllProducts = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+                .OrderBy(x => x.ProductID).ToList();
 
 
             //convert this to a select list
