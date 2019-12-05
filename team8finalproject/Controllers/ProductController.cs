@@ -117,6 +117,7 @@ namespace team8finalproject.Controllers
             {
                 pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
                 pd.InitialDeposit = product.InitialDeposit;
+                pd.AccountBalance = product.AccountBalance;
                 if(product.AccountName != null)
                 {
                     pd.AccountName = product.AccountName;

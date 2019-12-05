@@ -71,16 +71,31 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name")] PayBill payBill, int SelectedPayee)
+        public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,PayeeName")] PayBill payBill, int SelectedPayee, int SelectedAccount)
         {
 
-            payBill.User = await _userManager.FindByNameAsync(User.Identity.Name);
+            //find the correct payee 
+            Payee payee = _context.Payees.Find(SelectedPayee);
+            payBill.Payee = payee;
+
+            //find the correct account
+            Product product = _context.Products.Find(SelectedAccount);
+            payBill.Product = product;
+
+            //subtract bill from account balance 
+            payBill.Product.AccountBalance = payBill.Product.AccountBalance - payBill.PaymentAmount;
+            if (payBill.Product.AccountBalance < 50)
+            {
+                payBill.Product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
+                ViewBag.Error = TempData["error"];
+                return View(payBill);
+            }
 
             if (ModelState.IsValid)
             {
                 _context.Add(payBill);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","PayBill");
             }
             return View(payBill);
         }
