@@ -125,20 +125,48 @@ namespace team8finalproject.Controllers
             AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
 
             //populate the view model
-            ivm.Email = user.Email;
-            ivm.HasPassword = true;
-            ivm.UserID = user.Id;
+            ivm.Email = user.Email;		
+            ivm.HasPassword = true;           
             ivm.UserName = user.UserName;
 
             //send data to the view
             return View(ivm);
         }
 
+		public ActionResult Edit()
+		{
+			EditViewModel evm = new EditViewModel();
+
+			//get user info
+			String id = User.Identity.Name;
+			AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
+
+			//populate the view model
+			evm.Email = user.Email;
+			evm.Birthdate = user.Birthdate;
+			evm.City = user.City;
+			evm.LastName = user.LastName;
+			evm.FirstName = user.FirstName;
+			evm.State = user.State;
+			evm.MiddleInitial = user.MiddleInitial;
+			evm.StreetAddress = user.StreetAddress;
+			evm.ZipCode = user.ZipCode;
+			evm.PhoneNumber = user.PhoneNumber;
+			evm.HasPassword = true;
+			evm.UserID = user.Id;
+			evm.UserName = user.UserName;
+
+			//send data to the view
+			return View(evm);
+		}
 
 
-        //Logic for change password
-        // GET: /Account/ChangePassword
-        public ActionResult ChangePassword()
+
+
+
+		//Logic for change password
+		// GET: /Account/ChangePassword
+		public ActionResult ChangePassword()
         {
             return View();
         }

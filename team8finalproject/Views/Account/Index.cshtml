@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model team8finalproject.Models.ViewModels.IndexViewModel
+@model team8finalproject.Models.ViewModels.EditViewModel
+
 @{
     ViewBag.Title = "Change Password";
 }
@@ -14,8 +15,36 @@
             <dt>User Name:</dt>
             <dd>@Model.UserName</dd>
 
+            <dt>First Name:</dt>
+            <dd>@Model.FirstName</dd>
+
+            <dt>Middle Initial:</dt>
+            <dd>@Model.MiddleInitial</dd>
+
+            <dt>Last Name:</dt>
+            <dd>@Model.LastName</dd>
+
             <dt>Email:</dt>
             <dd>@Model.Email</dd>
+
+            <dt>Phone Number:</dt>
+            <dd>@Model.PhoneNumber</dd>
+
+            <dt>Birth Date:</dt>
+            <dd>@Model.Birthdate</dd>
+
+            <dt>Street Address:</dt>
+            <dd>@Model.StreetAddress</dd>
+
+            <dt>City:</dt>
+            <dd>@Model.City</dd>
+
+            <dt>State:</dt>
+            <dd>@Model.State</dd>
+
+            <dt>Zip Code:</dt>
+            <dd>@Model.ZipCode</dd>
+
 
             <dt>Password:</dt>
             <dd>

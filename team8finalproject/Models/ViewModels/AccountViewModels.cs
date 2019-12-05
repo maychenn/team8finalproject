@@ -100,7 +100,56 @@ namespace team8finalproject.Models.ViewModels
         public string ConfirmPassword { get; set; }
     }
 
-    public class IndexViewModel
+	public class EditViewModel : IndexViewModel
+
+	{
+
+		[Required(ErrorMessage = "First name is required.")]
+		[Display(Name = "First Name")]
+		public String FirstName { get; set; }
+
+		//optional
+		[Display(Name = "Middle Initial")]
+		public String MiddleInitial { get; set; }
+
+		[Required(ErrorMessage = "Last name is required.")]
+		[Display(Name = "Last Name")]
+		public String LastName { get; set; }
+
+		[Required(ErrorMessage = "Address is required.")]
+		[Display(Name = "Address")]
+		public String StreetAddress { get; set; }
+
+		[Required(ErrorMessage = "City is required.")]
+		[Display(Name = "City")]
+		public String City { get; set; }
+
+		[Required(ErrorMessage = "State is required.")]
+		[Display(Name = "State")]
+		public String State { get; set; }
+
+		[Required(ErrorMessage = "Zip Code is required.")]
+		[Display(Name = "Zip")]
+		public String ZipCode { get; set; }
+
+		[Required(ErrorMessage = "Email is required")]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+
+		//NOTE: Here is the property for phone number
+		[Required(ErrorMessage = "Phone number is required")]
+		[Phone]
+		[Display(Name = "Phone Number")]
+		public string PhoneNumber { get; set; }
+
+		[Required(ErrorMessage = "Birthday is required")]
+		[Display(Name = "Birthday")]
+		[DataType(DataType.Date)]
+		public DateTime Birthdate { get; set; }
+	}
+
+	public class IndexViewModel
     {
         public bool HasPassword { get; set; }
         public String UserName { get; set; }
