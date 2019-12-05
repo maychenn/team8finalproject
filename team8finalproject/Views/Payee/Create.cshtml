@@ -44,7 +44,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Selection" class="control-label"></label>
-                @Html.DropDownListFor(Payee => Payee.Selection, new SelectList(ViewBag.selection), "Select Payee",new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Selection, new SelectList(ViewBag.SelectType),new { @class = "form-control" })
+                <span asp-validation-for="Selection" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

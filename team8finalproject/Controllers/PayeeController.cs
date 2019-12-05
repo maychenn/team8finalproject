@@ -44,21 +44,25 @@ namespace team8finalproject.Controllers
             return View(payee);
         }
 
+		
+
         // GET: Payee/Create
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
-            return View();
+			ViewBag.SelectType = Enum.GetValues(typeof(PayeeType)).Cast<PayeeType>();
+			return View();
         }
 
         // POST: Payee/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PayeeID,Name,Address,City,State,Zip,PhoneNumber,Selection")] Payee payee)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(payee);
@@ -71,7 +75,8 @@ namespace team8finalproject.Controllers
         // GET: Payee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			ViewBag.SelectType = Enum.GetValues(typeof(PayeeType)).Cast<PayeeType>();
+			if (id == null)
             {
                 return NotFound();
             }
@@ -122,7 +127,8 @@ namespace team8finalproject.Controllers
         // GET: Payee/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			ViewBag.SelectType = Enum.GetValues(typeof(PayeeType)).Cast<PayeeType>();
+			if (id == null)
             {
                 return NotFound();
             }
