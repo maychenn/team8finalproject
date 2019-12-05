@@ -203,7 +203,7 @@ namespace team8finalproject.Controllers
             }
 
             List<Product> accountList = query.ToList();
-            SelectList accountSelection = new SelectList(accountList, "AccountName", "AccountName");
+            SelectList accountSelection = new SelectList(accountList, "AccountName", "AccountBalance");
             return accountSelection;
         }
     }
