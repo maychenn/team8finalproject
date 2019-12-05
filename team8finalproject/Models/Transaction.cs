@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace team8finalproject.Models
 {
-    public enum TransactionTypes { Deposit, Withdrawal, Fee, Transfer, [Display(Name = "Stock Purchase")] StockPurchase }
+    public enum TransactionTypes { Deposit, Withdrawal, Fee, Transfer }
 
     public enum TransactionStatus { Pending, Approved, Denied }
 

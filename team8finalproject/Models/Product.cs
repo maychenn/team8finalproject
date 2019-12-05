@@ -40,7 +40,12 @@ namespace team8finalproject.Models
         public List<PortfolioDetail> PortfolioDetail { get; set; }
 
         public Product()
-        {
+        { 
+            if (AccountBalance == null)
+            {
+                AccountBalance = 0.0m;
+            }
+            
             // defaults
             AccountStatus = AccountStatus.Inactive;
             if (Transaction == null)

@@ -9,14 +9,20 @@ namespace team8finalproject.Utilities
     {
         public static Int32 GetNextAccountNumber(AppDbContext _context)
         {
-            Int32 intMaxAccountNumber;
-            Int32 intNextAccountNumber = 1000000000;
+            Int32 intMaxAccountNumber; //the current maximum number
+            Int32 intNextAccountNumber; //the trans number
 
-            intMaxAccountNumber = _context.Products.Max(c => c.ProductID); //this is the highest number in the database right now
-           
+            if (_context.Products.Count() == 0) //there are no Accounts in the database yet
+            {
+                intMaxAccountNumber = 1; //Account number starts at 1
+            }
+            else
+            {
+                intMaxAccountNumber = _context.Products.Max(c => c.ProductID); //this is the highest number in the database right now
+            }
 
             //add one to the current max to find the next one
-            intNextAccountNumber += (intMaxAccountNumber + 1);
+            intNextAccountNumber = intMaxAccountNumber + 1;
 
             //return the value
             return intNextAccountNumber;

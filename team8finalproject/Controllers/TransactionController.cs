@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace team8finalproject.Controllers
 {
@@ -15,9 +18,10 @@ namespace team8finalproject.Controllers
         private readonly AppDbContext _context;
 		private readonly UserManager<AppUser> _userManager;
 
-		public TransactionController(AppDbContext context)
+		public TransactionController(AppDbContext context, IServiceProvider service)
         {
             _context = context;
+            _userManager = service.GetRequiredService<UserManager<AppUser>>();
         }
 
         // GET: Transaction
@@ -43,15 +47,188 @@ namespace team8finalproject.Controllers
 
             return View(transaction);
         }
-
-        // GET: Transaction/Create
-        public IActionResult Create()
+        // GET: Transaction/Select
+        public IActionResult Select()
         {
-			Viewbag.SelectType = Enum.GetValues(typeof(TransactionTypes)).Cast<TransactionTypes>();
-			ViewBag.AllProducts = GetAllProducts();
-			ViewBag.Accounts = FindAccounts();
-			return View();
+            return View();
         }
+
+        // POST: Transaction/Select
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Select(String dummy)
+        {
+            return View();
+
+        }
+
+        // GET: Transaction/CreateDeposit
+        public IActionResult CreateDeposit(int id)
+        {
+            //finds user's accounts
+            ViewBag.SelectAccount = GetUserProducts();     
+
+            return View();
+        }
+
+        // POST: Product/CreateDeposit
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDeposit([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus")] Transaction transaction, int SelectedProduct)
+        {
+            Transaction ts = new Transaction();
+
+            //find the correct product
+            Product product = _context.Products.Find(SelectedProduct+1);
+            
+            // updates the values from user input
+            ts.TransactionType = TransactionTypes.Deposit;
+            ts.Number = (int) Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+            ts.Date = DateTime.Now;
+            if (transaction.Description != null)
+            {
+                ts.Description = transaction.Description;
+            }
+
+            if (transaction.Amount < 0)
+            {
+                ViewBag.SelectAccount = GetUserProducts();
+                return View(product);
+
+            }
+            ts.Amount = transaction.Amount;
+
+            // connects the product to the transaction
+            ts.Product = product;
+
+            //checks if the deposit is > 5000, updates the status
+            if (transaction.Amount > 5000)
+            {
+                ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+                ts.TransactionStatus = TransactionStatus.Pending;
+            }
+            // valid deposit
+            else
+            {
+                ViewBag.StatusUpdate = "You've successfully deposited " + ts.Amount.ToString() + " into your account.";
+                ts.TransactionStatus = TransactionStatus.Approved;
+                ts.Product.AccountBalance = product.AccountBalance + ts.Amount;
+            }
+            
+
+            
+            _context.Add(ts);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "Transaction", new { id = ts.TransactionID });
+            /*
+            if (ModelState.IsValid)
+            {
+                _context.Add(ts);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Transaction", new { id = ts.TransactionID });
+            }*/
+
+        }
+
+        // GET: Transaction/CreateWithdrawal
+        public IActionResult CreateWithdrawl(int id)
+        {
+            //finds user's accounts
+            ViewBag.SelectAccount = GetUserProducts();
+
+            return View();
+        }
+
+        // POST: Product/CreateWithdrawal
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateWithdrawal([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus")] Transaction transaction, int SelectedProduct)
+        {
+            Transaction ts = new Transaction();
+
+            //find the correct product
+            Product product = _context.Products.Find(SelectedProduct+1);
+            ts.Product = product;
+
+            // updates the values from user input
+            ts.TransactionType = TransactionTypes.Withdrawal;
+            ts.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+            ts.Date = DateTime.Now;
+            ts.Amount = transaction.Amount;
+            if (transaction.Description != null)
+            {
+                ts.Description = transaction.Description;
+            }
+
+            // checks for overdraft
+            if (product.AccountBalance < 0)
+            {
+                // cannot overdraft
+                if (product.AccountBalance < -50)
+                {
+                    ViewBag.OverdraftMessage = "Transaction exceeds $50 overdraft limit";
+                    product.AccountBalance -= transaction.Amount;
+                    ModelState.Remove("Amount");
+                    transaction.Amount = 50 + product.AccountBalance;
+                    return View(transaction);
+                }
+                // add overdraft fee
+                else
+                {
+                    Transaction fee = new Transaction();
+                    fee.Amount = -30;
+                    fee.Description = "Overdraft fee";
+                    fee.Date = transaction.Date;
+                    fee.Number = transaction.Number;
+                    fee.TransactionType = TransactionTypes.Fee;
+                    fee.Product = transaction.Product;
+                    _context.Transactions.Add(fee);
+                    product.AccountBalance += fee.Amount;
+                }
+                
+            }
+
+            //checks if the deposit is > 5000, updates the status
+            if (transaction.Amount > 5000)
+            {
+                ViewBag.LargeWithdrawalMessage = "Your withdrawal is $5000 or larger. You need to wait on Manager Approval";
+                ts.TransactionStatus = TransactionStatus.Pending;
+            }
+            else
+            {
+                ViewBag.StatusUpdate = "You've successfully withdrawn " + ts.Amount.ToString() + " into your account.";
+                ts.TransactionStatus = TransactionStatus.Approved;
+                product.AccountBalance = product.AccountBalance + transaction.Amount;
+            }
+
+            // invalid amount entered
+            if (transaction.Amount < 0)
+            {
+                return View(product);
+
+            }
+
+            // saves the transaction
+            _context.Entry(product).State = EntityState.Modified;
+            _context.Add(ts);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "Transaction", new { id = ts.TransactionID });
+            /*
+            if (ModelState.IsValid)
+            {
+                _context.Add(ts);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Transaction", new { id = ts.TransactionID });
+            }*/
+
+        }
+
+
+
 
         // POST: Transaction/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -62,17 +239,17 @@ namespace team8finalproject.Controllers
         {
 
 			//Find the Selected Transaction
-			Transaction transaction = _context.Transactions.Find(SelectedTransaction);
-			transaction.Transactions = transaction;
+			//Transaction trans = _context.Transactions.Find(SelectedTransaction);
+			//trans.Transactions = trans;
 
-			////Find the selected Account
+			//Find the selected Account
 			Product product = _context.Products.Find(SelectedProduct);
 			transaction.Product = product;
 
 
 			transaction.TransactionType = TransactionTypes.Deposit;
 
-			transaction.Product.Balance = transaction.Product.Balance + transaction.Amount;
+			transaction.Product.AccountBalance = transaction.Product.AccountBalance + transaction.Amount;
 
 			if (transaction.Amount <= 0)
 			{
@@ -97,7 +274,7 @@ namespace team8finalproject.Controllers
 			}
 
 			Transaction deposit = new Transaction();
-			deposite.Description = "New Desposit";
+			deposit.Description = "New Desposit";
 			deposit.Date = transaction.Date;
 			deposit.Number = transaction.Number;
 			deposit.TransactionType = TransactionTypes.Deposit;
@@ -143,7 +320,7 @@ namespace team8finalproject.Controllers
         //POST: Deposit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction)
+        public ActionResult Deposit([Bind("TransactionID,Date,TransactionType,Description,Amount,TransactionStatus")] Transaction transaction, int SelectedAccount)
         {
             if (ModelState.IsValid)
             {
@@ -259,14 +436,30 @@ namespace team8finalproject.Controllers
 
         }
 
-		public SelectList FindAccounts()
+		public SelectList GetUserProducts()
 		{
-			var query = from p in _context.Products
-						select p;
-			{
-				query = query.Where(p => p.ProductID == ProductID);
-			}
+            //get a list of all products from the database
+            List<Product> AllProducts = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name).ToList();
 
+
+            //convert this to a select list
+            //note that ProductID and ProductName are the names of fields in the Product model class
+            SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
+
+            //return the select list
+            return products;
+
+
+            // query all accounts for this user
+            var query = from p in _context.Products
+						select p;
+			query = query.Where(p => p.Customer.UserName == User.Identity.Name);
+
+
+            SelectList accounts = new SelectList(AllProducts, "ProductID", "ProductName");
+
+            // make the query into a list displaying the accountname and balance
+            /*
 			List<Product> accountList = query.ToList();
 			IEnumerable<SelectListItem> selectList = from p in query
 													 select new SelectListItem
@@ -274,10 +467,11 @@ namespace team8finalproject.Controllers
 														 Value = p.ProductID.ToString(),
 														 Text = p.AccountName + " -- " + p.AccountBalance.ToString()
 													 };
-			SelectList accountSelection = new SelectList(selectList, "Value", "Text");
-			return accountSelection;
-			/*SelectList accountSelection = new SelectList(accountList, "ProductID", "Text");
-            return accountSelection;*/
+                                                     
+
+            // pass in a select list of the user's accounts
+            SelectList accountSelection = new SelectList(selectList, "Value", "Text");
+			return accountSelection;*/
 		}
 
 

@@ -12,9 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th
                 @Html.DisplayNameFor(model => model.Number)
-            </th>
+            </tth
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -30,7 +30,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.TransactionStatus)
             </th>
-            <th></th>
+             <th></th>
         </tr>
     </thead>
     <tbody>
@@ -55,10 +55,7 @@
                 @Html.DisplayFor(modelItem => item.TransactionStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.TransactionID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TransactionID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TransactionID">Delete</a>
-                
+                <a asp-action="Create" controller="Dispute" asp-route-id="@item.TransactionID">Dispute</a>
             </td>
         </tr>
 }

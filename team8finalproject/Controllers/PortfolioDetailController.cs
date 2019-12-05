@@ -96,7 +96,7 @@ namespace team8finalproject.Controllers
             portfolioDetail.Stock.Price = stock.Price;
 
             //set stock Price*Quantity
-            portfolioDetail.ExtendedPrice = portfolioDetail.Stock.Price * portfolioDetail.NumShares;
+            portfolioDetail.StockPrice = portfolioDetail.Stock.Price * portfolioDetail.NumShares;
 
             if (ModelState.IsValid)
             {

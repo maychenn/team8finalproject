@@ -1,0 +1,24 @@
+﻿@model string
+@{
+    ViewData["Title"] = "Select Transaction Type";
+}
+
+<h1>Select a Transaction Type:</h1>
+
+
+@if (User.Identity.IsAuthenticated != true)
+{
+    <a asp-action="Register" asp-controller="Account" class="btn btn-success">Make an Account</a>
+}
+@if (User.IsInRole("New Customer"))
+{
+    <a asp-action="Apply" asp-controller="Product" class="btn btn-success">Apply for an Account</a>
+}
+@if (User.IsInRole("Customer"))
+{
+    <a asp-action="CreateDeposit" asp-controller="Transaction" class="btn btn-success">Deposit</a>
+    <a asp-action="CreateWithdrawal" asp-controller="Transaction" class="btn btn-success">Withdrawal</a>
+    <a asp-action="CreateTransfer" asp-controller="Transaction" class="btn btn-success">Transfer</a>
+    <a asp-action="Index" asp-controller="Portfolio" class="btn btn-success">Purchase Stock</a>
+     <p></p>
+}

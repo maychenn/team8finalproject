@@ -32,7 +32,7 @@
                             @Html.ActionLink("Pay Bills", "Index", "PayBill", null, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Create Transaction", "Index", "Transaction", null, new { @class = "nav-link" })
+                            @Html.ActionLink("Create Transaction", "Select", "Transaction", null, new { @class = "nav-link" })
                         </li>
 
 
@@ -46,6 +46,9 @@
                         <li class="nav-item">
                             @Html.ActionLink("All Pay Bills", "Index", "PayBill", null, new { @class = "nav-link" })
                         </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("All Transactions", "Index", "Transaction", null, new { @class = "nav-link" })
+                        </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -54,6 +57,9 @@
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("All Pay Bills", "Index", "PayBill", null, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("All Transactions", "Index", "Transaction", null, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("Manage Users", "Index", "RoleAdmin", null, new { @class = "nav-link" })

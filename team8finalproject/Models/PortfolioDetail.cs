@@ -18,7 +18,7 @@ namespace team8finalproject.Models
         [Required(ErrorMessage = "Current Stock Price is required.")]
         [Display(Name = "Current Stock Price")]
         [DisplayFormat(DataFormatString = "{0:C}")]
-        public Decimal ExtendedPrice { get; set; }
+        public Decimal StockPrice { get; set; }
 
         public Product Product { get; set; }
         public Stock Stock { get; set; }

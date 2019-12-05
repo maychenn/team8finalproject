@@ -9,6 +9,7 @@ namespace team8finalproject.Utilities
     {
         public static Int64 GetNextTransactionNumber(AppDbContext _context)
         {
+
             Int32 intMaxTransactionNumber; //the current maximum number
             Int32 intNextTransactionNumber; //the trans number
 
