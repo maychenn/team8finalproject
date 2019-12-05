@@ -21,6 +21,7 @@ namespace team8finalproject.Models
         public String Description { get; set; }
 
         [Display(Name = "Transaction Date")]
+        [DisplayFormat(DataFormatString = "{0:MM//dd/yyyy}")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
