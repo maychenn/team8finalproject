@@ -209,6 +209,7 @@ namespace team8finalproject.Migrations
                     AccountName = table.Column<string>(nullable: true),
                     AccountStatus = table.Column<int>(nullable: false),
                     InitialDeposit = table.Column<decimal>(nullable: false),
+                    Contribution = table.Column<decimal>(nullable: false),
                     AccountBalance = table.Column<decimal>(nullable: false),
                     CustomerId = table.Column<string>(nullable: true)
                 },

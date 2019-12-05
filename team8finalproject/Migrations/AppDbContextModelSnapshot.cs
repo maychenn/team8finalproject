@@ -324,6 +324,8 @@ namespace team8finalproject.Migrations
 
                     b.Property<int>("AccountStatus");
 
+                    b.Property<decimal>("Contribution");
+
                     b.Property<string>("CustomerId");
 
                     b.Property<decimal>("InitialDeposit");
