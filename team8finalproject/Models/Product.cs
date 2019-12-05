@@ -39,14 +39,6 @@ namespace team8finalproject.Models
         {
             // defaults
             AccountStatus = AccountStatus.Inactive;
-            if (ProductType == ProductTypes.Checking && AccountName == null)
-            {
-                AccountName = "Longhorn Checking";
-            }
-            if (ProductType == ProductTypes.Savings && AccountName == null)
-            {
-                AccountName = "Longhorn Savings";
-            }
             if (Transaction == null)
             {
                 Transaction = new List<Transaction>();

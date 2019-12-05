@@ -95,7 +95,7 @@ namespace team8finalproject.Controllers
             }
             else
             {
-                ViewBag.StatusUpdate = "You've successfully applied for an account!";
+                ViewBag.StatusUpdate = "You've successfully applied for a Checking account!";
                 pd.AccountStatus = AccountStatus.Active;
             }
 
@@ -120,48 +120,59 @@ namespace team8finalproject.Controllers
             }*/
             
         }
-        
+
         // GET: Product/CreateSavings
         public IActionResult CreateSavings()
         {
-            return View();
+            return View("CreateSavings");
         }
 
-        // POST: Product/CreateSavings
+        // POST: Product/CreateChecking
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateSavings([Bind("ProductID,ProductType,AccountName,InitialDeposit,AccountStatus")] Product product)
+        public async Task<IActionResult> CreateSavings([Bind("ProductID,ProductType,AccountNumber,AccountName,InitialDeposit,AccountBalance,AccountStatus")] Product product)
         {
             Product pd = new Product();
+            pd.ProductType = ProductTypes.Savings;
+            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
+            pd.InitialDeposit = product.InitialDeposit;
+            pd.AccountBalance = product.InitialDeposit;
 
-            //checks if the initial depo is > 5000, updates the status
+            pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            //checks if the initial deposit is > 5000, updates the status
             if (product.InitialDeposit > 5000)
             {
                 ViewBag.StatusUpdate = "Your application must be approved by a manager.";
             }
             else
             {
-                ViewBag.StatusUpdate = "You've successfully applied for a Savings Account!";
+                ViewBag.StatusUpdate = "You've successfully applied for a Savings account!";
                 pd.AccountStatus = AccountStatus.Active;
             }
-            pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
-            pd.InitialDeposit = product.InitialDeposit;
-            pd.AccountBalance = product.AccountBalance + product.InitialDeposit;
 
             if (product.AccountName != null)
             {
                 pd.AccountName = product.AccountName;
             }
+            if (product.InitialDeposit < 0)
+            {
+                return View(product);
 
+            }
+            _context.Add(pd);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "Product", new { id = pd.ProductID });
+            /*
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
+                return RedirectToAction("Details", "Product", new { productId = pd.ProductID });
+            }*/
+
         }
         // GET: Product/CreateIRA
         public IActionResult CreateIRA()
@@ -196,7 +207,10 @@ namespace team8finalproject.Controllers
             {
                 pd.AccountName = product.AccountName;
             }
-
+            else
+            {
+                pd.AccountName = "Longhorn Savings";
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(pd);
