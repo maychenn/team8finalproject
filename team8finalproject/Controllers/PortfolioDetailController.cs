@@ -24,6 +24,7 @@ namespace team8finalproject.Controllers
         {
             List<PortfolioDetail> Pdt = _context.PortfolioDetails
                 .Include(Pd => Pd.Stock)
+                .Include(pd => pd.Product.Customer)
                 .Where(P => P.Product.ProductID == stockID).ToList();
             return View(Pdt);
 
@@ -68,6 +69,12 @@ namespace team8finalproject.Controllers
             return View(portfolioDetail);
         }
         */
+
+
+
+
+
+
         //GET: PortfolioDetail/Create
         public IActionResult Create(Int32 productID)
         {
@@ -92,6 +99,7 @@ namespace team8finalproject.Controllers
             Product product = _context.Products.Find(portfolioDetail.Product.ProductID);
             portfolioDetail.Product = product;
 
+
             // set stock price
             portfolioDetail.StockPrice = stock.Price;
 
@@ -107,6 +115,18 @@ namespace team8finalproject.Controllers
             ViewBag.AllStocks = GetAllStocks();
             return View(portfolioDetail);
         }
+
+
+        // GET: Transaction/CreateDeposit
+        public IActionResult PurchaseStock(int id)
+        {
+            //finds user's accounts
+            ViewBag.SelectAccount = GetUserProducts();
+
+            return View();
+        }
+
+
 
         //GET: PortfolioDetail/Edit/5
         public IActionResult Edit(int? id)
@@ -186,7 +206,29 @@ namespace team8finalproject.Controllers
         {
             return _context.PortfolioDetails.Any(e => e.PortfolioDetailID == id);
         }
-        private SelectList GetAllStocks()
+
+
+        public SelectList GetUserProducts()
+        {
+            //get a list of all products from the database
+            List<Product> AllProducts = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+                .OrderBy(x => x.ProductID).ToList();
+
+
+            //convert this to a select list
+            //note that ProductID and ProductName are the names of fields in the Product model class
+            SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
+
+            //return the select list
+            return products;
+
+        }
+
+
+
+
+         private SelectList GetAllStocks()
+
         {
             //get a list of all stocks from the database
             List<Stock> AllStocks = _context.Stocks.ToList();
