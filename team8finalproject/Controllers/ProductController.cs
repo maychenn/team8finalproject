@@ -64,21 +64,43 @@ namespace team8finalproject.Controllers
 		// GET: Product/Details/5
 		public async Task<IActionResult> DetailsPortfolio()
 		{
-			var portfolio = _context.Products
+            if (User.IsInRole("Customer") || User.IsInRole("New Customer"))
+            {
+                var portfolio = _context.Products
                 .Include(p => p.Transaction)
-                .Include(p=>p.PortfolioDetail)
-				.ThenInclude(p => p.Stock)
-				.Where(p => p.Customer.UserName == User.Identity.Name)
+                .Include(p => p.PortfolioDetail)
+                .ThenInclude(p => p.Stock)
+                .Where(p => p.Customer.UserName == User.Identity.Name)
                 .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
 
-            if (portfolio.Count != 0)
-			{
-				Product product = portfolio[0];
-                
-				return View(product);
-			}
+                if (portfolio.Count != 0)
+                {
+                    Product product = portfolio[0];
 
-			return View();
+                    return View(product);
+                }
+                else
+                {
+                    RedirectToAction("CreatePortfolio", "Product");
+                }
+            }
+            if(User.IsInRole("Admin"))
+            {
+                var portfolio = _context.Products
+                       .Include(p => p.Transaction)
+                       .Include(p => p.PortfolioDetail)
+                       .ThenInclude(p => p.Stock).ToList();
+
+               if (portfolio.Count != 0)
+                {
+                    Product product = portfolio[0];
+
+                    return View(product);
+                }
+            }
+
+
+            return View();
 		}
 
 		// GET: Product/Details/5
