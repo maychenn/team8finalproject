@@ -84,6 +84,7 @@ namespace team8finalproject.Controllers
 		public async Task<IActionResult> DetailsIRA()
 		{
 			var ira = _context.Products
+                .Include(p => p.Transaction)
 				.Where(p => p.Customer.UserName == User.Identity.Name)
 				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
 
@@ -249,6 +250,7 @@ namespace team8finalproject.Controllers
             pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
             pd.InitialDeposit = product.InitialDeposit;
             pd.AccountBalance = product.InitialDeposit;
+			pd.Contribution = product.Contribution;
             //contribution = initial deposit
 
             pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
