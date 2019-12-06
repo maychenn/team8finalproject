@@ -118,13 +118,13 @@ namespace team8finalproject.Controllers
 
 
         // GET: Transaction/CreateDeposit
-        public IActionResult PurchaseStock(int id)
-        {
-            //finds user's accounts
-            ViewBag.SelectAccount = GetUserProducts();
+        //public IActionResult PurchaseStock(int id)
+        //{
+        //    //finds user's accounts
+        //    ViewBag.SelectAccount = GetUserProducts();
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
 

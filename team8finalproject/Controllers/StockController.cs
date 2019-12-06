@@ -22,6 +22,8 @@ namespace team8finalproject.Controllers
         // GET: Stock
         public async Task<IActionResult> Index()
         {
+
+
             return View(await _context.Stocks.ToListAsync());
         }
 
