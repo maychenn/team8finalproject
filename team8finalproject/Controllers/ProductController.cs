@@ -80,6 +80,23 @@ namespace team8finalproject.Controllers
 			return View();
 		}
 
+		// GET: Product/Details/5
+		public async Task<IActionResult> DetailsIRA()
+		{
+			var ira = _context.Products
+				.Where(p => p.Customer.UserName == User.Identity.Name)
+				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+
+			if (ira.Count != 0)
+			{
+				Product product = ira[0];
+
+				return View(product);
+			}
+
+			return View();
+		}
+
 		// GET: Product/Apply
 		public IActionResult Apply()
         {
@@ -235,9 +252,15 @@ namespace team8finalproject.Controllers
             //contribution = initial deposit
 
             pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            //checks if the initial deposit is > 5000, updates the status
-            if (product.InitialDeposit > 5000)
+			var pt = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+			if (pt.Count != 0)
+			{
+				//ViewBag.ErrorMessage = "You already have a stock portfolio account!";
+				TempData["ErrorMessage"] = "You already have a stock portfolio account!";
+			}
+			//checks if the initial deposit is > 5000, updates the status
+			if (product.InitialDeposit > 5000)
             {
                 ViewBag.StatusUpdate = "Your application must be approved by a manager.";
             }
@@ -262,7 +285,7 @@ namespace team8finalproject.Controllers
             }
             _context.Add(pd);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Product", new { id = pd.ProductID });
+            return RedirectToAction("DetailsIRA", "Product", new { id = pd.ProductID });
             /*
             if (ModelState.IsValid)
             {
@@ -290,6 +313,7 @@ namespace team8finalproject.Controllers
             pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
 
             pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
+            // count how many portfolio accounts the customer has
 			var pt = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
 				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
 			if (pt.Count != 0)
