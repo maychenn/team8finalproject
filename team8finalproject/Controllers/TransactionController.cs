@@ -77,11 +77,37 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDeposit([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName")] Transaction transaction, int SelectedProduct)
+        public async Task<IActionResult> CreateDeposit([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName,Contribution")] Transaction transaction, int SelectedProduct)
         {
 
 			Product product = _context.Products.Find(SelectedProduct);
 			transaction.Product = product;
+
+            if (transaction.Product.ProductType == ProductTypes.IRA)
+			{
+                if (transaction.AppUser.Age < 70 && transaction.Product.Contribution < 5000.00m)
+				{
+					transaction.TransactionType = TransactionTypes.Deposit;
+					transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					transaction.Date = DateTime.Now;
+					if (transaction.Description == null)
+					{
+						transaction.Description = "Deposit";
+					}
+					ViewBag.StatusUpdate = "You've successfully deposited " + transaction.Amount.ToString() + " into your account.";
+					transaction.TransactionStatus = TransactionStatus.Approved;
+					transaction.Product.Contribution = product.Contribution + transaction.Amount;
+
+					_context.Add(transaction);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction.TransactionID });
+				}
+                else
+				{
+					ViewBag.ErrorIRAMessage = "You are not of age or have reached your maximum contribution for the year.";
+					return View(transaction);
+				}
+			}
 
             // updates the values from user input
             transaction.TransactionType = TransactionTypes.Deposit;
@@ -155,7 +181,7 @@ namespace team8finalproject.Controllers
                 fee.Amount = -30.00m;
                 fee.Description = "An overdraft fee of $30 has been applied";
                 fee.Date = transaction.Date;
-                fee.Number = Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+                fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
 				fee.TransactionType = TransactionTypes.Fee;
                 fee.Product = transaction.Product;
                 _context.Transactions.Add(fee);
@@ -191,8 +217,17 @@ namespace team8finalproject.Controllers
 
         }
 
+		// GET: Transaction/CreateTransfer
+		public IActionResult CreateTransfer(int id)
+		{
+			Transaction ts = new Transaction();
+			//finds user's accounts
+			ViewBag.SelectAccount = GetUserProducts();
 
-        private SelectList GetAllProducts()
+			return View(ts);
+		}
+
+		private SelectList GetAllProducts()
         {
             //get a list of all courses from the database
             List<Product> AllProducts = _context.Products.ToList();
@@ -222,22 +257,26 @@ namespace team8finalproject.Controllers
 													 };
 			SelectList accountSelection = new SelectList(selectList, "Value", "Text");
 			return accountSelection;
-			/*SelectList accountSelection = new SelectList(accountList, "ProductID", "Text");
-            return accountSelection;*/
 		}
 	
         public SelectList GetUserProducts()
         {
-            //get a list of all of the user's accounts from the database
-            List<Product> AllProducts = _context.Products
-                .Where(p => p.Customer.UserName == User.Identity.Name)
-                .OrderBy(x => x.ProductID).ToList();
+			var query = from p in _context.Products
+						select p;
 
-            //convert this to a select list
-            SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
+			query = query.Where(p => p.Customer.UserName == User.Identity.Name);
 
-            //return the select list
-            return products;
+
+			List<Product> accountList = query.ToList();
+			IEnumerable<SelectListItem> selectList = from p in query
+													 select new SelectListItem
+													 {
+														 Value = p.ProductID.ToString(),
+														 Text = p.AccountName + ": " + p.AccountBalance.ToString()
+													 };
+			SelectList accountSelection = new SelectList(selectList, "Value", "Text");
+			return accountSelection;
+			
         }
 
 
