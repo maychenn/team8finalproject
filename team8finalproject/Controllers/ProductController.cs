@@ -65,6 +65,7 @@ namespace team8finalproject.Controllers
 		public async Task<IActionResult> DetailsPortfolio()
 		{
 			var portfolio = _context.Products
+                .Include(p => p.Transaction)
                 .Include(p=>p.PortfolioDetail)
 				.ThenInclude(p => p.Stock)
 				.Where(p => p.Customer.UserName == User.Identity.Name)
@@ -86,7 +87,7 @@ namespace team8finalproject.Controllers
 			var ira = _context.Products
                 .Include(p => p.Transaction)
 				.Where(p => p.Customer.UserName == User.Identity.Name)
-				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+				.Where(p => p.ProductType == ProductTypes.IRA).ToList();
 
 			if (ira.Count != 0)
 			{
@@ -323,10 +324,12 @@ namespace team8finalproject.Controllers
 				//ViewBag.ErrorMessage = "You already have a stock portfolio account!";
 				TempData["ErrorMessage"] = "You already have a stock portfolio account!";
 			}
-			// user doesn't have a stock portfolio
-			return RedirectToAction("CreatePortfolio", "Product");
+			
 			//checks if the initial deposit is > 5000, updates the status
-			ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
+            if (product.InitialDeposit > 5000)
+            {
+                ViewBag.StatusUpdate = "Deposits of greater than $5000 must be approved.";
+            }
 			//checks if the initial deposit is > 5000, updates the status
 			ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
             pd.AccountStatus = AccountStatus.Active;
@@ -341,7 +344,7 @@ namespace team8finalproject.Controllers
             }
             _context.Add(pd);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "PortfolioDetail", new { id = pd.ProductID });
+            return RedirectToAction("Index", "Stock", new { id = pd.ProductID });
             /*
             if (ModelState.IsValid)
             {

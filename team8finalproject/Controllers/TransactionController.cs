@@ -471,15 +471,17 @@ namespace team8finalproject.Controllers
         // GET: Detailed Search
         public IActionResult DetailedSearch()
         {
-            ViewBag.AllAccounts = GetAllProducts();
+            ViewBag.AllAmounts = Enum.GetValues(typeof(AmountRanges)).Cast<AmountRanges>();
+            ViewBag.AllDates = Enum.GetValues(typeof(DateRanges)).Cast<DateRanges>();
 
+            ViewBag.Accounts = GetUserProducts(); 
             //default properties
             SearchViewModel svm = new SearchViewModel();
     
             return View("DetailedSearch");
         }
 
-        public IActionResult DisplaySearchResults(SearchViewModel svm)
+        public IActionResult DisplaySearchResults(SearchViewModel svm, int SelectedAccount)
         {
             // gets all of the user's transactions from all accounts
             var query = from t in _context.Transactions
@@ -488,6 +490,7 @@ namespace team8finalproject.Controllers
             {
                 query.Where(t => t.Product.Customer.UserName == User.Identity.Name);
             }
+            query.Where(t => t.Product.ProductID == SelectedAccount);
             // search by transaction number
             if (svm.TransactionNumber != null && svm.TransactionNumber != "")
             {
@@ -580,7 +583,7 @@ namespace team8finalproject.Controllers
             ViewBag.AllTransactionCount = _context.Transactions.Count();
             ViewBag.SelectedTransactionCount = SelectedTransactions.Count();
 
-            return View("Index", SelectedTransactions.OrderByDescending(b => b.Amount));
+            return View("Transaction/Index", SelectedTransactions.OrderByDescending(b => b.Amount));
 
         }
 
