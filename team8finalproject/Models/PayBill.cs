@@ -23,6 +23,8 @@ namespace team8finalproject.Models
 
         public PayBill()
         {
+            PaymentAmount = 0.0m;
+            Date = DateTime.Now;
         }
     }
 }

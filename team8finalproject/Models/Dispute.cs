@@ -32,6 +32,10 @@ namespace team8finalproject.Models
 
         public Dispute()
         {
+            NewAmount = 0.0m;
+            Description = "Dispute";
+            Delete = false;
+            
             if (Delete == true)
             {
                 NewAmount = 0.00m;

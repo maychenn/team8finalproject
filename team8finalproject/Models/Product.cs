@@ -112,16 +112,19 @@ namespace team8finalproject.Models
 
         public Product()
         {
+            AccountStatus = AccountStatus.Inactive;
             AccountBalance = 0.0m;
+            InitialDeposit = 0.0m;
             Balanced = false;
             AvailableCash = 0.0m;
             AccountNumber = 1000000000;
+            StockValue = 0.0m;
             Gains = 0.0m;
             Bonuses = 0.0m;
             Fees = 0.0m;
+            AvailableCash = 0.0m;
+            Contribution = 0.0m;
 
-            // defaults
-            AccountStatus = AccountStatus.Inactive;
             if (Transaction == null)
             {
                 Transaction = new List<Transaction>();
