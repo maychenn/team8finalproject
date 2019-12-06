@@ -291,18 +291,53 @@ namespace team8finalproject.Controllers
 			Product accountfrom = _context.Products.Find(AccountFrom);
 			transaction1.Product = accountfrom;
 			transaction1.Amount = transaction.Amount;
+			transaction1.TransactionType = TransactionTypes.Transfer;
+			transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
 
+			Transaction transaction2 = new Transaction();
+			Product accountto = _context.Products.Find(AccountTo);
+			transaction2.Product = accountto;
+			transaction2.Amount = transaction.Amount;
 
+			transaction1.Description = "Transfer to account " + transaction2.Product.AccNumber;
+			transaction2.Description = "Transfer from account " + transaction1.Product.AccNumber;
+
+            if (transaction1.Product.ProductType == ProductTypes.Portfolio)
+			{
+				if (transaction1.Amount > transaction1.Product.AvailableCash)
+				{
+					ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+					return RedirectToAction("CreateTransfer", "Transaction");
+				}
+				// 1. cannot overdraft -> error
+				if (transaction1.Product.AccountBalance < 0.00m || (transaction1.Product.AccountBalance - transaction1.Amount < 0.00m))
+				{
+					ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+					return RedirectToAction("CreateTransfer", "Transaction");
+				}
+
+				//checks if the withdraw is > 5000, updates the status
+				if (transaction1.Amount > 5000)
+				{
+					ViewBag.LargeWithdrawalMessage = "Your withdrawal is $5000 or larger. You need to wait on Manager Approval";
+					transaction1.TransactionStatus = TransactionStatus.Pending;
+				}
+				// portfolio amount is under cash value 
+				else
+				{
+					transaction1.Product.AccountBalance -= transaction1.Amount;
+					transaction1.Product.AvailableCash -= transaction1.Amount;
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
+					transaction1.TransactionStatus = TransactionStatus.Approved;
+					//transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
+				}
+			}
+			
 			if (transaction1.Product.ProductType == ProductTypes.IRA)
 			{
 				if (transaction.AppUser.Age < 66 && transaction1.Amount <= 3000)
 				{
-					transaction1.TransactionType = TransactionTypes.Transfer;
-					transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-					if (transaction1.Description == null)
-					{
-						transaction1.Description = "Transfer";
-					}
+
 					Transaction fee = new Transaction();
 					fee.Amount = -30.00m;
 					fee.Description = "An overdraft fee of $30 has been applied";
@@ -324,82 +359,70 @@ namespace team8finalproject.Controllers
 					ViewBag.ErrorMessage = "You are not allowed to withdraw over $3000!";
 					return RedirectToAction("CreateTransfer", "Transaction");
 				}
+				// 1. cannot overdraft -> error
+				if (transaction1.Product.AccountBalance < 0.00m || (transaction1.Product.AccountBalance - transaction1.Amount < 0.00m))
+				{
+					ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+					return RedirectToAction("CreateTransfer", "Transaction");
+				}
+
 				else
 				{
-					transaction1.TransactionType = TransactionTypes.Transfer;
-					transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-					if (transaction1.Description == null)
-					{
-						transaction1.Description = "Transfer";
-					}
 					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
 					transaction1.TransactionStatus = TransactionStatus.Approved;
 					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
 				}
 			}
-			// updates the values from user input
-			transaction1.TransactionType = TransactionTypes.Transfer;
-			transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-			if (transaction1.Description == null)
+
+			if (transaction1.Product.ProductType == ProductTypes.Checking || transaction1.Product.ProductType == ProductTypes.Savings)
 			{
-				transaction1.Description = "Transfer";
+				// 1. cannot overdraft -> error
+				if (transaction1.Product.AccountBalance < 0.00m || (transaction1.Product.AccountBalance - transaction1.Amount < 0.00m))
+				{
+					ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+					return RedirectToAction("CreateTransfer", "Transaction");
+				}
+
+				//checks if the withdraw is > 5000, updates the status
+				if (transaction1.Amount > 5000)
+				{
+					ViewBag.LargeWithdrawalMessage = "Your withdrawal is $5000 or larger. You need to wait on Manager Approval";
+					transaction1.TransactionStatus = TransactionStatus.Pending;
+				}
+				else
+				{
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
+					transaction1.TransactionStatus = TransactionStatus.Approved;
+					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
+				}
+
+				// invalid amount entered
+				if (transaction1.Amount < 0)
+				{
+					return View(transaction1);
+
+				}
 			}
 
-
-			// 1. cannot overdraft -> error
-			if (transaction1.Product.AccountBalance < 0.00m || (transaction1.Product.AccountBalance - transaction1.Amount < -50.00m))
-			{
-				ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
-				return View(transaction1);
-			}
-			// 2. can overdraft -> $30 overdraft fee
-			if ((transaction1.Product.AccountBalance - transaction1.Amount) < 0)
-			{
-				Transaction fee = new Transaction();
-				fee.Amount = -30.00m;
-				fee.Description = "An overdraft fee of $30 has been applied";
-				fee.Date = transaction1.Date;
-				fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-				fee.TransactionType = TransactionTypes.Fee;
-				fee.Product = transaction1.Product;
-				_context.Transactions.Add(fee);
-
-				transaction1.Product.AccountBalance += fee.Amount;
-
-			}
-
-			//checks if the withdraw is > 5000, updates the status
-			if (transaction1.Amount > 5000)
-			{
-				ViewBag.LargeWithdrawalMessage = "Your withdrawal is $5000 or larger. You need to wait on Manager Approval";
-				transaction1.TransactionStatus = TransactionStatus.Pending;
-			}
-			else
-			{
-				ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
-				transaction1.TransactionStatus = TransactionStatus.Approved;
-				transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
-			}
-
-			// invalid amount entered
-			if (transaction1.Amount < 0)
-			{
-				return View(transaction1);
-
-			}
-
-			Transaction transaction2 = new Transaction();
-			Product accountto = _context.Products.Find(AccountTo);
-			transaction2.Product = accountto;
-			transaction2.Amount = transaction.Amount;
-
+			
 			// updates the values from user input
 			transaction2.TransactionType = TransactionTypes.Transfer;
 			transaction2.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
 
-			if (transaction2.Description == null)
+            if (transaction2.Product.ProductType == ProductTypes.Portfolio)
 			{
-				transaction2.Description = "Transfer";
+				if (transaction2.Amount > 5000)
+				{
+					ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+					transaction2.TransactionStatus = TransactionStatus.Pending;
+				}
+				else
+				{
+					transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
+					transaction2.Product.AvailableCash = accountto.AvailableCash + transaction2.Amount;
+					ViewBag.StatusUpdate = "You've successfully deposited " + transaction2.Amount.ToString() + " into your account.";
+					transaction2.TransactionStatus = TransactionStatus.Approved;
+				}
 			}
 
 			if (transaction2.Product.ProductType == ProductTypes.IRA)
@@ -411,10 +434,6 @@ namespace team8finalproject.Controllers
 					transaction2.TransactionStatus = TransactionStatus.Approved;
 					transaction2.Product.Contribution = accountto.Contribution + transaction2.Amount;
 					transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
-
-					_context.Add(transaction2);
-					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", "Transaction", new { id = transaction2.TransactionID });
 				}
 				else
 				{
@@ -422,18 +441,22 @@ namespace team8finalproject.Controllers
 					return RedirectToAction("CreateDeposit", "Transaction");
 				}
 			}
-			//checks if the deposit is > 5000, updates the status
-			if (transaction2.Amount > 5000)
+
+			if (transaction2.Product.ProductType == ProductTypes.Checking || transaction2.Product.ProductType == ProductTypes.Savings)
 			{
-				ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
-				transaction2.TransactionStatus = TransactionStatus.Pending;
-			}
-			// valid deposit
-			if (ModelState.IsValid)
-			{
-				ViewBag.StatusUpdate = "You've successfully deposited " + transaction2.Amount.ToString() + " into your account.";
-				transaction2.TransactionStatus = TransactionStatus.Approved;
-				transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
+				//checks if the deposit is > 5000, updates the status
+				if (transaction2.Amount > 5000)
+				{
+					ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+					transaction2.TransactionStatus = TransactionStatus.Pending;
+				}
+				// valid deposit
+				if (ModelState.IsValid)
+				{
+					ViewBag.StatusUpdate = "You've successfully deposited " + transaction2.Amount.ToString() + " into your account.";
+					transaction2.TransactionStatus = TransactionStatus.Approved;
+					transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
+				}
 			}
 
 			_context.Add(transaction1);
