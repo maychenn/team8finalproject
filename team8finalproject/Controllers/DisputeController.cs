@@ -92,7 +92,7 @@ namespace team8finalproject.Controllers
 
         // GET: Dispute/Edit/5
         // only managers can change dispute (status)
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -114,7 +114,7 @@ namespace team8finalproject.Controllers
         // POST: Dispute/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id, [Bind("DisputeID,NewAmount,Description,ManagerComment,DisputeStatus")] Dispute dispute, Decimal? adjustedAmount)
         {
             Dispute dp = _context.Disputes

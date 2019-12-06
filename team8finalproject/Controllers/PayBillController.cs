@@ -27,7 +27,7 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Index()
         {
             List<PayBill> PayBills = new List<PayBill>();
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("Manager"))
             {
                 PayBills = _context.PayBills.Include(r => r.Payee).ToList();
             }

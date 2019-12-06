@@ -28,7 +28,7 @@
                 </label>
             </div>
 
-            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
             {
             <div class="form-group">
                 <label asp-for="ManagerComment" class="control-label"></label>

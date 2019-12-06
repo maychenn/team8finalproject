@@ -21,7 +21,7 @@
                     <span asp-validation-for="AccountName" class="text-danger"></span>
                 </div>
             }
-            @if (User.IsInRole("Admin"))
+            @if (User.IsInRole("Manager"))
             {
                 <div class="form-group">
                     <label asp-for="AccountStatus" class="control-label"></label>
