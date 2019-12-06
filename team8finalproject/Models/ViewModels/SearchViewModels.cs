@@ -19,8 +19,6 @@ namespace team8finalproject.Models.ViewModels
         [Display(Name = "Custom Date Range")] Custom
     }
 
-    public enum TransactionTypes { Deposit, Withdrawal, Transfer }
-
     public enum AccountType { Checkings, Savings, Portfolio, IRA }
 
     public class SearchViewModel

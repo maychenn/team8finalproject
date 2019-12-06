@@ -475,17 +475,19 @@ namespace team8finalproject.Controllers
 
             //default properties
             SearchViewModel svm = new SearchViewModel();
-            svm.SelectedAccountID = 0;    //SelectedAccount is an ID number
-
+    
             return View("DetailedSearch");
         }
-        // should be employees & managers only
+
         public IActionResult DisplaySearchResults(SearchViewModel svm)
         {
-            // gets all transactions
+            // gets all of the user's transactions from all accounts
             var query = from t in _context.Transactions
                         select t;
-
+            if (User.IsInRole("Customer"))
+            {
+                query.Where(t => t.Product.Customer.UserName == User.Identity.Name);
+            }
             // search by transaction number
             if (svm.TransactionNumber != null && svm.TransactionNumber != "")
             {
@@ -499,12 +501,6 @@ namespace team8finalproject.Controllers
             {
                 query = query.Where(t => t.Description.Contains(svm.TransactionDescription));
 
-            }
-            // StandardStandardStandardStandardStandardAccountID
-            if (svm.SelectedAccountID != 0)
-
-            {
-                query = query.Where(t => t.Product.ProductID == svm.SelectedAccountID);
             }
             // transaction amount (range)
             if (svm.AmountRange != null)
@@ -579,21 +575,16 @@ namespace team8finalproject.Controllers
                 //(query is not modified)
             }
 
-            List<Transaction> SelectedTransactions = query.Include(b => b.Account).ToList();
+            List<Transaction> SelectedTransactions = query.Include(b => b.Product).ToList();
 
-            ViewBag.AllBookCount = _context.Transactions.Count();
-            ViewBag.SelectedBookCount = SelectedTransactions.Count();
+            ViewBag.AllTransactionCount = _context.Transactions.Count();
+            ViewBag.SelectedTransactionCount = SelectedTransactions.Count();
 
             return View("Index", SelectedTransactions.OrderByDescending(b => b.Amount));
 
         }
 
-  
-
-
-
-
-
+ 
 
         private SelectList GetAllProducts()
         {
