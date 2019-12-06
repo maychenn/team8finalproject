@@ -29,6 +29,11 @@ namespace team8finalproject.Seeding
                 await _roleManager.CreateAsync(new IdentityRole("Employee"));
             }
 
+            if (await _roleManager.RoleExistsAsync("New Customer") == false)
+            {
+                await _roleManager.CreateAsync(new IdentityRole("New Customer"));
+            }
+
             if (await _roleManager.RoleExistsAsync("Customer") == false)
 			{
 				await _roleManager.CreateAsync(new IdentityRole("Customer"));

@@ -107,6 +107,19 @@ namespace team8finalproject.Controllers
             {
                 ViewBag.StatusUpdate = "You've successfully applied for a Checking account!";
                 pd.AccountStatus = AccountStatus.Active;
+
+                AppUser newCustomer= await _userManager.FindByNameAsync(User.Identity.Name);
+                // changing role to customer
+                IdentityResult result = await _userManager.AddToRoleAsync(newCustomer, "Customer");
+                if (!result.Succeeded)
+                {
+                    return View("Error", result.Errors);
+                }
+                result = await _userManager.RemoveFromRoleAsync(newCustomer, "New Customer");
+                if (!result.Succeeded)
+                {
+                    return View("Error", result.Errors);
+                }
             }
 
             if (product.AccountName != null)
