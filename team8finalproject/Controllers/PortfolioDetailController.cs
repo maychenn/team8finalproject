@@ -20,7 +20,7 @@ namespace team8finalproject.Controllers
         }
 
         //GET: PortfolioDetail
-        public async Task<IActionResult> Index(Int32 stockID)
+        public IActionResult Index(Int32 stockID)
         {
             List<PortfolioDetail> Pdt = _context.PortfolioDetails
                 .Include(Pd => Pd.Stock)
@@ -71,40 +71,36 @@ namespace team8finalproject.Controllers
         */
 
 
-
-
-
-
-        //GET: PortfolioDetail/Create
-        public IActionResult Create(Int32 productID)
+        //GET: PortfolioDetail/Purchase
+        public IActionResult Purchase(Int32 stockID)
         {
-
+            // finds the user's portfolio
             PortfolioDetail Pdt = new PortfolioDetail();
-            Pdt.Product = _context.Products.Find(productID);
-            ViewBag.AllStock = GetAllStocks();
-
+            var product = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+            Pdt.Product = product[0];
+            // finds the stock
+            Pdt.Stock = _context.Stocks.Find(stockID);
             return View(Pdt);
         }
 
-        //POST: PortfolioDetail/Create
+        //POST: PortfolioDetail/Purchase
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice")] PortfolioDetail portfolioDetail, int SelectedStock)
+        public async Task<IActionResult> Purchase([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice,Balanced")] PortfolioDetail portfolioDetail)
         {
-            //find selected stock
-            Stock stock = _context.Stocks.Find(SelectedStock);
-            portfolioDetail.Stock = stock;
-
             // find correct product (stock portfolio)
             Product product = _context.Products.Find(portfolioDetail.Product.ProductID);
             portfolioDetail.Product = product;
 
-
             // set stock price
-            portfolioDetail.StockPrice = stock.Price;
+            portfolioDetail.StockPrice = portfolioDetail.Stock.Price;
 
-            //set stock Price*Quantity
+            // set extended price
             portfolioDetail.ExtendedPrice = portfolioDetail.StockPrice * portfolioDetail.NumShares;
+
+            // update Stock Value
+            portfolioDetail.Product.StockValue += portfolioDetail.ExtendedPrice;
 
             if (ModelState.IsValid)
             {
@@ -116,20 +112,8 @@ namespace team8finalproject.Controllers
             return View(portfolioDetail);
         }
 
-
-        // GET: Transaction/CreateDeposit
-        //public IActionResult PurchaseStock(int id)
-        //{
-        //    //finds user's accounts
-        //    ViewBag.SelectAccount = GetUserProducts();
-
-        //    return View();
-        //}
-
-
-
-        //GET: PortfolioDetail/Edit/5
-        public IActionResult Edit(int? id)
+        //GET: PortfolioDetail/Sell/5
+        public IActionResult Sell(int? id)
         {
             if (id == null)
             {
@@ -147,17 +131,24 @@ namespace team8finalproject.Controllers
             return View(portfolioDetail);
         }
 
-        //POST: PortfolioDetail/Edit/5
+        //POST: PortfolioDetail/Sell/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice")] PortfolioDetail portfolioDetail)
+        public IActionResult Sell(int id, [Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice")] PortfolioDetail portfolioDetail)
         {
             PortfolioDetail dbPD = _context.PortfolioDetails
                 .Include(p => p.Stock)
                 .Include(p => p.Product)
                 .FirstOrDefault(p => p.Product.ProductID == id);
+
             // update num of shares
             dbPD.NumShares = portfolioDetail.NumShares;
+
+            // set extended price
+            portfolioDetail.ExtendedPrice = portfolioDetail.StockPrice * portfolioDetail.NumShares;
+
+            // update Stock Value
+            portfolioDetail.Product.StockValue -= portfolioDetail.ExtendedPrice;
 
             if (id != portfolioDetail.PortfolioDetailID)
             {
@@ -191,7 +182,7 @@ namespace team8finalproject.Controllers
             return View(portfolioDetail);
         }
 
-        //POST: PortfolioDetail/Delete/5
+        //POST: PortfolioDetail/Sell/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -206,7 +197,6 @@ namespace team8finalproject.Controllers
         {
             return _context.PortfolioDetails.Any(e => e.PortfolioDetailID == id);
         }
-
 
         public SelectList GetUserProducts()
         {
@@ -240,5 +230,6 @@ namespace team8finalproject.Controllers
             return stocks;
 
         }
+
     }
 }
