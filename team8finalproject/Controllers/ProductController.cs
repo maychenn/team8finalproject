@@ -378,36 +378,5 @@ namespace team8finalproject.Controllers
         {
             return _context.Products.Any(e => e.ProductID == id);
         }
-    
-        [Authorize(Roles = "Manager")]
-        public ActionResult ProcessBalancedPortfolios(AppDbContext _context)
-        {
-            var AllPortfolios = _context.Products.Where(p => p.ProductType == ProductTypes.Portfolio);
-
-            foreach (var s in AllPortfolios)
-            {
-                s.CheckIfBalanced();
-                // add bonus as a transaction
-                if (s.Balanced)
-                {
-                    Decimal Bonus = s.StockValue * .1m;
-                    s.Bonuses += Bonus;
-
-                    Transaction transaction = new Transaction();
-                    transaction.Amount = Bonus;
-                    transaction.Product = s;
-                    transaction.Description = "Balanced Portfolio Bonus";
-                    transaction.Date = DateTime.Now;
-                    transaction.TransactionType = TransactionTypes.Bonus;
-                    transaction.TransactionStatus = TransactionStatus.Approved;
-
-                    _context.Transactions.Add(transaction);
-                }
-            }
-
-            _context.SaveChanges();
-            return RedirectToAction("ProcessStockPortfoliosConfirmationMessage", "StockPortfolios");
-        }
-        
     }
 }

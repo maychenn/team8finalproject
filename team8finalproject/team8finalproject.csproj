@@ -59,10 +59,12 @@
     <Content Remove="Views\Stock\Delete.cshtml" />
     <Content Remove="Views\Transaction\Index.cshtml" />
     <Content Remove="Views\Shared\_Layout.cshtml" />
-    <Content Remove="Views\Transaction\Select.cshtml" />
-    <Content Remove="Views\Account\ForgotPassword.cshtml" />
+    <Content Remove="Views\PortfolioDetail\Edit.cshtml" />
     <Content Remove="Views\PortfolioDetail\Delete.cshtml" />
+    <Content Remove="Views\PortfolioDetail\Create.cshtml" />
+    <Content Remove="Views\PortfolioDetail\Index.cshtml" />
     <Content Remove="Views\PortfolioDetail\Details.cshtml" />
+    <Content Remove="Views\Transaction\Select.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Home\" />
