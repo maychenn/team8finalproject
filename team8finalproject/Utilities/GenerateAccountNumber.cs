@@ -14,7 +14,7 @@ namespace team8finalproject.Utilities
 
             if (_context.Products.Count() == 0) //there are no Accounts in the database yet
             {
-                intMaxAccountNumber = 1000000001; //Account number starts at 1
+                intMaxAccountNumber = 1000000000; //Account number starts at 1
             }
             else
             {

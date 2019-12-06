@@ -15,10 +15,14 @@ namespace team8finalproject.Models
 		[Display(Name = "Account Type: ")]
 		public ProductTypes ProductType { get; set; }
 
-		[Display(Name = "Account Number")]
+		
         public Int32 AccountNumber { get; set; }
 
-        public string AccNumber { get; set; }
+        [Display(Name = "Account Number")]
+        public string AccNumber
+        {
+            get { return ("XXXXXX" + AccountNumber.ToString().Substring(6)); }
+        }
 
         [Display(Name = "Account Name: ")]
 		public string AccountName { get; set; }
@@ -109,7 +113,6 @@ namespace team8finalproject.Models
             Balanced = false;
             AvailableCash = 0.0m;
             AccountNumber = 1000000000;
-            AccNumber = string.Format("XXXXXX", AccountNumber.ToString().Substring(6));
 
             // defaults
             AccountStatus = AccountStatus.Inactive;
