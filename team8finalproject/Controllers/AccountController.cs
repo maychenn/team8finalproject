@@ -142,7 +142,7 @@ namespace team8finalproject.Controllers
 			//send data to the view
 			return View(ivm);
         }
-
+        //GET: Account/Edit
 		public ActionResult Edit()
 		{
 			EditViewModel evm = new EditViewModel();
@@ -151,10 +151,10 @@ namespace team8finalproject.Controllers
 			String id = User.Identity.Name;
 			AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
 
-			//populate the view model
-			evm.Email = user.Email;
-			evm.Birthdate = user.Birthdate;
-			evm.City = user.City;
+            //populate the view model
+            ViewBag.Email = user.Email;
+            ViewBag.Birthdate = user.Birthdate;
+            evm.City = user.City;
 			evm.LastName = user.LastName;
 			evm.FirstName = user.FirstName;
 			evm.State = user.State;
@@ -166,12 +166,35 @@ namespace team8finalproject.Controllers
 			//send data to the view
 			return View(evm);
 		}
+        // POST: /Account/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditViewModel model)
+        {
+            //fetch user
+            AppUser user = _db.Users.FirstOrDefault(u => u.UserName.Equals(User.Identity.Name));
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            user.City = model.City;
+            user.LastName = model.LastName;
+            user.FirstName = model.FirstName;
+            user.State = model.State;
+            user.MiddleInitial = model.MiddleInitial;
+            user.StreetAddress = model.StreetAddress;
+            user.ZipCode = model.ZipCode;
+            user.PhoneNumber = model.PhoneNumber;
+
+            await _db.SaveChangesAsync();
+            return View("Index", "Account");
+        }
 
 
-
-		//Logic for change password
-		// GET: /Account/ChangePassword
-		public ActionResult ChangePassword()
+        //Logic for change password
+        // GET: /Account/ChangePassword
+        public ActionResult ChangePassword()
         {
             return View();
         }
