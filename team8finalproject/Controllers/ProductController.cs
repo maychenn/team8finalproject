@@ -51,6 +51,7 @@ namespace team8finalproject.Controllers
             }
 
             var product = await _context.Products
+                .Include(p => p.Transaction)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
