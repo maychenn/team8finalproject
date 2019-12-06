@@ -100,6 +100,25 @@ namespace team8finalproject.Models.ViewModels
         public string ConfirmPassword { get; set; }
     }
 
+	public class ResetPasswordModel
+	{
+		[Required(ErrorMessage = "Email is required")]
+		[EmailAddress]
+		[Display(Name = "Email")]
+		public string Email { get; set; }
+
+		[Required]
+		[DataType(DataType.Password)]
+		[Display(Name = "New password")]
+		public string NewPassword { get; set; }
+
+		[DataType(DataType.Password)]
+		[Compare("NewPassword", ErrorMessage = "New password and confirm password does not match")]
+		[Display(Name = "Confirm password")]
+		public string ConfirmPassword { get; set; }
+
+	}
+
 	public class EditViewModel
 
 	{

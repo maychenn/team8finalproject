@@ -192,36 +192,37 @@ namespace team8finalproject.Controllers
         }
 
 
-        //Logic for change password
-        // GET: /Account/ChangePassword
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
+		// GET: /Account/ForgotPassword
+		[AllowAnonymous]
+		public ActionResult ForgotPassword(string returnUrl)
+		{
+			return View();
+		}
 
-        //
-        // POST: /Account/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            AppUser userLoggedIn = await _userManager.FindByNameAsync(User.Identity.Name);
-            var result = await _userManager.ChangePasswordAsync(userLoggedIn, model.OldPassword, model.NewPassword);
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(userLoggedIn, isPersistent: false);
-                return RedirectToAction("Index", "Home");
-            }
-            AddErrors(result);
-            return View(model);
-        }
 
-        //GET:/Account/AccessDenied
-        public ActionResult AccessDenied(String ReturnURL)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ForgotPassword(ResetPasswordModel model, string returnUrl)
+		{
+
+
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+			AppUser userLoggedIn = await _userManager.FindByNameAsync(model.Email);
+			var result = await _userManager.ChangePasswordAsync(userLoggedIn, model.NewPassword, model.ConfirmPassword);
+			if (result.Succeeded)
+			{
+				return Redirect(returnUrl ?? "/");
+			}
+			AddErrors(result);
+			return View(model);
+		}
+
+
+		//GET:/Account/AccessDenied
+		public ActionResult AccessDenied(String ReturnURL)
         {
             return View("Error", new string[] { "Access is denied" });
         }
