@@ -285,7 +285,7 @@ namespace team8finalproject.Controllers
             }
             _context.Add(pd);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Create", "PortfolioDetail", new { id = pd.ProductID });
+            return RedirectToAction("Index", "PortfolioDetail", new { id = pd.ProductID });
             /*
             if (ModelState.IsValid)
             {

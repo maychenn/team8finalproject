@@ -8,32 +8,39 @@
 
 <h4>PortfolioDetail</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="NumShares" class="control-label"></label>
-                <input asp-for="NumShares" class="form-control" />
-                <span asp-validation-for="NumShares" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockPrice" class="control-label"></label>
-                <input asp-for="StockPrice" class="form-control" />
-                <span asp-validation-for="StockPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExtendedPrice" class="control-label"></label>
-                <input asp-for="ExtendedPrice" class="form-control" />
-                <span asp-validation-for="ExtendedPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+@if (User.IsInRole("New Customer") || Model.Product.ProductType != ProductTypes.Portfolio)
+{
+    <a asp-action="CreatePortfolio" asp-controller="Product" class="btn btn-success">Create a Stock Portfolio</a>
 
+}
+@if (User.IsInRole("Customer") || Model.Product.ProductType == ProductTypes.Portfolio)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="NumShares" class="control-label"></label>
+                    <input asp-for="NumShares" class="form-control" />
+                    <span asp-validation-for="NumShares" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="StockPrice" class="control-label"></label>
+                    <input asp-for="StockPrice" class="form-control" />
+                    <span asp-validation-for="StockPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExtendedPrice" class="control-label"></label>
+                    <input asp-for="ExtendedPrice" class="form-control" />
+                    <span asp-validation-for="ExtendedPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

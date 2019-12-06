@@ -322,7 +322,7 @@ namespace team8finalproject.Migrations
 
                     b.Property<string>("AccountName");
 
-                    b.Property<string>("AccountNumber");
+                    b.Property<int>("AccountNumber");
 
                     b.Property<int>("AccountStatus");
 

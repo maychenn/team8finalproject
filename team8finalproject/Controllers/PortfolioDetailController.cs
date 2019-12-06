@@ -68,20 +68,24 @@ namespace team8finalproject.Controllers
 
             return View(portfolioDetail);
         }
-        */
+*/
 
-
-        //GET: PortfolioDetail/Purchase
+        //GET: PortfolioDetail/Purchase/5
         public IActionResult Purchase(Int32 stockID)
         {
             // finds the user's portfolio
             PortfolioDetail Pdt = new PortfolioDetail();
             var product = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
                 .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
-            Pdt.Product = product[0];
-            // finds the stock
-            Pdt.Stock = _context.Stocks.Find(stockID);
-            return View(Pdt);
+            if (product.Count != 0)
+            {
+                Pdt.Product = product[0];
+                // finds the stock
+                Pdt.Stock = _context.Stocks.Find(stockID);
+                return View(Pdt);
+            }
+            // user doesn't have a stock portfolio
+            return RedirectToAction("CreatePortfolio", "Product");
         }
 
         //POST: PortfolioDetail/Purchase
