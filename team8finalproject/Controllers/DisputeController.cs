@@ -51,6 +51,7 @@ namespace team8finalproject.Controllers
 
             // finds the dispute
             var dispute = await _context.Disputes
+                .Include(t => t.Transaction).ThenInclude(t=>t.Product)
                 .FirstOrDefaultAsync(m => m.DisputeID == id);
             if (dispute == null)
             {
@@ -73,7 +74,7 @@ namespace team8finalproject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="Customer")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TransactionID,DisputeID,NewAmount,Description,Delete,DisputeStatus")] Dispute dispute)
         {
@@ -101,8 +102,10 @@ namespace team8finalproject.Controllers
             }
             Dispute dispute = _context.Disputes
                 .Include(r => r.Transaction).ThenInclude(r => r.AppUser)
-                .Include(r => r.Transaction)
+                //.Include(r => r.Transaction)
                 .FirstOrDefault(reg => reg.DisputeID == id);
+
+            //dispute = _context.Disputes.Include(o => o.Transaction).ToList();
 
             if (dispute == null)
             {
@@ -118,7 +121,7 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("DisputeID,NewAmount,Description,ManagerComment,DisputeStatus")] Dispute dispute, Decimal? adjustedAmount)
         {
             Dispute dp = _context.Disputes
-                .Include(t => t.Transaction)
+                .Include(t => t.Transaction).ThenInclude(r => r.AppUser)
                 .FirstOrDefault(d => dispute.DisputeID == id);
 
             // dispute not found
@@ -167,7 +170,7 @@ namespace team8finalproject.Controllers
                     }
                 }
                 // brings them back to all disputes
-                return RedirectToAction("Index", "Dispute");
+                return RedirectToAction("Index", "Dispute", new { transactionID = dispute.Transaction.TransactionID });
             }
             return View(dispute);
         }

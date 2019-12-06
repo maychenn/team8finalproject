@@ -51,7 +51,7 @@
                             @Html.ActionLink("All Transactions", "Index", "Transaction", null, new { @class = "nav-link" })
                         </li>
                     }
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
                     {
                         <li class="nav-item">
                             @Html.ActionLink("All Accounts", "Index", "Product", null, new { @class = "nav-link" })
@@ -65,6 +65,10 @@
                         <li class="nav-item">
                             @Html.ActionLink("Manage Users", "Index", "RoleAdmin", null, new { @class = "nav-link" })
                         </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Manage Disputes", "Index", "Dispute", null, new { @class = "nav-link" })
+                        </li>
+
                     }
 
                 </ul>
