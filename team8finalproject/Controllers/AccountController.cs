@@ -152,8 +152,6 @@ namespace team8finalproject.Controllers
 			AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
 
             //populate the view model
-            ViewBag.Email = user.Email;
-            ViewBag.Birthdate = user.Birthdate;
             evm.City = user.City;
 			evm.LastName = user.LastName;
 			evm.FirstName = user.FirstName;
@@ -188,7 +186,7 @@ namespace team8finalproject.Controllers
             user.PhoneNumber = model.PhoneNumber;
 
             await _db.SaveChangesAsync();
-            return View("Index", "Account");
+            return View(model);
         }
 
 
@@ -219,6 +217,34 @@ namespace team8finalproject.Controllers
 			AddErrors(result);
 			return View(model);
 		}
+
+		// GET: /Account/ChangePassword
+		public ActionResult ChangePassword()
+		{
+			return View();
+		}
+
+		//
+		// POST: /Account/ChangePassword
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+			AppUser userLoggedIn = await _userManager.FindByNameAsync(User.Identity.Name);
+			var result = await _userManager.ChangePasswordAsync(userLoggedIn, model.OldPassword, model.NewPassword);
+			if (result.Succeeded)
+			{
+				await _signInManager.SignInAsync(userLoggedIn, isPersistent: false);
+				return RedirectToAction("Index", "Home");
+			}
+			AddErrors(result);
+			return View(model);
+		}
+
 
 
 		//GET:/Account/AccessDenied
