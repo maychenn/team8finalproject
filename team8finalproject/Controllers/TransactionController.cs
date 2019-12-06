@@ -287,9 +287,10 @@ namespace team8finalproject.Controllers
 		{
 			transaction.AppUser = await _userManager.FindByNameAsync(User.Identity.Name);
 
-			Product accountfrom = _context.Products.Find(AccountFrom);
 			Transaction transaction1 = new Transaction();
+			Product accountfrom = _context.Products.Find(AccountFrom);
 			transaction1.Product = accountfrom;
+			transaction1.Amount = transaction.Amount;
 
 
 			if (transaction1.Product.ProductType == ProductTypes.IRA)
@@ -316,9 +317,7 @@ namespace team8finalproject.Controllers
 					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
 					transaction1.TransactionStatus = TransactionStatus.Approved;
 					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
-					_context.Add(transaction1);
-					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
+					
 				}
 				if (transaction.AppUser.Age < 66 && transaction1.Amount > 3000)
 				{
@@ -336,11 +335,6 @@ namespace team8finalproject.Controllers
 					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
 					transaction1.TransactionStatus = TransactionStatus.Approved;
 					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
-
-					_context.Add(transaction1);
-					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
-
 				}
 			}
 			// updates the values from user input
@@ -394,15 +388,10 @@ namespace team8finalproject.Controllers
 
 			}
 
-			// saves the transaction
-			_context.Entry(accountfrom).State = EntityState.Modified;
-			_context.Add(transaction1);
-			await _context.SaveChangesAsync();
-			return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
-
-			Product accountto = _context.Products.Find(AccountTo);
 			Transaction transaction2 = new Transaction();
+			Product accountto = _context.Products.Find(AccountTo);
 			transaction2.Product = accountto;
+			transaction2.Amount = transaction.Amount;
 
 			// updates the values from user input
 			transaction2.TransactionType = TransactionTypes.Transfer;
@@ -432,9 +421,28 @@ namespace team8finalproject.Controllers
 					ViewBag.ErrorIRAMessage = "You are not of age or have reached your maximum contribution for the year.";
 					return RedirectToAction("CreateDeposit", "Transaction");
 				}
-
-
 			}
+			//checks if the deposit is > 5000, updates the status
+			if (transaction2.Amount > 5000)
+			{
+				ViewBag.LargeDepositMessage = "Your deposit is $5000 or larger. You need to wait on Manager Approval";
+				transaction2.TransactionStatus = TransactionStatus.Pending;
+			}
+			// valid deposit
+			if (ModelState.IsValid)
+			{
+				ViewBag.StatusUpdate = "You've successfully deposited " + transaction2.Amount.ToString() + " into your account.";
+				transaction2.TransactionStatus = TransactionStatus.Approved;
+				transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
+			}
+
+			_context.Add(transaction1);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
+
+			_context.Add(transaction2);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Details", "Transaction", new { id = transaction2.TransactionID });
 		}
 
 		private SelectList GetAllProducts()
