@@ -5,10 +5,12 @@
 }
 
 <h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if(User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New Stock</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -51,9 +53,9 @@
             <td>
                 @if (User.IsInRole("Customer"))
                 {
-                    <a asp-action="Purchase" asp-controller="PortfolioDetail" asp-route-id="@item.StockID">Edit</a>
+                    <a asp-action="Purchase" asp-controller="PortfolioDetail" asp-route-id="@item.StockID">Purchase</a>
                 }
-                @if (User.IsInRole("Customer"))
+                @if (User.IsInRole("Admin"))
                 {
                     <a asp-action="Edit" asp-route-stockID="@item.StockID">Edit </a>
                     <a asp-action="Details" asp-route-id="@item.StockID">Details </a>

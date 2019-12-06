@@ -57,9 +57,7 @@
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_gl.min.js" />
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_he.js" />
     <Content Remove="Views\Stock\Delete.cshtml" />
-    <Content Remove="Views\Transaction\Index.cshtml" />
     <Content Remove="Views\Shared\_Layout.cshtml" />
-    <Content Remove="Views\Transaction\Select.cshtml" />
     <Content Remove="Views\Account\ForgotPassword.cshtml" />
     <Content Remove="Views\PortfolioDetail\Delete.cshtml" />
     <Content Remove="Views\PortfolioDetail\Details.cshtml" />
