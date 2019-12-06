@@ -1,0 +1,80 @@
+﻿@model team8finalproject.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Balanced)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Balanced)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StockValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StockValue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gains)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gains)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bonuses)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bonuses)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fees)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fees)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AvailableCash)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AvailableCash)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CashValue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CashValue)
+        </dd>
+     </dl>
+</div>
+
+<h1>Portfolio Purchases</h1>
+
+<table class="table table-primary">
+    <tr>
+        <th>Stock Name</th>
+        <th>Stock Type</th>
+        <th>Number of Shares</th>
+        <th>Stock Price</th>
+        <th>Total Price</th>
+
+    </tr>
+    @foreach (PortfolioDetail p in Model.PortfolioDetail)
+    {
+        <tr>
+            <td>@Html.DisplayFor(ModelItem => p.Stock.StockName)</td>
+            <td>@Html.DisplayFor(ModelItem => p.Stock.StockType)</td>
+            <td>@Html.DisplayFor(ModelItem => p.NumShares)</td>
+            <td>@Html.DisplayFor(ModelItem => p.StockPrice)</td>
+            <td>@Html.DisplayFor(ModelItem => p.ExtendedPrice)</td>
+        </tr>
+    }
+</table>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProductID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

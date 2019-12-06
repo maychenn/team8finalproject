@@ -60,9 +60,28 @@ namespace team8finalproject.Controllers
 
             return View(product);
         }
-        
-        // GET: Product/Apply
-        public IActionResult Apply()
+
+		// GET: Product/Details/5
+		public async Task<IActionResult> DetailsPortfolio()
+		{
+			var portfolio = _context.Products
+                .Include(p=>p.PortfolioDetail)
+				.ThenInclude(p => p.Stock)
+				.Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+
+            if (portfolio.Count != 0)
+			{
+				Product product = portfolio[0];
+                
+				return View(product);
+			}
+
+			return View();
+		}
+
+		// GET: Product/Apply
+		public IActionResult Apply()
         {
             return View();   
         }

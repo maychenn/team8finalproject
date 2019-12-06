@@ -58,8 +58,6 @@
     <Content Remove="wwwroot\lib\jquery-validate\localization\messages_he.js" />
     <Content Remove="Views\Stock\Delete.cshtml" />
     <Content Remove="Views\Account\ForgotPassword.cshtml" />
-    <Content Remove="Views\PortfolioDetail\Delete.cshtml" />
-    <Content Remove="Views\PortfolioDetail\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Home\" />
