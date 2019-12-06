@@ -84,9 +84,9 @@ namespace team8finalproject.Controllers
                 _context.Add(dispute);
           
                 await _context.SaveChangesAsync();
-                // redirects to the transaction/detail of the dispute just created
-                return RedirectToAction("Index", "Transaction");//, new { transactionID = dispute.Transaction.TransactionID });
-            }
+				// redirects to the transaction/detail of the dispute just created
+				return RedirectToAction("Details", "Transaction", new { transactionID = dispute.Transaction.TransactionID });
+			}
             return View(dispute);
         }
 
