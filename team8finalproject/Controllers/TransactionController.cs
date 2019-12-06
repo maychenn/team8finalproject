@@ -118,7 +118,7 @@ namespace team8finalproject.Controllers
             {
                 ViewBag.StatusUpdate = "You've successfully deposited " + ts.Amount.ToString() + " into your account.";
                 ts.TransactionStatus = TransactionStatus.Approved;
-                ts.Product.AccountBalance = ts.Product.AccountBalance + ts.Amount;
+                ts.Product.AccountBalance = product.AccountBalance + ts.Amount;
             }
 
 
@@ -159,7 +159,6 @@ namespace team8finalproject.Controllers
                 .Where(p => p.Customer.UserName == User.Identity.Name)
                 .Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings || p.ProductType == ProductTypes.IRA)
                 .OrderBy(x => x.ProductID).ToList();
-
             Product product = userProducts[SelectedProduct];
             ts.Product = product;
 
@@ -204,7 +203,7 @@ namespace team8finalproject.Controllers
             {
                 ViewBag.StatusUpdate = "You've successfully withdrawn " + ts.Amount.ToString() + " into your account.";
                 ts.TransactionStatus = TransactionStatus.Approved;
-                ts.Product.AccountBalance = ts.Product.AccountBalance - transaction.Amount;
+                ts.Product.AccountBalance = product.AccountBalance - transaction.Amount;
             }
 
             // invalid amount entered
@@ -448,7 +447,7 @@ namespace team8finalproject.Controllers
 
 
             //convert this to a select list
-            SelectList products = new SelectList(AllProducts, "ProductID", "AccountName");
+            SelectList products = new SelectList(AllProducts, "", "AccountName");
 
             //return the select list
             return products;
