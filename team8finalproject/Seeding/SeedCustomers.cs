@@ -11,27 +11,19 @@ namespace team8finalproject.Seeding
 {
     public static class SeedCustomers
     {
-        public static async Task SeedAllCustomers(AppDbContext db, IServiceProvider serviceProvider)
+        public static async Task SeedAllCustomers(IServiceProvider serviceProvider)
         {
             AppDbContext _db = serviceProvider.GetRequiredService<AppDbContext>();
             UserManager<AppUser> _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             RoleManager<IdentityRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            // check to see if all the AppUser have already been added
-            if (db.Users.Count() == 70)
-            {
-                //exit the program - we don't need to do any of this
-                NotSupportedException ex = new NotSupportedException("Customers are already added!");
-                throw ex;
-            }
-
 
             AppUser newUser1 = _db.Users.FirstOrDefault(u => u.Email == "cbaker@freezing.co.uk");
 
             if (newUser1 == null)
             {
                 newUser1 = new AppUser();
-                newUser1.Email = "cbaker@freezing.co.uk";
+				newUser1.UserName = "cbaker@freezing.co.uk";
+				newUser1.Email = "cbaker@freezing.co.uk";
                 newUser1.FirstName = "Christopher";
                 newUser1.LastName = "Baker";
                 newUser1.MiddleInitial = "L";
@@ -69,7 +61,8 @@ namespace team8finalproject.Seeding
             if (newUser2 == null)
             {
                 newUser2 = new AppUser();
-                newUser2.Email = "mb@aool.com";
+				newUser2.UserName = "mb@aool.com";
+				newUser2.Email = "mb@aool.com";
                 newUser2.FirstName = "Michelle";
                 newUser2.LastName = "Banks";
                 newUser2.MiddleInitial = "1300";
@@ -107,7 +100,8 @@ namespace team8finalproject.Seeding
             if (newUser3 == null)
             {
                 newUser3 = new AppUser();
-                newUser3.Email = "fd@aool.com";
+				newUser3.UserName = "fd@aool.com";
+				newUser3.Email = "fd@aool.com";
                 newUser3.FirstName = "Franco";
                 newUser3.LastName = "Broccolo";
                 newUser3.MiddleInitial = "V";
@@ -145,7 +139,8 @@ namespace team8finalproject.Seeding
             if (newUser4 == null)
             {
                 newUser4 = new AppUser();
-                newUser4.Email = "wendy@ggmail.com";
+				newUser4.UserName = "wendy@ggmail.com";
+				newUser4.Email = "wendy@ggmail.com";
                 newUser4.FirstName = "Wendy";
                 newUser4.LastName = "Chang";
                 newUser4.MiddleInitial = "L";
@@ -183,7 +178,8 @@ namespace team8finalproject.Seeding
             if (newUser5 == null)
             {
                 newUser5 = new AppUser();
-                newUser5.Email = "limchou@yaho.com";
+				newUser5.UserName = "limchou@yaho.com";
+				newUser5.Email = "limchou@yaho.com";
                 newUser5.FirstName = "Lim";
                 newUser5.LastName = "Chou";
                 newUser5.MiddleInitial = "";
@@ -221,7 +217,8 @@ namespace team8finalproject.Seeding
             if (newUser6 == null)
             {
                 newUser6 = new AppUser();
-                newUser6.Email = "Dixon@aaol.com";
+				newUser6.UserName = "Dixon@aaol.com";
+				newUser6.Email = "Dixon@aaol.com";
                 newUser6.FirstName = "Shan";
                 newUser6.LastName = "Dixon";
                 newUser6.MiddleInitial = "D";
@@ -259,7 +256,8 @@ namespace team8finalproject.Seeding
             if (newUser7 == null)
             {
                 newUser7 = new AppUser();
-                newUser7.Email = "louann@ggmail.com";
+				newUser7.UserName = "louann@ggmail.com";
+				newUser7.Email = "louann@ggmail.com";
                 newUser7.FirstName = "Lou Ann";
                 newUser7.LastName = "Feeley";
                 newUser7.MiddleInitial = "K";
@@ -297,7 +295,8 @@ namespace team8finalproject.Seeding
             if (newUser8 == null)
             {
                 newUser8 = new AppUser();
-                newUser8.Email = "tfreeley@minntonka.ci.state.mn.us";
+				newUser8.UserName = "tfreeley@minntonka.ci.state.mn.us";
+				newUser8.Email = "tfreeley@minntonka.ci.state.mn.us";
                 newUser8.FirstName = "Tesa";
                 newUser8.LastName = "Freeley";
                 newUser8.MiddleInitial = "P";
@@ -335,7 +334,8 @@ namespace team8finalproject.Seeding
             if (newUser9 == null)
             {
                 newUser9 = new AppUser();
-                newUser9.Email = "mgar@aool.com";
+				newUser9.UserName = "mgar@aool.com";
+				newUser9.Email = "mgar@aool.com";
                 newUser9.FirstName = "Margaret";
                 newUser9.LastName = "Garcia";
                 newUser9.MiddleInitial = "L";
@@ -373,7 +373,8 @@ namespace team8finalproject.Seeding
             if (newUser10 == null)
             {
                 newUser10 = new AppUser();
-                newUser10.Email = "chaley@thud.com";
+				newUser10.UserName = "chaley@thud.com";
+				newUser10.Email = "chaley@thud.com";
                 newUser10.FirstName = "Charles";
                 newUser10.LastName = "Haley";
                 newUser10.MiddleInitial = "E";
@@ -411,7 +412,8 @@ namespace team8finalproject.Seeding
             if (newUser11 == null)
             {
                 newUser11 = new AppUser();
-                newUser11.Email = "jeff@ggmail.com";
+				newUser11.UserName = "jeff@ggmail.com";
+				newUser11.Email = "jeff@ggmail.com";
                 newUser11.FirstName = "Jeffrey";
                 newUser11.LastName = "Hampton";
                 newUser11.MiddleInitial = "T";
@@ -449,7 +451,8 @@ namespace team8finalproject.Seeding
             if (newUser12 == null)
             {
                 newUser12 = new AppUser();
-                newUser12.Email = "wjhearniii@umch.edu";
+				newUser12.UserName = "wjhearniii@umch.edu";
+				newUser12.Email = "wjhearniii@umch.edu";
                 newUser12.FirstName = "John";
                 newUser12.LastName = "Hearn";
                 newUser12.MiddleInitial = "B";
@@ -487,7 +490,8 @@ namespace team8finalproject.Seeding
             if (newUser13 == null)
             {
                 newUser13 = new AppUser();
-                newUser13.Email = "hicks43@ggmail.com";
+				newUser13.UserName = "hicks43@ggmail.com";
+				newUser13.Email = "hicks43@ggmail.com";
                 newUser13.FirstName = "Anthony";
                 newUser13.LastName = "Hicks";
                 newUser13.MiddleInitial = "J";
@@ -525,7 +529,8 @@ namespace team8finalproject.Seeding
             if (newUser14 == null)
             {
                 newUser14 = new AppUser();
-                newUser14.Email = "bradsingram@mall.utexas.edu";
+				newUser14.UserName = "bradsingram@mall.utexas.edu";
+				newUser14.Email = "bradsingram@mall.utexas.edu";
                 newUser14.FirstName = "Brad";
                 newUser14.LastName = "Ingram";
                 newUser14.MiddleInitial = "S";
@@ -563,7 +568,8 @@ namespace team8finalproject.Seeding
             if (newUser15 == null)
             {
                 newUser15 = new AppUser();
-                newUser15.Email = "mother.Ingram@aool.com";
+				newUser15.UserName = "mother.Ingram@aool.com";
+				newUser15.Email = "mother.Ingram@aool.com";
                 newUser15.FirstName = "Todd";
                 newUser15.LastName = "Jacobs";
                 newUser15.MiddleInitial = "L";
@@ -601,7 +607,8 @@ namespace team8finalproject.Seeding
             if (newUser16 == null)
             {
                 newUser16 = new AppUser();
-                newUser16.Email = "victoria@aool.com";
+				newUser16.UserName = "victoria@aool.com";
+				newUser16.Email = "victoria@aool.com";
                 newUser16.FirstName = "Victoria";
                 newUser16.LastName = "Lawrence";
                 newUser16.MiddleInitial = "M";
@@ -639,7 +646,8 @@ namespace team8finalproject.Seeding
             if (newUser17 == null)
             {
                 newUser17 = new AppUser();
-                newUser17.Email = "lineback@flush.net";
+				newUser17.UserName = "lineback@flush.net";
+				newUser17.Email = "lineback@flush.net";
                 newUser17.FirstName = "Erik";
                 newUser17.LastName = "Lineback";
                 newUser17.MiddleInitial = "W";
@@ -677,7 +685,8 @@ namespace team8finalproject.Seeding
             if (newUser18 == null)
             {
                 newUser18 = new AppUser();
-                newUser18.Email = "elowe@netscrape.net";
+				newUser18.UserName = "elowe@netscrape.net";
+				newUser18.Email = "elowe@netscrape.net";
                 newUser18.FirstName = "Ernest";
                 newUser18.LastName = "Lowe";
                 newUser18.MiddleInitial = "S";
@@ -715,7 +724,8 @@ namespace team8finalproject.Seeding
             if (newUser19 == null)
             {
                 newUser19 = new AppUser();
-                newUser19.Email = "luce_chuck@ggmail.com";
+				newUser19.UserName = "luce_chuck@ggmail.com";
+				newUser19.Email = "luce_chuck@ggmail.com";
                 newUser19.FirstName = "Chuck";
                 newUser19.LastName = "Luce";
                 newUser19.MiddleInitial = "B";
@@ -753,7 +763,8 @@ namespace team8finalproject.Seeding
             if (newUser20 == null)
             {
                 newUser20 = new AppUser();
-                newUser20.Email = "mackcloud@pimpdaddy.com";
+				newUser20.UserName = "mackcloud@pimpdaddy.com";
+				newUser20.Email = "mackcloud@pimpdaddy.com";
                 newUser20.FirstName = "Jennifer";
                 newUser20.LastName = "MacLeod";
                 newUser20.MiddleInitial = "D";
@@ -791,7 +802,8 @@ namespace team8finalproject.Seeding
             if (newUser21 == null)
             {
                 newUser21 = new AppUser();
-                newUser21.Email = "liz@ggmail.com";
+				newUser21.UserName = "liz@ggmail.com";
+				newUser21.Email = "liz@ggmail.com";
                 newUser21.FirstName = "Elizabeth";
                 newUser21.LastName = "Markham";
                 newUser21.MiddleInitial = "P";
@@ -829,7 +841,8 @@ namespace team8finalproject.Seeding
             if (newUser22 == null)
             {
                 newUser22 = new AppUser();
-                newUser22.Email = "mclarence@aool.com";
+				newUser22.UserName = "mclarence@aool.com";
+				newUser22.Email = "mclarence@aool.com";
                 newUser22.FirstName = "Clarence";
                 newUser22.LastName = "Martin";
                 newUser22.MiddleInitial = "A";
@@ -867,7 +880,8 @@ namespace team8finalproject.Seeding
             if (newUser23 == null)
             {
                 newUser23 = new AppUser();
-                newUser23.Email = "smartinmartin.Martin@aool.com";
+				newUser23.UserName = "smartinmartin.Martin@aool.com";
+				newUser23.Email = "smartinmartin.Martin@aool.com";
                 newUser23.FirstName = "Gregory";
                 newUser23.LastName = "Martinez";
                 newUser23.MiddleInitial = "R";
@@ -905,7 +919,8 @@ namespace team8finalproject.Seeding
             if (newUser24 == null)
             {
                 newUser24 = new AppUser();
-                newUser24.Email = "cmiller@mapster.com";
+				newUser24.UserName = "cmiller@mapster.com";
+				newUser24.Email = "cmiller@mapster.com";
                 newUser24.FirstName = "Charles";
                 newUser24.LastName = "Miller";
                 newUser24.MiddleInitial = "R";
@@ -943,7 +958,8 @@ namespace team8finalproject.Seeding
             if (newUser25 == null)
             {
                 newUser25 = new AppUser();
-                newUser25.Email = "nelson.Kelly@aool.com";
+				newUser25.UserName = "nelson.Kelly@aool.com";
+				newUser25.Email = "nelson.Kelly@aool.com";
                 newUser25.FirstName = "Kelly";
                 newUser25.LastName = "Nelson";
                 newUser25.MiddleInitial = "T";
@@ -981,7 +997,8 @@ namespace team8finalproject.Seeding
             if (newUser26 == null)
             {
                 newUser26 = new AppUser();
-                newUser26.Email = "jojoe@ggmail.com";
+				newUser26.UserName = "jojoe@ggmail.com";
+				newUser26.Email = "jojoe@ggmail.com";
                 newUser26.FirstName = "Joe";
                 newUser26.LastName = "Nguyen";
                 newUser26.MiddleInitial = "C";
@@ -1019,7 +1036,8 @@ namespace team8finalproject.Seeding
             if (newUser27 == null)
             {
                 newUser27 = new AppUser();
-                newUser27.Email = "orielly@foxnets.com";
+				newUser27.UserName = "orielly@foxnets.com";
+				newUser27.Email = "orielly@foxnets.com";
                 newUser27.FirstName = "Bill";
                 newUser27.LastName = "O'Reilly";
                 newUser27.MiddleInitial = "T";
@@ -1057,7 +1075,8 @@ namespace team8finalproject.Seeding
             if (newUser28 == null)
             {
                 newUser28 = new AppUser();
-                newUser28.Email = "or@aool.com";
+				newUser28.UserName = "or@aool.com";
+				newUser28.Email = "or@aool.com";
                 newUser28.FirstName = "Anka";
                 newUser28.LastName = "Radkovich";
                 newUser28.MiddleInitial = "L";
@@ -1095,7 +1114,8 @@ namespace team8finalproject.Seeding
             if (newUser29 == null)
             {
                 newUser29 = new AppUser();
-                newUser29.Email = "megrhodes@freezing.co.uk";
+				newUser29.UserName = "megrhodes@freezing.co.uk";
+				newUser29.Email = "megrhodes@freezing.co.uk";
                 newUser29.FirstName = "Megan";
                 newUser29.LastName = "Rhodes";
                 newUser29.MiddleInitial = "C";
@@ -1133,7 +1153,8 @@ namespace team8finalproject.Seeding
             if (newUser30 == null)
             {
                 newUser30 = new AppUser();
-                newUser30.Email = "erynrice@aool.com";
+				newUser30.UserName = "erynrice@aool.com";
+				newUser30.Email = "erynrice@aool.com";
                 newUser30.FirstName = "Eryn";
                 newUser30.LastName = "Rice";
                 newUser30.MiddleInitial = "M";
@@ -1171,7 +1192,8 @@ namespace team8finalproject.Seeding
             if (newUser31 == null)
             {
                 newUser31 = new AppUser();
-                newUser31.Email = "jorge@hootmail.com";
+				newUser31.UserName = "jorge@hootmail.com";
+				newUser31.Email = "jorge@hootmail.com";
                 newUser31.FirstName = "Jorge";
                 newUser31.LastName = "Rodriguez";
                 newUser31.MiddleInitial = "";
@@ -1209,7 +1231,8 @@ namespace team8finalproject.Seeding
             if (newUser32 == null)
             {
                 newUser32 = new AppUser();
-                newUser32.Email = "ra@aoo.com";
+				newUser32.UserName = "ra@aoo.com";
+				newUser32.Email = "ra@aoo.com";
                 newUser32.FirstName = "Allen";
                 newUser32.LastName = "Rogers";
                 newUser32.MiddleInitial = "B";
@@ -1247,7 +1270,8 @@ namespace team8finalproject.Seeding
             if (newUser33 == null)
             {
                 newUser33 = new AppUser();
-                newUser33.Email = "st-jean@home.com";
+				newUser33.UserName = "st-jean@home.com";
+				newUser33.Email = "st-jean@home.com";
                 newUser33.FirstName = "Olivier";
                 newUser33.LastName = "Saint-Jean";
                 newUser33.MiddleInitial = "M";
@@ -1285,7 +1309,8 @@ namespace team8finalproject.Seeding
             if (newUser34 == null)
             {
                 newUser34 = new AppUser();
-                newUser34.Email = "ss34@ggmail.com";
+				newUser34.UserName = "ss34@ggmail.com";
+				newUser34.Email = "ss34@ggmail.com";
                 newUser34.FirstName = "Sarah";
                 newUser34.LastName = "Saunders";
                 newUser34.MiddleInitial = "J";
@@ -1323,7 +1348,8 @@ namespace team8finalproject.Seeding
             if (newUser35 == null)
             {
                 newUser35 = new AppUser();
-                newUser35.Email = "willsheff@email.com";
+				newUser35.UserName = "willsheff@email.com";
+				newUser35.Email = "willsheff@email.com";
                 newUser35.FirstName = "William";
                 newUser35.LastName = "Sewell";
                 newUser35.MiddleInitial = "T";
@@ -1360,7 +1386,8 @@ namespace team8finalproject.Seeding
             if (newUser36 == null)
             {
                 newUser36 = new AppUser();
-                newUser36.Email = "sheff44@ggmail.com";
+				newUser36.UserName = "sheff44@ggmail.com";
+				newUser36.Email = "sheff44@ggmail.com";
                 newUser36.FirstName = "Martin";
                 newUser36.LastName = "Sheffield";
                 newUser36.MiddleInitial = "J";
@@ -1397,7 +1424,8 @@ namespace team8finalproject.Seeding
             if (newUser37 == null)
             {
                 newUser37 = new AppUser();
-                newUser37.Email = "johnsmith187@aool.com";
+				newUser37.UserName = "johnsmith187@aool.com";
+				newUser37.Email = "johnsmith187@aool.com";
                 newUser37.FirstName = "John";
                 newUser37.LastName = "Smith";
                 newUser37.MiddleInitial = "A";
@@ -1435,7 +1463,8 @@ namespace team8finalproject.Seeding
             if (newUser38 == null)
             {
                 newUser38 = new AppUser();
-                newUser38.Email = "dustroud@mail.com";
+				newUser38.UserName = "dustroud@mail.com";
+				newUser38.Email = "dustroud@mail.com";
                 newUser38.FirstName = "Dustin";
                 newUser38.LastName = "Stroud";
                 newUser38.MiddleInitial = "P";
@@ -1473,7 +1502,8 @@ namespace team8finalproject.Seeding
             if (newUser39 == null)
             {
                 newUser39 = new AppUser();
-                newUser39.Email = "ericstuart@aool.com";
+				newUser39.UserName = "ericstuart@aool.com";
+				newUser39.Email = "ericstuart@aool.com";
                 newUser39.FirstName = "Eric";
                 newUser39.LastName = "Stuart";
                 newUser39.MiddleInitial = "D";
@@ -1511,7 +1541,8 @@ namespace team8finalproject.Seeding
             if (newUser40 == null)
             {
                 newUser40 = new AppUser();
-                newUser40.Email = "peterstump@hootmail.com";
+				newUser40.UserName = "peterstump@hootmail.com";
+				newUser40.Email = "peterstump@hootmail.com";
                 newUser40.FirstName = "Peter";
                 newUser40.LastName = "Stump";
                 newUser40.MiddleInitial = "L";
@@ -1549,7 +1580,8 @@ namespace team8finalproject.Seeding
             if (newUser41 == null)
             {
                 newUser41 = new AppUser();
-                newUser41.Email = "tanner@ggmail.com";
+				newUser41.UserName = "tanner@ggmail.com";
+				newUser41.Email = "tanner@ggmail.com";
                 newUser41.FirstName = "Jeremy";
                 newUser41.LastName = "Tanner";
                 newUser41.MiddleInitial = "S";
@@ -1587,7 +1619,8 @@ namespace team8finalproject.Seeding
             if (newUser42 == null)
             {
                 newUser42 = new AppUser();
-                newUser42.Email = "TayTaylor@aool.com";
+				newUser42.UserName = "TayTaylor@aool.com";
+				newUser42.Email = "TayTaylor@aool.com";
                 newUser42.FirstName = "Rachel";
                 newUser42.LastName = "Taylor";
                 newUser42.MiddleInitial = "K";
@@ -1625,7 +1658,8 @@ namespace team8finalproject.Seeding
             if (newUser43 == null)
             {
                 newUser43 = new AppUser();
-                newUser43.Email = "taylordjay@aool.com";
+				newUser43.UserName = "taylordjay@aool.com";
+				newUser43.Email = "taylordjay@aool.com";
                 newUser43.FirstName = "Allison";
                 newUser43.LastName = "Taylor";
                 newUser43.MiddleInitial = "R";
@@ -1663,7 +1697,8 @@ namespace team8finalproject.Seeding
             if (newUser44 == null)
             {
                 newUser44 = new AppUser();
-                newUser44.Email = "teefrank@hootmail.com";
+				newUser44.UserName = "teefrank@hootmail.com";
+				newUser44.Email = "teefrank@hootmail.com";
                 newUser44.FirstName = "Frank";
                 newUser44.LastName = "Tee";
                 newUser44.MiddleInitial = "J";
@@ -1702,7 +1737,8 @@ namespace team8finalproject.Seeding
             if (newUser45 == null)
             {
                 newUser45 = new AppUser();
-                newUser45.Email = "tuck33@ggmail.com";
+				newUser45.UserName = "tuck33@ggmail.com";
+				newUser45.Email = "tuck33@ggmail.com";
                 newUser45.FirstName = "Clent";
                 newUser45.LastName = "Tucker";
                 newUser45.MiddleInitial = "J";
@@ -1740,7 +1776,8 @@ namespace team8finalproject.Seeding
             if (newUser46 == null)
             {
                 newUser46 = new AppUser();
-                newUser46.Email = "avelasco@yaho.com";
+				newUser46.UserName = "avelasco@yaho.com";
+				newUser46.Email = "avelasco@yaho.com";
                 newUser46.FirstName = "Allen";
                 newUser46.LastName = "Valasco";
                 newUser46.MiddleInitial = "G";
@@ -1778,7 +1815,8 @@ namespace team8finalproject.Seeding
             if (newUser47 == null)
             {
                 newUser47 = new AppUser();
-                newUser47.Email = "westj@pioneer.net";
+				newUser47.UserName = "westj@pioneer.net";
+				newUser47.Email = "westj@pioneer.net";
                 newUser47.FirstName = "Jake";
                 newUser47.LastName = "West";
                 newUser47.MiddleInitial = "T";
@@ -1817,7 +1855,8 @@ namespace team8finalproject.Seeding
             if (newUser48 == null)
             {
                 newUser48 = new AppUser();
-                newUser48.Email = "louielouie@aool.com";
+				newUser48.UserName = "louielouie@aool.com";
+				newUser48.Email = "louielouie@aool.com";
                 newUser48.FirstName = "Louis";
                 newUser48.LastName = "Winthorpe";
                 newUser48.MiddleInitial = "L";
@@ -1855,7 +1894,8 @@ namespace team8finalproject.Seeding
             if (newUser49 == null)
             {
                 newUser49 = new AppUser();
-                newUser49.Email = "rwood@voyager.net";
+				newUser49.UserName = "rwood@voyager.net";
+				newUser49.Email = "rwood@voyager.net";
                 newUser49.FirstName = "Regean";
                 newUser49.LastName = "Wood";
                 newUser49.MiddleInitial = "B";

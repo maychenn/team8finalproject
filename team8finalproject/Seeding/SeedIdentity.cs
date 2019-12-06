@@ -19,9 +19,9 @@ namespace team8finalproject.Seeding
 
             //TODO: Add the needed roles
             //if role doesn't exist, add it
-            if (await _roleManager.RoleExistsAsync("Admin") == false)
+            if (await _roleManager.RoleExistsAsync("Manager") == false)
             {
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                await _roleManager.CreateAsync(new IdentityRole("Manager"));
             }
 
             if (await _roleManager.RoleExistsAsync("Employee") == false)
