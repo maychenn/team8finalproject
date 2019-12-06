@@ -318,11 +318,13 @@ namespace team8finalproject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AccNumber");
+
                     b.Property<decimal>("AccountBalance");
 
                     b.Property<string>("AccountName");
 
-                    b.Property<string>("AccountNumber");
+                    b.Property<int>("AccountNumber");
 
                     b.Property<int>("AccountStatus");
 

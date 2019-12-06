@@ -7,7 +7,7 @@ namespace team8finalproject.Utilities
 {
     public static class GenerateAccountNumber
     {
-        public static string GetNextAccountNumber(AppDbContext _context)
+        public static Int32 GetNextAccountNumber(AppDbContext _context)
         {
             Int32 intMaxAccountNumber; //the current maximum number
             Int32 intNextAccountNumber; //the trans number
@@ -23,12 +23,9 @@ namespace team8finalproject.Utilities
 
             //add one to the current max to find the next one
             intNextAccountNumber = intMaxAccountNumber + 1;
-			string NextAccountNumber = intNextAccountNumber.ToString();
-			// gets substring
-			NextAccountNumber.Substring(NextAccountNumber.Length - 4);
-			NextAccountNumber = "XXXXXX" + NextAccountNumber;
+
 			//return the value
-			return NextAccountNumber;
+			return intNextAccountNumber;
         }
 
     }

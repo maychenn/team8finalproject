@@ -10,7 +10,7 @@ using team8finalproject.DAL;
 namespace team8finalproject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191206082242_Setup")]
+    [Migration("20191206085152_Setup")]
     partial class Setup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -320,11 +320,13 @@ namespace team8finalproject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AccNumber");
+
                     b.Property<decimal>("AccountBalance");
 
                     b.Property<string>("AccountName");
 
-                    b.Property<string>("AccountNumber");
+                    b.Property<int>("AccountNumber");
 
                     b.Property<int>("AccountStatus");
 
