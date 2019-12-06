@@ -113,6 +113,9 @@ namespace team8finalproject.Models
             Balanced = false;
             AvailableCash = 0.0m;
             AccountNumber = 1000000000;
+            Gains = 0.0m;
+            Bonuses = 0.0m;
+            Fees = 0.0m;
 
             // defaults
             AccountStatus = AccountStatus.Inactive;

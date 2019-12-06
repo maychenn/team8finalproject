@@ -53,7 +53,7 @@
             <td>
                 @if (User.IsInRole("Customer"))
                 {
-                    <a asp-action="Purchase" asp-controller="PortfolioDetail" asp-route-id="@item.StockID">Purchase</a>
+                    <a asp-action="Purchase" asp-controller="PortfolioDetail" asp-route-stockID="@item.StockID">Purchase</a>
                 }
                 @if (User.IsInRole("Admin"))
                 {

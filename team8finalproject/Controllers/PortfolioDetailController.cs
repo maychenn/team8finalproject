@@ -82,6 +82,7 @@ namespace team8finalproject.Controllers
                 Pdt.Product = product[0];
                 // finds the stock
                 Pdt.Stock = _context.Stocks.Find(stockID);
+                Pdt.StockPrice = Pdt.Stock.Price;
                 return View(Pdt);
             }
             // user doesn't have a stock portfolio
@@ -91,17 +92,40 @@ namespace team8finalproject.Controllers
         //POST: PortfolioDetail/Purchase
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Purchase([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice,Balanced")] PortfolioDetail portfolioDetail)
+        public async Task<IActionResult> Purchase([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice,Stock,Product")] PortfolioDetail portfolioDetail, int stockID)
         {
-            // find correct product (stock portfolio)
-            Product product = _context.Products.Find(portfolioDetail.Product.ProductID);
-            portfolioDetail.Product = product;
+            PortfolioDetail Pdt = new PortfolioDetail();
+            var product = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+                .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+            if (product.Count != 0)
+            {
+                Pdt.Product = product[0];
 
-            // set stock price
-            portfolioDetail.StockPrice = portfolioDetail.Stock.Price;
+                // set stock price
+                Stock stock = _context.Stocks.Find(stockID);
+                portfolioDetail.Stock = stock;
+                portfolioDetail.StockPrice = portfolioDetail.Stock.Price;
+                // set extended price
+                portfolioDetail.ExtendedPrice = portfolioDetail.StockPrice * portfolioDetail.NumShares;
 
-            // set extended price
-            portfolioDetail.ExtendedPrice = portfolioDetail.StockPrice * portfolioDetail.NumShares;
+            }
+            // product not found
+            else
+            {
+                return View(portfolioDetail);
+            }
+            // fee
+            Transaction fee = new Transaction();
+            fee.Amount = (-portfolioDetail.Stock.Fee);
+            fee.Description = "Fee: " + portfolioDetail.Stock.StockName;
+            fee.Date = DateTime.Today;
+            fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+            fee.TransactionType = TransactionTypes.Fee;
+            fee.Product = portfolioDetail.Product;
+            portfolioDetail.Product.Fees = portfolioDetail.Product.Fees + portfolioDetail.Stock.Fee;
+            _context.Transactions.Add(fee);
+
+            portfolioDetail.Product.AccountBalance += fee.Amount;
 
             // update Stock Value
             portfolioDetail.Product.StockValue += portfolioDetail.ExtendedPrice;
