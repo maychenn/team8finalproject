@@ -60,10 +60,11 @@ namespace team8finalproject.Controllers
         // GET: PayBill/Create
         public IActionResult Create()
         {
-            ViewBag.AllPayees = GetAllPayees();
+			PayBill pb = new PayBill();
+			ViewBag.AllPayees = GetAllPayees();
             ViewBag.Accounts = FindAccounts();
 
-            return View();
+            return View(pb);
         }
 
         // POST: PayBill/Create
@@ -74,25 +75,25 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Create([Bind("PayBillID,PaymentAmount,Date,Name,AccountBalance,AccountName")] PayBill payBill, int SelectedPayee, int SelectedAccount, Transaction transaction)
         {
 
-			PayBill pb = new PayBill();
+			
 			//find the correct payee 
 			Payee payee = _context.Payees.Find(SelectedPayee);
 			payBill.Payee = payee;
-            pb.Payee.Name = payee.Name;
+			payBill.Payee.Name = payee.Name;
 
             //find the correct account
             Product product = _context.Products.Find(SelectedAccount);
 			payBill.Product = product;
-			//subtract bill from account balance 
-			pb.Product.AccountBalance = product.AccountBalance - pb.PaymentAmount;
-			pb.Product.AccountName = product.AccountName;
+            // subtract payment amount from account balance 
+			payBill.Product.AccountBalance = product.AccountBalance - payBill.PaymentAmount;
+			payBill.Product.AccountName = product.AccountName;
 
-            if (pb.Product.AccountBalance < 0)
+            if (payBill.Product.AccountBalance < 0)
 			{
-				if (pb.Product.AccountBalance < -50)
+				if (payBill.Product.AccountBalance < -50)
 				{
-					ViewBag.Message = "Transaction exceeds $50 overdraft limit";
-					payBill.Product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
+					ViewBag.ErrorMessage = "Transaction exceeds $50 overdraft limit";
+					product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
 					return RedirectToAction("Index","PayBill");
 				}
 				Transaction fee = new Transaction();
@@ -109,15 +110,15 @@ namespace team8finalproject.Controllers
 			    _context.SaveChangesAsync();
 				ViewBag.Message = "Successful payment with overdraft fee.";
 
-				return RedirectToAction("Index", "PayBill", new { id = payBill.PayBillID });
+				return RedirectToAction("Details", "PayBill", new { id = payBill.PayBillID });
 			}
 
             if (ModelState.IsValid)
             {
-                _context.Add(pb);
+                _context.Add(payBill);
                 _context.SaveChangesAsync();
 				ViewBag.Message = "Successful payment with overdraft fee.";
-				return RedirectToAction("Details","PayBill", new { id = pb.PayBillID });
+				return RedirectToAction("Details","PayBill", new { id = payBill.PayBillID });
             }
             return View(payBill);
         }
@@ -218,18 +219,18 @@ namespace team8finalproject.Controllers
 
         public SelectList FindAccounts()
         {
-            var query = from p in _context.Products
+			var query = from p in _context.Products
                         select p;
             {
-                query = query.Where(p => p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings);
-            }
+				query = query.Where(p => p.Customer.UserName == User.Identity.Name && p.ProductType == ProductTypes.Checking || p.ProductType == ProductTypes.Savings);
+			}
             
             List<Product> accountList = query.ToList();
 			IEnumerable<SelectListItem> selectList = from p in query
 													 select new SelectListItem
 													 {
 														 Value = p.ProductID.ToString(),
-														 Text = p.AccountName + " -- " + p.AccountBalance.ToString()
+														 Text = p.AccountName + ": " + p.AccountBalance.ToString()
 													 };
 			SelectList accountSelection = new SelectList(selectList, "Value", "Text");
 			return accountSelection;

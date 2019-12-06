@@ -29,8 +29,18 @@ namespace team8finalproject.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
-        }
+			List<Product> Products = new List<Product>();
+			if (User.IsInRole("Admin"))
+			{
+				Products = _context.Products.ToList();
+			}
+			else //user is customer
+			{
+				Products = _context.Products.Where(r => r.Customer.UserName == User.Identity.Name).ToList();
+			}
+
+			return View(Products);
+		}
 
         // GET: Product/Details/5
         public async Task<IActionResult> Details(int? id)
