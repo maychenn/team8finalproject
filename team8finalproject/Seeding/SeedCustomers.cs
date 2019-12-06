@@ -11,18 +11,27 @@ namespace team8finalproject.Seeding
 {
     public static class SeedCustomers
     {
-        public static async Task SeedAllCustomers(IServiceProvider serviceProvider)
+        public static async Task SeedAllCustomers(AppDbContext db, IServiceProvider serviceProvider)
         {
             AppDbContext _db = serviceProvider.GetRequiredService<AppDbContext>();
             UserManager<AppUser> _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             RoleManager<IdentityRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            AppUser newUser1 = _db.Users.FirstOrDefault(u => u.Email == "cbaker@freezer.co.uk");
+            // check to see if all the AppUser have already been added
+            if (db.Users.Count() == 70)
+            {
+                //exit the program - we don't need to do any of this
+                NotSupportedException ex = new NotSupportedException("Customers are already added!");
+                throw ex;
+            }
+
+
+            AppUser newUser1 = _db.Users.FirstOrDefault(u => u.Email == "cbaker@freezing.co.uk");
 
             if (newUser1 == null)
             {
                 newUser1 = new AppUser();
-                newUser1.Email = "cbaker@freezer.co.uk";
+                newUser1.Email = "cbaker@freezing.co.uk";
                 newUser1.FirstName = "Christopher";
                 newUser1.LastName = "Baker";
                 newUser1.MiddleInitial = "L";
@@ -43,7 +52,7 @@ namespace team8finalproject.Seeding
                     throw new Exception("This user can't be added - " + result.ToString());
                 }
                 _db.SaveChanges();
-                newUser1 = _db.Users.FirstOrDefault(u => u.UserName == "cbaker@freezer.co.uk");
+                newUser1 = _db.Users.FirstOrDefault(u => u.UserName == "cbaker@freezing.co.uk");
             }
 
             //Add the new user we just created to the Admin role

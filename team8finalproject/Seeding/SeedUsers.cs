@@ -28,7 +28,7 @@ namespace team8finalproject.Seeding
                 newUser1.FirstName = "Todd";
                 newUser1.MiddleInitial = "L";
                 newUser1.LastName = "Jacobs";
-                newUser1.StreetAddress = "4564ElmSt.";
+                newUser1.StreetAddress = "4564 ElmSt.";
                 newUser1.City = "Houston";
                 newUser1.State = "TX";
                 newUser1.ZipCode = "77003";
