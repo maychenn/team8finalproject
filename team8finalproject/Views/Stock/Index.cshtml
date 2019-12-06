@@ -5,10 +5,8 @@
 }
 
 <h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
 <table class="table">
     <thead>
         <tr>
@@ -31,7 +29,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Ticker)
@@ -57,3 +56,59 @@
 }
     </tbody>
 </table>
+}
+
+else
+{
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticker)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticker)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.StockID">Details</a> |
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
