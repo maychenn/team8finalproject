@@ -307,6 +307,7 @@ namespace team8finalproject.Controllers
 
         }
         // GET: Product/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.SelectStatus = Enum.GetValues(typeof(AccountStatus)).Cast<AccountStatus>();
