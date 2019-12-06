@@ -49,9 +49,19 @@
                 @Html.DisplayFor(modelItem => item.Fee)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.StockID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StockID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StockID">Delete</a>
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-action="Purchase" asp-controller="PortfolioDetail" asp-route-id="@item.StockID">Edit</a>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <a asp-action="Edit" asp-route-stockID="@item.StockID">Edit </a>
+                    <a asp-action="Details" asp-route-id="@item.StockID">Details </a>
+                    <a asp-action="Delete" asp-route-id="@item.StockID">Delete</a>
+                }
+
+
+                
             </td>
         </tr>
 }
