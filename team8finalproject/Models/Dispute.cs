@@ -14,6 +14,7 @@ namespace team8finalproject.Models
 
         public Int32 DisputeID { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Correct Transaction Amount: ")]
         public Decimal NewAmount { get; set; }
 

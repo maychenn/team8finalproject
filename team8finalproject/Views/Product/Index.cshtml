@@ -50,9 +50,21 @@
                 @Html.DisplayFor(modelItem => item.AccountStatus)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>|
+                <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> 
+                @if (item.ProductType == ProductTypes.Portfolio)
+                {
+                    <a asp-action="DetailsPortfolio" asp-route-id="@item.ProductID">Details </a>
+                }
+                @if (item.ProductType == ProductTypes.IRA)
+                {
+                    <a asp-action="DetailsIRA" asp-route-id="@item.ProductID">Details</a>
+                }
+                @if (item.ProductType == ProductTypes.Checking || item.ProductType == ProductTypes.Savings)
+                {
+                    <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> 
+                }
+
+                <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
              
             </td>
         </tr>

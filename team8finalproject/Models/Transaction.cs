@@ -25,7 +25,8 @@ namespace team8finalproject.Models
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Transaction Amount is required.")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Transaction Amount")]
         public Decimal Amount { get; set; }
 
@@ -49,8 +50,8 @@ namespace team8finalproject.Models
             {
                 Dispute = new List<Dispute>();
             }
-
-  
+            //default
+            Date = DateTime.Now;
         }
     }
 }

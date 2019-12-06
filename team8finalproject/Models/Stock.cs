@@ -33,10 +33,12 @@ namespace team8finalproject.Models
         [Display(Name = "Stock Name")]
         public string StockName { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Required(ErrorMessage = "Price is required.")]
         [Display(Name = "Stock Price")]
         public Decimal Price { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Required(ErrorMessage = "Fee is required.")]
         [Display(Name = "Stock Fee")]
         public Decimal Fee { get; set; }

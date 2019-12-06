@@ -13,6 +13,7 @@ namespace team8finalproject.Models
         public Product Product { get; set; }
         public AppUser User { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [Display(Name = "Payment Amount:")]
         public Decimal PaymentAmount { get; set; }
 

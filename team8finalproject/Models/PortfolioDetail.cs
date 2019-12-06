@@ -15,6 +15,7 @@ namespace team8finalproject.Models
         [Range(1, 1000, ErrorMessage = "Number of Shares must be between 1 and 1000")]
         public Int32 NumShares { get; set; }
 
+
         [Display(Name = "Purchased Stock Price")]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Decimal StockPrice { get; set; }
