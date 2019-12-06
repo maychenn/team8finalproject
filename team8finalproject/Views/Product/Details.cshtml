@@ -44,6 +44,29 @@
 
     </dl>
 </div>
+
+<h5>Transactions for this Account</h5>
+<table class="table table-primary">
+    <tr>
+        <th>Transaction Number</th>
+        <th>Transaction Type</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Date</th>
+
+    </tr>
+    @foreach (Transaction t in Model.Transaction)
+    {
+        <tr>
+            <td>@Html.DisplayFor(ModelItem => t.Number)</td>
+            <td>@Html.DisplayFor(ModelItem => t.TransactionType)</td>
+            <td>@Html.DisplayFor(ModelItem => t.Description)</td>
+            <td>@Html.DisplayFor(ModelItem => t.Amount)</td>
+            <td>@Html.DisplayFor(ModelItem => t.Date)</td>
+        </tr>
+    }
+</table>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ProductID">Edit</a> |
     <a asp-action="Index">Back to List</a>
