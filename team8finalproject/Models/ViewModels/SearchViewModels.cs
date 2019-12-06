@@ -57,9 +57,5 @@ namespace team8finalproject.Models.ViewModels
         [DataType(DataType.Date)]
         public DateTime? EndingDate { get; set; }
 
-        [Display(Name = "Account:")]
-        public Int32 SelectedAccountID { get; set; }
-
-
     }
 }
