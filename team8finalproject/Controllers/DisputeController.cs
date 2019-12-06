@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using team8finalproject.DAL;
 using team8finalproject.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Net.Mail;
-using System.Net;
 
 namespace team8finalproject.Controllers
 {
@@ -53,7 +51,6 @@ namespace team8finalproject.Controllers
 
             // finds the dispute
             var dispute = await _context.Disputes
-                .Include(t => t.Transaction).ThenInclude(t=>t.Product)
                 .FirstOrDefaultAsync(m => m.DisputeID == id);
             if (dispute == null)
             {
@@ -76,7 +73,7 @@ namespace team8finalproject.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles ="Customer")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TransactionID,DisputeID,NewAmount,Description,Delete,DisputeStatus")] Dispute dispute)
         {
@@ -88,7 +85,7 @@ namespace team8finalproject.Controllers
           
                 await _context.SaveChangesAsync();
 				// redirects to the transaction/detail of the dispute just created
-				return RedirectToAction("Details", "Transaction", new { transactionID = dispute.Transaction.TransactionID });
+				return RedirectToAction("Index", "Transaction");
 			}
             return View(dispute);
         }
@@ -104,10 +101,8 @@ namespace team8finalproject.Controllers
             }
             Dispute dispute = _context.Disputes
                 .Include(r => r.Transaction).ThenInclude(r => r.AppUser)
-                //.Include(r => r.Transaction)
+                .Include(r => r.Transaction)
                 .FirstOrDefault(reg => reg.DisputeID == id);
-
-            //dispute = _context.Disputes.Include(o => o.Transaction).ToList();
 
             if (dispute == null)
             {
@@ -123,7 +118,7 @@ namespace team8finalproject.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("DisputeID,NewAmount,Description,ManagerComment,DisputeStatus")] Dispute dispute, Decimal? adjustedAmount)
         {
             Dispute dp = _context.Disputes
-                .Include(t => t.Transaction).ThenInclude(r => r.AppUser)
+                .Include(t => t.Transaction)
                 .FirstOrDefault(d => dispute.DisputeID == id);
 
             // dispute not found
@@ -172,7 +167,7 @@ namespace team8finalproject.Controllers
                     }
                 }
                 // brings them back to all disputes
-                return RedirectToAction("Index", "Dispute", new { transactionID = dispute.Transaction.TransactionID });
+                return RedirectToAction("Index", "Dispute");
             }
             return View(dispute);
         }
