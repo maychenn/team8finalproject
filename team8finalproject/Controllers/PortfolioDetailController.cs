@@ -94,13 +94,13 @@ namespace team8finalproject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Purchase([Bind("PortfolioDetailID,NumShares,StockPrice,ExtendedPrice,Stock,Product")] PortfolioDetail portfolioDetail, int stockID)
         {
-            PortfolioDetail Pdt = new PortfolioDetail();
+            // finds the portfolio
             var product = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
                 .Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+
             if (product.Count != 0)
             {
-                Pdt.Product = product[0];
-
+                portfolioDetail.Product = product[0];
                 // set stock price
                 Stock stock = _context.Stocks.Find(stockID);
                 portfolioDetail.Stock = stock;
