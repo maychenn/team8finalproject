@@ -123,6 +123,7 @@ namespace team8finalproject.Models.ViewModels
 
 	{
 
+
 		[Required(ErrorMessage = "First name is required.")]
 		[Display(Name = "First Name")]
 		public String FirstName { get; set; }
@@ -151,10 +152,6 @@ namespace team8finalproject.Models.ViewModels
 		[Display(Name = "Zip")]
 		public String ZipCode { get; set; }
 
-		[Required(ErrorMessage = "Email is required")]
-		[EmailAddress]
-		[Display(Name = "Email")]
-		public string Email { get; set; }
 
 		//NOTE: Here is the property for phone number
 		[Required(ErrorMessage = "Phone number is required")]
@@ -162,10 +159,6 @@ namespace team8finalproject.Models.ViewModels
 		[Display(Name = "Phone Number")]
 		public string PhoneNumber { get; set; }
 
-		[Required(ErrorMessage = "Birthday is required")]
-		[Display(Name = "Birthday")]
-		[DataType(DataType.Date)]
-		public DateTime Birthdate { get; set; }
 	}
 
 	public class IndexViewModel

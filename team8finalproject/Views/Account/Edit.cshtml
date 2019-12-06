@@ -13,10 +13,6 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <h4>@ViewBag.Error</h4>
     <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @ViewBag.Email
-        </div>
     </div>
     @*TODO: Add code for additional fields required for login - First name shown for example*@
     <div class="form-group">
@@ -44,10 +40,6 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-10">
-            <label asp-for="Birthdate" class="control-label"></label>
-            @ViewBag.Birthdate
-        </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.StreetAddress, new { @class = "col-md-2 control-label" })
@@ -79,4 +71,15 @@
             <input type="submit" class="btn btn-primary" value="Save" />
         </div>
     </div>
+
+    
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
 }
