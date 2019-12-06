@@ -115,16 +115,13 @@ namespace team8finalproject.Controllers
 
 					_context.Add(transaction);
 					await _context.SaveChangesAsync();
-					return RedirectToAction("Details", "Transaction", new { id = transaction.TransactionID });
 				}
                 else
 				{
 					ViewBag.ErrorIRAMessage = "You are not of age or have reached your maximum contribution for the year.";
-					return RedirectToAction("CreateDeposit", "Transaction");
+
 				}
 			}
-
-            
 
 			//checks if the deposit is > 5000, updates the status
 			if (transaction.Amount > 5000)
