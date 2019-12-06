@@ -92,6 +92,8 @@ namespace team8finalproject.Controllers
         {
             Product pd = new Product();
             pd.ProductType = ProductTypes.Checking;
+
+            // gets next number
             pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
             pd.InitialDeposit = product.InitialDeposit;
             pd.AccountBalance = product.InitialDeposit;
