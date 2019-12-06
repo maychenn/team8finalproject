@@ -151,8 +151,10 @@ namespace team8finalproject.Controllers
 			String id = User.Identity.Name;
 			AppUser user = _db.Users.FirstOrDefault(u => u.UserName == id);
 
-            //populate the view model
-            evm.City = user.City;
+			//populate the view model
+			ViewBag.Email = user.Email;
+			ViewBag.Birthdate = user.Birthdate;
+			evm.City = user.City;
 			evm.LastName = user.LastName;
 			evm.FirstName = user.FirstName;
 			evm.State = user.State;
@@ -186,8 +188,8 @@ namespace team8finalproject.Controllers
             user.PhoneNumber = model.PhoneNumber;
 
             await _db.SaveChangesAsync();
-            return View(model);
-        }
+			return View("Index", "Account");
+		}
 
 
 		// GET: /Account/ForgotPassword

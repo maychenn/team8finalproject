@@ -77,26 +77,31 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateDeposit([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName,Contribution")] Transaction transaction, int SelectedProduct)
+        public async Task<IActionResult> CreateDeposit([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName,Contribution,ProductType,Age")] Transaction transaction, int SelectedProduct)
         {
+			transaction.AppUser = await _userManager.FindByNameAsync(User.Identity.Name);
 
 			Product product = _context.Products.Find(SelectedProduct);
 			transaction.Product = product;
 
-            if (transaction.Product.ProductType == ProductTypes.IRA)
+			// updates the values from user input
+			transaction.TransactionType = TransactionTypes.Deposit;
+			transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+			transaction.Date = DateTime.Now;
+			if (transaction.Description == null)
 			{
-                if (transaction.AppUser.Age < 70 && transaction.Product.Contribution < 5000.00m)
+				transaction.Description = "Deposit";
+			}
+
+			if (transaction.Product.ProductType == ProductTypes.IRA)
+			{
+                if (transaction.AppUser.Age < 70 && (transaction.Product.Contribution + transaction.Amount) < 5000.00m)
 				{
-					transaction.TransactionType = TransactionTypes.Deposit;
-					transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-					transaction.Date = DateTime.Now;
-					if (transaction.Description == null)
-					{
-						transaction.Description = "Deposit";
-					}
+					
 					ViewBag.StatusUpdate = "You've successfully deposited " + transaction.Amount.ToString() + " into your account.";
 					transaction.TransactionStatus = TransactionStatus.Approved;
 					transaction.Product.Contribution = product.Contribution + transaction.Amount;
+					transaction.Product.AccountBalance = product.AccountBalance + transaction.Amount;
 
 					_context.Add(transaction);
 					await _context.SaveChangesAsync();
@@ -105,18 +110,11 @@ namespace team8finalproject.Controllers
                 else
 				{
 					ViewBag.ErrorIRAMessage = "You are not of age or have reached your maximum contribution for the year.";
-					return View(transaction);
+					return RedirectToAction("CreateDeposit", "Transaction");
 				}
 			}
 
-            // updates the values from user input
-            transaction.TransactionType = TransactionTypes.Deposit;
-            transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
-            transaction.Date = DateTime.Now;
-            if (transaction.Description == null)
-            {
-                transaction.Description = "Deposit";
-            }
+            
 
 			//checks if the deposit is > 5000, updates the status
 			if (transaction.Amount > 5000)
@@ -153,11 +151,66 @@ namespace team8finalproject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateWithdrawal([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName")] Transaction transaction, int SelectedProduct)
+        public async Task<IActionResult> CreateWithdrawal([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName,ProductType,Age")] Transaction transaction, int SelectedProduct)
         {
+			transaction.AppUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
 			Product product = _context.Products.Find(SelectedProduct);
 			transaction.Product = product;
 
+			if (transaction.Product.ProductType == ProductTypes.IRA)
+			{
+				if (transaction.AppUser.Age < 66 && transaction.Amount <= 3000)
+				{
+					transaction.TransactionType = TransactionTypes.Withdrawal;
+					transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					transaction.Date = DateTime.Now;
+					if (transaction.Description == null)
+					{
+						transaction.Description = "Withdrawal";
+					}
+					Transaction fee = new Transaction();
+					fee.Amount = -30.00m;
+					fee.Description = "An overdraft fee of $30 has been applied";
+					fee.Date = transaction.Date;
+					fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					fee.TransactionType = TransactionTypes.Fee;
+					fee.Product = transaction.Product;
+					_context.Transactions.Add(fee);
+
+					transaction.Product.AccountBalance += fee.Amount;
+
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction.Amount.ToString() + " into your account.";
+					transaction.TransactionStatus = TransactionStatus.Approved;
+					transaction.Product.AccountBalance = product.AccountBalance - transaction.Amount;
+					_context.Add(transaction);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction.TransactionID });
+				}
+				if (transaction.AppUser.Age < 66 && transaction.Amount > 3000)
+				{
+					ViewBag.ErrorMessage = "You are not allowed to withdraw over $3000!";
+					return RedirectToAction("CreateWithdrawal", "Transaction");
+				}
+				else
+				{
+					transaction.TransactionType = TransactionTypes.Withdrawal;
+					transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					transaction.Date = DateTime.Now;
+					if (transaction.Description == null)
+					{
+						transaction.Description = "Withdrawal";
+					}
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction.Amount.ToString() + " into your account.";
+					transaction.TransactionStatus = TransactionStatus.Approved;
+					transaction.Product.AccountBalance = product.AccountBalance - transaction.Amount;
+
+					_context.Add(transaction);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction.TransactionID });
+
+				}
+			}
 			// updates the values from user input
 			transaction.TransactionType = TransactionTypes.Withdrawal;
 			transaction.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
@@ -187,6 +240,7 @@ namespace team8finalproject.Controllers
                 _context.Transactions.Add(fee);
 
                 transaction.Product.AccountBalance += fee.Amount;
+
             }
 
             //checks if the withdraw is > 5000, updates the status
@@ -225,6 +279,162 @@ namespace team8finalproject.Controllers
 			ViewBag.SelectAccount = GetUserProducts();
 
 			return View(ts);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CreateTransfer([Bind("TransactionID,Number,Description,Date,Amount,TransactionType,TransactionStatus,AccountBalance,AccountName,ProductType,Age")] Transaction transaction, int AccountFrom, int AccountTo)
+		{
+			transaction.AppUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+			Product accountfrom = _context.Products.Find(AccountFrom);
+			Transaction transaction1 = new Transaction();
+			transaction1.Product = accountfrom;
+
+
+			if (transaction1.Product.ProductType == ProductTypes.IRA)
+			{
+				if (transaction.AppUser.Age < 66 && transaction1.Amount <= 3000)
+				{
+					transaction1.TransactionType = TransactionTypes.Transfer;
+					transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					if (transaction1.Description == null)
+					{
+						transaction1.Description = "Transfer";
+					}
+					Transaction fee = new Transaction();
+					fee.Amount = -30.00m;
+					fee.Description = "An overdraft fee of $30 has been applied";
+					fee.Date = transaction.Date;
+					fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					fee.TransactionType = TransactionTypes.Fee;
+					fee.Product = transaction1.Product;
+					_context.Transactions.Add(fee);
+
+					transaction1.Product.AccountBalance += fee.Amount;
+
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
+					transaction1.TransactionStatus = TransactionStatus.Approved;
+					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
+					_context.Add(transaction1);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
+				}
+				if (transaction.AppUser.Age < 66 && transaction1.Amount > 3000)
+				{
+					ViewBag.ErrorMessage = "You are not allowed to withdraw over $3000!";
+					return RedirectToAction("CreateTransfer", "Transaction");
+				}
+				else
+				{
+					transaction1.TransactionType = TransactionTypes.Transfer;
+					transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+					if (transaction1.Description == null)
+					{
+						transaction1.Description = "Transfer";
+					}
+					ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
+					transaction1.TransactionStatus = TransactionStatus.Approved;
+					transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
+
+					_context.Add(transaction1);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
+
+				}
+			}
+			// updates the values from user input
+			transaction1.TransactionType = TransactionTypes.Transfer;
+			transaction1.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+			if (transaction1.Description == null)
+			{
+				transaction1.Description = "Transfer";
+			}
+
+
+			// 1. cannot overdraft -> error
+			if (transaction1.Product.AccountBalance < 0.00m || (transaction1.Product.AccountBalance - transaction1.Amount < -50.00m))
+			{
+				ViewBag.OverdraftMessage = "Transaction violates overdraft rules";
+				return View(transaction1);
+			}
+			// 2. can overdraft -> $30 overdraft fee
+			if ((transaction1.Product.AccountBalance - transaction1.Amount) < 0)
+			{
+				Transaction fee = new Transaction();
+				fee.Amount = -30.00m;
+				fee.Description = "An overdraft fee of $30 has been applied";
+				fee.Date = transaction1.Date;
+				fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+				fee.TransactionType = TransactionTypes.Fee;
+				fee.Product = transaction1.Product;
+				_context.Transactions.Add(fee);
+
+				transaction1.Product.AccountBalance += fee.Amount;
+
+			}
+
+			//checks if the withdraw is > 5000, updates the status
+			if (transaction1.Amount > 5000)
+			{
+				ViewBag.LargeWithdrawalMessage = "Your withdrawal is $5000 or larger. You need to wait on Manager Approval";
+				transaction1.TransactionStatus = TransactionStatus.Pending;
+			}
+			else
+			{
+				ViewBag.StatusUpdate = "You've successfully withdrawn " + transaction1.Amount.ToString() + " into your account.";
+				transaction1.TransactionStatus = TransactionStatus.Approved;
+				transaction1.Product.AccountBalance = accountfrom.AccountBalance - transaction1.Amount;
+			}
+
+			// invalid amount entered
+			if (transaction1.Amount < 0)
+			{
+				return View(transaction1);
+
+			}
+
+			// saves the transaction
+			_context.Entry(accountfrom).State = EntityState.Modified;
+			_context.Add(transaction1);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
+
+			Product accountto = _context.Products.Find(AccountTo);
+			Transaction transaction2 = new Transaction();
+			transaction2.Product = accountto;
+
+			// updates the values from user input
+			transaction2.TransactionType = TransactionTypes.Transfer;
+			transaction2.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+
+			if (transaction2.Description == null)
+			{
+				transaction2.Description = "Transfer";
+			}
+
+			if (transaction2.Product.ProductType == ProductTypes.IRA)
+			{
+				if (transaction.AppUser.Age < 70 && (transaction2.Product.Contribution + transaction2.Amount) < 5000.00m)
+				{
+
+					ViewBag.StatusUpdate = "You've successfully deposited " + transaction2.Amount.ToString() + " into your account.";
+					transaction2.TransactionStatus = TransactionStatus.Approved;
+					transaction2.Product.Contribution = accountto.Contribution + transaction2.Amount;
+					transaction2.Product.AccountBalance = accountto.AccountBalance + transaction2.Amount;
+
+					_context.Add(transaction2);
+					await _context.SaveChangesAsync();
+					return RedirectToAction("Details", "Transaction", new { id = transaction2.TransactionID });
+				}
+				else
+				{
+					ViewBag.ErrorIRAMessage = "You are not of age or have reached your maximum contribution for the year.";
+					return RedirectToAction("CreateDeposit", "Transaction");
+				}
+
+
+			}
 		}
 
 		private SelectList GetAllProducts()
