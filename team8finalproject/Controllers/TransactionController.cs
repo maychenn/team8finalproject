@@ -10,7 +10,6 @@ using team8finalproject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using team8finalproject.Models.ViewModels;
 
 namespace team8finalproject.Controllers
 {
@@ -28,8 +27,18 @@ namespace team8finalproject.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Transactions.ToListAsync());
-        }
+			List<Transaction> trans = new List<Transaction>();
+			if (User.IsInRole("Admin"))
+			{
+				trans = _context.Transactions.ToList();
+			}
+			else //user is customer
+			{
+				trans = _context.Transactions.Where(r => r.Product.Customer.UserName == User.Identity.Name).ToList();
+			}
+
+			return View(trans);
+		}
 
         // GET: Transaction/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -468,128 +477,7 @@ namespace team8finalproject.Controllers
 			return RedirectToAction("Index", "Transaction");
 		}
 
-        // GET: Detailed Search
-        public IActionResult DetailedSearch()
-        {
-            ViewBag.AllAmounts = Enum.GetValues(typeof(AmountRanges)).Cast<AmountRanges>();
-            ViewBag.AllDates = Enum.GetValues(typeof(DateRanges)).Cast<DateRanges>();
-
-            ViewBag.Accounts = GetUserProducts(); 
-            //default properties
-            SearchViewModel svm = new SearchViewModel();
-    
-            return View("DetailedSearch");
-        }
-
-        public IActionResult DisplaySearchResults(SearchViewModel svm, int SelectedAccount)
-        {
-            // gets all of the user's transactions from all accounts
-            var query = from t in _context.Transactions
-                        select t;
-            if (User.IsInRole("Customer"))
-            {
-                query.Where(t => t.Product.Customer.UserName == User.Identity.Name);
-            }
-            query.Where(t => t.Product.ProductID == SelectedAccount);
-            // search by transaction number
-            if (svm.TransactionNumber != null && svm.TransactionNumber != "")
-            {
-
-                query = query.Where(t => t.Number.Equals(svm.TransactionNumber));
-
-            }
-            // description
-            if (svm.TransactionDescription != null && svm.TransactionDescription != "")
-
-            {
-                query = query.Where(t => t.Description.Contains(svm.TransactionDescription));
-
-            }
-            // transaction amount (range)
-            if (svm.AmountRange != null)
-            {
-                // low
-                if (svm.AmountRange == AmountRanges.Low)
-                {
-                    query = query.Where(b => b.Amount <= 100);
-                }
-                // medium
-                else if (svm.AmountRange == AmountRanges.Medium)
-                {
-                    query = query.Where(b => b.Amount >= 100);
-                    query = query.Where(b => b.Amount <= 200);
-                }
-                // high
-                else if (svm.AmountRange == AmountRanges.High)
-                {
-                    query = query.Where(b => b.Amount >= 200);
-                    query = query.Where(b => b.Amount <= 300);
-                }
-                // highest
-                else if (svm.AmountRange == AmountRanges.Highest)
-                {
-                    query = query.Where(b => b.Amount >= 300);
-                }
-                // custom range & an upper or lower limit is inputted
-                else if (svm.AmountRange == AmountRanges.Custom && (svm.LowerLimit != null || svm.UpperLimit != null))
-                {
-                    if (svm.LowerLimit != null)
-                    {
-                        query = query.Where(b => b.Amount >= svm.LowerLimit);
-                    }
-                    if (svm.UpperLimit != null)
-                    {
-                        query = query.Where(b => b.Amount <= svm.UpperLimit);
-                    }
-                }
-
-            }
-            // date
-            if (svm.DateRange != null)
-            {
-                // Last 15 days
-                if (svm.DateRange == DateRanges.Last15)
-                {
-                    query = query.Where(b => b.Date >= DateTime.Today.AddDays(-15));
-                }
-                // last 30 days
-                else if (svm.DateRange == DateRanges.Last30)
-                {
-                    query = query.Where(b => b.Date >= DateTime.Today.AddDays(-30));
-                }
-                // last 60 days
-                else if (svm.DateRange == DateRanges.Last60)
-                {
-                    query = query.Where(b => b.Date >= DateTime.Today.AddDays(-60));
-                }
-                // custom range & an upper or lower limit is inputted
-                else if (svm.DateRange == DateRanges.Custom && (svm.BeginningDate != null || svm.EndingDate != null))
-                {
-                    if (svm.BeginningDate != null)
-                    {
-                        query = query.Where(b => b.Date >= svm.BeginningDate);
-                    }
-                    if (svm.UpperLimit != null)
-                    {
-                        query = query.Where(b => b.Date <= svm.EndingDate);
-                    }
-                }
-                // all
-                //(query is not modified)
-            }
-
-            List<Transaction> SelectedTransactions = query.Include(b => b.Product).ToList();
-
-            ViewBag.AllTransactionCount = _context.Transactions.Count();
-            ViewBag.SelectedTransactionCount = SelectedTransactions.Count();
-
-            return View("Transaction/Index", SelectedTransactions.OrderByDescending(b => b.Amount));
-
-        }
-
- 
-
-        private SelectList GetAllProducts()
+		private SelectList GetAllProducts()
         {
             //get a list of all courses from the database
             List<Product> AllProducts = _context.Products.ToList();
