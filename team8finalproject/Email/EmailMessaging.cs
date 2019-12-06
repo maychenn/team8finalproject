@@ -19,7 +19,7 @@ namespace team8finalproject
             };
             //Add anything that you need to the body of the message
             // /n is a new line – this will add some white space after the main body of the message
-            String finalMessage = emailBody + "\n\n This is a disclaimer that will be on all messages.";
+            String finalMessage = emailBody + "Sent by Team 8! Bevo's Bank and Trust.";
 
 
             //Create an email address object for the sender address

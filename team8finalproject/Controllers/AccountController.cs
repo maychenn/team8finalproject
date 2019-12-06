@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using team8finalproject.DAL;
 using team8finalproject.Models;
 using team8finalproject.Models.ViewModels;
+using System.Net.Mail;
+using System.Net;
 
 namespace team8finalproject.Controllers
 {
@@ -241,7 +243,8 @@ namespace team8finalproject.Controllers
 			if (result.Succeeded)
 			{
 				await _signInManager.SignInAsync(userLoggedIn, isPersistent: false);
-				return RedirectToAction("Index", "Home");
+                EmailMessaging.SendEmail(userLoggedIn.Email, "Password Change Notice", "Your Password has been changed");
+                return RedirectToAction("Index", "Home");
 			}
 			AddErrors(result);
 			return View(model);
