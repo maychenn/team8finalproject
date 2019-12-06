@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace team8finalproject.Migrations
 {
-    public partial class ExtendedPrice : Migration
+    public partial class Setup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -208,9 +208,15 @@ namespace team8finalproject.Migrations
                     AccountNumber = table.Column<int>(nullable: false),
                     AccountName = table.Column<string>(nullable: true),
                     AccountStatus = table.Column<int>(nullable: false),
+                    AccountBalance = table.Column<decimal>(nullable: false),
                     InitialDeposit = table.Column<decimal>(nullable: false),
                     Contribution = table.Column<decimal>(nullable: false),
-                    AccountBalance = table.Column<decimal>(nullable: false),
+                    Balanced = table.Column<bool>(nullable: false),
+                    StockValue = table.Column<decimal>(nullable: false),
+                    Gains = table.Column<decimal>(nullable: false),
+                    Bonuses = table.Column<decimal>(nullable: false),
+                    Fees = table.Column<decimal>(nullable: false),
+                    AvailableCash = table.Column<decimal>(nullable: false),
                     CustomerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

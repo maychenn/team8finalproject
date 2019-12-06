@@ -326,13 +326,25 @@ namespace team8finalproject.Migrations
 
                     b.Property<int>("AccountStatus");
 
+                    b.Property<decimal>("AvailableCash");
+
+                    b.Property<bool>("Balanced");
+
+                    b.Property<decimal>("Bonuses");
+
                     b.Property<decimal>("Contribution");
 
                     b.Property<string>("CustomerId");
 
+                    b.Property<decimal>("Fees");
+
+                    b.Property<decimal>("Gains");
+
                     b.Property<decimal>("InitialDeposit");
 
                     b.Property<int>("ProductType");
+
+                    b.Property<decimal>("StockValue");
 
                     b.HasKey("ProductID");
 
