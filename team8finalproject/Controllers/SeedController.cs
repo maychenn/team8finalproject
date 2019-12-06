@@ -60,6 +60,35 @@ namespace team8finalproject.Controllers
             return View("Confirm");
 
         }
+
+		public IActionResult SeedPayees()
+
+		{
+			try
+
+			{
+				Seeding.SeedPayees.SeedAllPayees(_db);
+
+			}
+
+			catch (NotSupportedException ex)
+
+			{
+
+				return View("Error", new String[] { "The payees have already been added", ex.Message });
+			}
+
+			catch (InvalidOperationException ex)
+
+			{
+
+				return View("Error", new String[] { "There was an error adding payees to the database", ex.Message });
+
+			}
+
+			return View("Confirm");
+
+		}
 	}
 
 }
