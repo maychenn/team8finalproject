@@ -80,7 +80,7 @@ namespace team8finalproject.Controllers
             if (ModelState.IsValid)
             {
 
-                dispute.Transaction.TransactionStatus = TransactionStatus.Pending;
+                //dispute.Transaction.TransactionStatus = dispute.Transaction.TransactionStatus.Pending;
                 _context.Add(dispute);
           
                 await _context.SaveChangesAsync();
