@@ -12,6 +12,7 @@ namespace team8finalproject.Controllers
 
     {
         private AppDbContext _db;
+		private IServiceProvider serviceProvider;
 
         public SeedController(AppDbContext context)
 
@@ -90,6 +91,35 @@ namespace team8finalproject.Controllers
             return View("Confirm");
         }
 
-    }
+		public IActionResult SeedCustomers()
+
+		{
+
+			try
+
+			{
+				Seeding.SeedCustomers.SeedAllCustomers(_db,serviceProvider);
+
+			}
+
+			catch (NotSupportedException ex)
+
+			{
+
+				return View("Error", new String[] { "The customers have already been added", ex.Message });
+
+			}
+
+			catch (InvalidOperationException ex)
+
+			{
+
+				return View("Error", new String[] { "There was an error adding customers to the database", ex.Message });
+
+			}
+
+			return View("Confirm");
+		}
+	}
 
 }
