@@ -83,40 +83,39 @@ namespace team8finalproject.Controllers
             //find the correct account
             Product product = _context.Products.Find(SelectedAccount);
 			payBill.Product = product;
+            // subtract payment amount from account balance 
+			payBill.Product.AccountBalance = product.AccountBalance - payBill.PaymentAmount;
 
-			if (payBill.Product.AccountBalance < 0.00m || (payBill.Product.AccountBalance - payBill.PaymentAmount < -50.00m))
+            if (payBill.Product.AccountBalance < 0)
 			{
-				ViewBag.OverdraftMessage = "Payment amount is greater than allowed for overdraft";
-				return View(payBill);
-			}
-			// 2. can overdraft -> $30 overdraft fee
-			if ((payBill.Product.AccountBalance - payBill.PaymentAmount) < 0)
-			{
+				if (payBill.Product.AccountBalance < -50)
+				{
+					ViewBag.ErrorMessage = "Transaction exceeds $50 overdraft limit";
+					product.AccountBalance = payBill.Product.AccountBalance + payBill.PaymentAmount;
+					return RedirectToAction("Index","PayBill");
+				}
 				Transaction fee = new Transaction();
-				fee.Amount = -30.00m;
-				fee.Description = "An overdraft fee of $30 has been applied";
-				fee.Date = payBill.Date;
-				fee.Number = (int)Utilities.GenerateTransactionNumber.GetNextTransactionNumber(_context);
+				fee.Amount = -30;
+				fee.Description = "Overdraft fee";
+				fee.Date = transaction.Date;
+				fee.Number = transaction.Number;
 				fee.TransactionType = TransactionTypes.Fee;
-				fee.Product = payBill.Product;
+				fee.Product = transaction.Product;
 				_context.Transactions.Add(fee);
-
-				// subtract payment amount from account balance 
-				payBill.Product.AccountBalance = product.AccountBalance - payBill.PaymentAmount;
 				payBill.Product.AccountBalance += fee.Amount;
-				_context.Add(payBill);
-				_context.SaveChanges();
+				_context.Transactions.Add(transaction);
+				_context.PayBills.Add(payBill);
+			    _context.SaveChangesAsync();
 				ViewBag.Message = "Successful payment with overdraft fee.";
+
 				return RedirectToAction("Details", "PayBill", new { id = payBill.PayBillID });
 			}
 
             if (ModelState.IsValid)
             {
-				// subtract payment amount from account balance 
-				payBill.Product.AccountBalance = product.AccountBalance - payBill.PaymentAmount;
-				_context.Add(payBill);
+                _context.Add(payBill);
                 _context.SaveChanges();
-				ViewBag.Message = "Successful payment.";
+				ViewBag.Message = "Successful payment with overdraft fee.";
 				return RedirectToAction("Details","PayBill", new { id = payBill.PayBillID });
             }
             return View(payBill);
