@@ -79,10 +79,13 @@ namespace team8finalproject.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                dispute.Transaction.TransactionStatus = TransactionStatus.Pending;
                 _context.Add(dispute);
+          
                 await _context.SaveChangesAsync();
                 // redirects to the transaction/detail of the dispute just created
-                return RedirectToAction("Details", "Transaction", new { transactionID = dispute.Transaction.TransactionID });
+                return RedirectToAction("Index", "Transaction");//, new { transactionID = dispute.Transaction.TransactionID });
             }
             return View(dispute);
         }
