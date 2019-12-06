@@ -76,14 +76,12 @@ namespace team8finalproject.Controllers
 
 
         //GET: PortfolioDetail/Create
-        public IActionResult Create(Int32 productID)
+        public IActionResult Create()
         {
+            ViewBag.SelectedStocks = GetAllStocks();
 
-            PortfolioDetail Pdt = new PortfolioDetail();
-            Pdt.Product = _context.Products.Find(productID);
-            ViewBag.AllStock = GetAllStocks();
+            return View();
 
-            return View(Pdt);
         }
 
         //POST: PortfolioDetail/Create
@@ -172,6 +170,40 @@ namespace team8finalproject.Controllers
             }
             return View(dbPD);
         }
+
+
+      /*  public void IsBalanced(PortfolioDetail pd)
+        {
+            int a = 0;
+            int b = 0;
+            int c = 0;
+           
+            foreach (var item in pd)
+            {
+                if (item.StockType == StockType.Ordinary)
+                {
+                    a += 1;
+                }
+                if (item.StockType == StockType.IndexFund)
+                {
+                    b += 1;
+                }
+                if (item.StockType == StockType.MutualFund)
+                {
+                    c += 1;
+                }
+                if (a >= 2 && b >= 1 && c >= 1)
+                {
+                    pd.Balanced = true;
+                    break;
+                }
+            }
+        }
+
+        */
+
+
+
         /*
         //GET: PortfolioDetail/Delete/5
         public async Task<IActionResult> Delete(int? id)

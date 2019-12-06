@@ -25,6 +25,9 @@ namespace team8finalproject.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Decimal ExtendedPrice { get; set; }
 
+        [Display(Name = "Portfolio Balanced")]
+        public Boolean Balanced { get; set; }
+
         public Product Product { get; set; }
         public Stock Stock { get; set; }
     }

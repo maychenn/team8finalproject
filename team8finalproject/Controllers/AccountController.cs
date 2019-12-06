@@ -115,8 +115,40 @@ namespace team8finalproject.Controllers
             }
         }
 
-        //GET: Account/Index
-        public ActionResult Index()
+
+		// GET: /Account/ForgotPassword
+		[AllowAnonymous]
+		public ActionResult ForgotPassword(string returnUrl)
+		{
+			return View();
+		}
+
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> ForgotPassword(ResetPasswordModel model, string returnUrl)
+		{
+
+
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
+			AppUser userLoggedIn = await _userManager.FindByNameAsync(model.Email);
+			var result = await _userManager.ChangePasswordAsync(userLoggedIn, model.NewPassword, model.ConfirmPassword);
+			if (result.Succeeded)
+			{
+				return Redirect(returnUrl ?? "/");
+			}
+			AddErrors(result);
+			return View(model);
+		}
+
+
+
+
+		//GET: Account/Index
+		public ActionResult Index()
         {
             IndexViewModel ivm = new IndexViewModel();
 

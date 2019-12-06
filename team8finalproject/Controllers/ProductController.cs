@@ -227,6 +227,7 @@ namespace team8finalproject.Controllers
 
             pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
 
+
             //checks if the initial deposit is > 5000, updates the status
             if (product.InitialDeposit > 5000)
             {
@@ -254,6 +255,7 @@ namespace team8finalproject.Controllers
             _context.Add(pd);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Product", new { id = pd.ProductID });
+
             /*
             if (ModelState.IsValid)
             {
