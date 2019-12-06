@@ -205,7 +205,7 @@ namespace team8finalproject.Migrations
                     ProductID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductType = table.Column<int>(nullable: false),
-                    AccountNumber = table.Column<int>(nullable: false),
+                    AccountNumber = table.Column<string>(nullable: true),
                     AccountName = table.Column<string>(nullable: true),
                     AccountStatus = table.Column<int>(nullable: false),
                     AccountBalance = table.Column<decimal>(nullable: false),
