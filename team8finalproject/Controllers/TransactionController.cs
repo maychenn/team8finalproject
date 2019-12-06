@@ -461,11 +461,10 @@ namespace team8finalproject.Controllers
 
 			_context.Add(transaction1);
 			await _context.SaveChangesAsync();
-			return RedirectToAction("Details", "Transaction", new { id = transaction1.TransactionID });
 
 			_context.Add(transaction2);
 			await _context.SaveChangesAsync();
-			return RedirectToAction("Details", "Transaction", new { id = transaction2.TransactionID });
+			return RedirectToAction("Index", "Transaction");
 		}
 
 		private SelectList GetAllProducts()
