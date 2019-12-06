@@ -79,14 +79,12 @@ namespace team8finalproject.Controllers
 			//find the correct payee 
 			Payee payee = _context.Payees.Find(SelectedPayee);
 			payBill.Payee = payee;
-			payBill.Payee.Name = payee.Name;
 
             //find the correct account
             Product product = _context.Products.Find(SelectedAccount);
 			payBill.Product = product;
             // subtract payment amount from account balance 
 			payBill.Product.AccountBalance = product.AccountBalance - payBill.PaymentAmount;
-			payBill.Product.AccountName = product.AccountName;
 
             if (payBill.Product.AccountBalance < 0)
 			{
@@ -116,7 +114,7 @@ namespace team8finalproject.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(payBill);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
 				ViewBag.Message = "Successful payment with overdraft fee.";
 				return RedirectToAction("Details","PayBill", new { id = payBill.PayBillID });
             }
