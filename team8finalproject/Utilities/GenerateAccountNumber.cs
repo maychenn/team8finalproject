@@ -18,7 +18,7 @@ namespace team8finalproject.Utilities
             }
             else
             {
-                intMaxAccountNumber = _context.Products.Max(c => c.ProductID); //this is the highest number in the database right now
+                intMaxAccountNumber = _context.Products.Max(c => c.AccountNumber); //this is the highest number in the database right now
             }
 
             //add one to the current max to find the next one
