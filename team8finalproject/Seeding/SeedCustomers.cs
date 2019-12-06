@@ -21,6 +21,7 @@ namespace team8finalproject.Seeding
 
             if (newUser1 == null)
             {
+                newUser1 = new AppUser();
                 newUser1.Email = "cbaker@freezer.co.uk";
                 newUser1.FirstName = "Christopher";
                 newUser1.LastName = "Baker";
@@ -33,7 +34,7 @@ namespace team8finalproject.Seeding
                 newUser1.Birthdate = new DateTime(1991, 2, 7);
 
 
-                newUser1 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser1, "gazing");
@@ -58,6 +59,7 @@ namespace team8finalproject.Seeding
 
             if (newUser2 == null)
             {
+                newUser2 = new AppUser();
                 newUser2.Email = "mb@aool.com";
                 newUser2.FirstName = "Michelle";
                 newUser2.LastName = "Banks";
@@ -70,7 +72,7 @@ namespace team8finalproject.Seeding
                 newUser2.Birthdate = new DateTime(1990, 6, 23);
 
 
-                newUser2 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser2, "banquet");
@@ -95,6 +97,7 @@ namespace team8finalproject.Seeding
 
             if (newUser3 == null)
             {
+                newUser3 = new AppUser();
                 newUser3.Email = "fd@aool.com";
                 newUser3.FirstName = "Franco";
                 newUser3.LastName = "Broccolo";
@@ -107,7 +110,7 @@ namespace team8finalproject.Seeding
                 newUser3.Birthdate = new DateTime(1986, 5, 6);
 
 
-                newUser3 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser3, "666666");
@@ -132,6 +135,7 @@ namespace team8finalproject.Seeding
 
             if (newUser4 == null)
             {
+                newUser4 = new AppUser();
                 newUser4.Email = "wendy@ggmail.com";
                 newUser4.FirstName = "Wendy";
                 newUser4.LastName = "Chang";
@@ -144,7 +148,7 @@ namespace team8finalproject.Seeding
                 newUser4.Birthdate = new DateTime(1964, 12, 21);
 
 
-                newUser4 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser4, "clover");
@@ -169,6 +173,7 @@ namespace team8finalproject.Seeding
 
             if (newUser5 == null)
             {
+                newUser5 = new AppUser();
                 newUser5.Email = "limchou@yaho.com";
                 newUser5.FirstName = "Lim";
                 newUser5.LastName = "Chou";
@@ -181,7 +186,7 @@ namespace team8finalproject.Seeding
                 newUser5.Birthdate = new DateTime(1950, 6, 14);
 
 
-                newUser5 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser5, "austin");
@@ -206,6 +211,7 @@ namespace team8finalproject.Seeding
 
             if (newUser6 == null)
             {
+                newUser6 = new AppUser();
                 newUser6.Email = "Dixon@aaol.com";
                 newUser6.FirstName = "Shan";
                 newUser6.LastName = "Dixon";
@@ -218,7 +224,7 @@ namespace team8finalproject.Seeding
                 newUser6.Birthdate = new DateTime(1930, 5, 9);
 
 
-                newUser6 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser6, "mailbox");
@@ -243,6 +249,7 @@ namespace team8finalproject.Seeding
 
             if (newUser7 == null)
             {
+                newUser7 = new AppUser();
                 newUser7.Email = "louann@ggmail.com";
                 newUser7.FirstName = "Lou Ann";
                 newUser7.LastName = "Feeley";
@@ -255,7 +262,7 @@ namespace team8finalproject.Seeding
                 newUser7.Birthdate = new DateTime(1930, 2, 24);
 
 
-                newUser7 = new AppUser();
+               
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser7, "aggies");
@@ -280,6 +287,7 @@ namespace team8finalproject.Seeding
 
             if (newUser8 == null)
             {
+                newUser8 = new AppUser();
                 newUser8.Email = "tfreeley@minntonka.ci.state.mn.us";
                 newUser8.FirstName = "Tesa";
                 newUser8.LastName = "Freeley";
@@ -292,7 +300,7 @@ namespace team8finalproject.Seeding
                 newUser8.Birthdate = new DateTime(1935, 9, 1);
 
 
-                newUser8 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser8, "raiders");
@@ -317,6 +325,7 @@ namespace team8finalproject.Seeding
 
             if (newUser9 == null)
             {
+                newUser9 = new AppUser();
                 newUser9.Email = "mgar@aool.com";
                 newUser9.FirstName = "Margaret";
                 newUser9.LastName = "Garcia";
@@ -329,7 +338,7 @@ namespace team8finalproject.Seeding
                 newUser9.Birthdate = new DateTime(1990, 7, 3);
 
 
-                newUser9 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser9, "mustangs");
@@ -354,6 +363,7 @@ namespace team8finalproject.Seeding
 
             if (newUser10 == null)
             {
+                newUser10 = new AppUser();
                 newUser10.Email = "chaley@thud.com";
                 newUser10.FirstName = "Charles";
                 newUser10.LastName = "Haley";
@@ -366,7 +376,7 @@ namespace team8finalproject.Seeding
                 newUser10.Birthdate = new DateTime(1985, 9, 17);
 
 
-                newUser10 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser10, "region");
@@ -391,6 +401,7 @@ namespace team8finalproject.Seeding
 
             if (newUser11 == null)
             {
+                newUser11 = new AppUser();
                 newUser11.Email = "jeff@ggmail.com";
                 newUser11.FirstName = "Jeffrey";
                 newUser11.LastName = "Hampton";
@@ -403,7 +414,7 @@ namespace team8finalproject.Seeding
                 newUser11.Birthdate = new DateTime(1995, 1, 23);
 
 
-                newUser11 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser11, "hungry");
@@ -428,6 +439,7 @@ namespace team8finalproject.Seeding
 
             if (newUser12 == null)
             {
+                newUser12 = new AppUser();
                 newUser12.Email = "wjhearniii@umch.edu";
                 newUser12.FirstName = "John";
                 newUser12.LastName = "Hearn";
@@ -440,7 +452,7 @@ namespace team8finalproject.Seeding
                 newUser12.Birthdate = new DateTime(1994, 1, 8);
 
 
-                newUser12 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser12, "logicon");
@@ -465,6 +477,7 @@ namespace team8finalproject.Seeding
 
             if (newUser13 == null)
             {
+                newUser13 = new AppUser();
                 newUser13.Email = "hicks43@ggmail.com";
                 newUser13.FirstName = "Anthony";
                 newUser13.LastName = "Hicks";
@@ -477,7 +490,7 @@ namespace team8finalproject.Seeding
                 newUser13.Birthdate = new DateTime(1990, 10, 6);
 
 
-                newUser13 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser13, "doofus");
@@ -502,6 +515,7 @@ namespace team8finalproject.Seeding
 
             if (newUser14 == null)
             {
+                newUser14 = new AppUser();
                 newUser14.Email = "bradsingram@mall.utexas.edu";
                 newUser14.FirstName = "Brad";
                 newUser14.LastName = "Ingram";
@@ -514,7 +528,7 @@ namespace team8finalproject.Seeding
                 newUser14.Birthdate = new DateTime(1984, 4, 12);
 
 
-                newUser14 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser14, "mother");
@@ -539,6 +553,7 @@ namespace team8finalproject.Seeding
 
             if (newUser15 == null)
             {
+                newUser15 = new AppUser();
                 newUser15.Email = "mother.Ingram@aool.com";
                 newUser15.FirstName = "Todd";
                 newUser15.LastName = "Jacobs";
@@ -551,7 +566,7 @@ namespace team8finalproject.Seeding
                 newUser15.Birthdate = new DateTime(1983, 4, 4);
 
 
-                newUser15 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser15, "whimsical");
@@ -576,6 +591,7 @@ namespace team8finalproject.Seeding
 
             if (newUser16 == null)
             {
+                newUser16 = new AppUser();
                 newUser16.Email = "victoria@aool.com";
                 newUser16.FirstName = "Victoria";
                 newUser16.LastName = "Lawrence";
@@ -588,7 +604,7 @@ namespace team8finalproject.Seeding
                 newUser16.Birthdate = new DateTime(1961, 2, 3);
 
 
-                newUser16 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser16, "nothing");
@@ -613,6 +629,7 @@ namespace team8finalproject.Seeding
 
             if (newUser17 == null)
             {
+                newUser17 = new AppUser();
                 newUser17.Email = "lineback@flush.net";
                 newUser17.FirstName = "Erik";
                 newUser17.LastName = "Lineback";
@@ -625,7 +642,7 @@ namespace team8finalproject.Seeding
                 newUser17.Birthdate = new DateTime(1946, 9, 3);
 
 
-                newUser17 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser17, "GoodFellow");
@@ -650,6 +667,7 @@ namespace team8finalproject.Seeding
 
             if (newUser18 == null)
             {
+                newUser18 = new AppUser();
                 newUser18.Email = "elowe@netscrape.net";
                 newUser18.FirstName = "Ernest";
                 newUser18.LastName = "Lowe";
@@ -662,7 +680,7 @@ namespace team8finalproject.Seeding
                 newUser18.Birthdate = new DateTime(1992, 2, 7);
 
 
-                newUser18 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser18, "impede");
@@ -687,6 +705,7 @@ namespace team8finalproject.Seeding
 
             if (newUser19 == null)
             {
+                newUser19 = new AppUser();
                 newUser19.Email = "luce_chuck@ggmail.com";
                 newUser19.FirstName = "Chuck";
                 newUser19.LastName = "Luce";
@@ -699,7 +718,7 @@ namespace team8finalproject.Seeding
                 newUser19.Birthdate = new DateTime(1942, 10, 25);
 
 
-                newUser19 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser19, "LuceyDacey");
@@ -724,6 +743,7 @@ namespace team8finalproject.Seeding
 
             if (newUser20 == null)
             {
+                newUser20 = new AppUser();
                 newUser20.Email = "mackcloud@pimpdaddy.com";
                 newUser20.FirstName = "Jennifer";
                 newUser20.LastName = "MacLeod";
@@ -736,7 +756,7 @@ namespace team8finalproject.Seeding
                 newUser20.Birthdate = new DateTime(1965, 8, 6);
 
 
-                newUser20 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser20, "cloudyday");
@@ -761,6 +781,7 @@ namespace team8finalproject.Seeding
 
             if (newUser21 == null)
             {
+                newUser21 = new AppUser();
                 newUser21.Email = "liz@ggmail.com";
                 newUser21.FirstName = "Elizabeth";
                 newUser21.LastName = "Markham";
@@ -773,7 +794,7 @@ namespace team8finalproject.Seeding
                 newUser21.Birthdate = new DateTime(1959, 4, 13);
 
 
-                newUser21 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser21, "emarkbark");
@@ -798,6 +819,7 @@ namespace team8finalproject.Seeding
 
             if (newUser22 == null)
             {
+                newUser22 = new AppUser();
                 newUser22.Email = "mclarence@aool.com";
                 newUser22.FirstName = "Clarence";
                 newUser22.LastName = "Martin";
@@ -810,7 +832,7 @@ namespace team8finalproject.Seeding
                 newUser22.Birthdate = new DateTime(1990, 1, 6);
 
 
-                newUser22 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser22, "smartinmartin");
@@ -835,6 +857,7 @@ namespace team8finalproject.Seeding
 
             if (newUser23 == null)
             {
+                newUser23 = new AppUser();
                 newUser23.Email = "smartinmartin.Martin@aool.com";
                 newUser23.FirstName = "Gregory";
                 newUser23.LastName = "Martinez";
@@ -847,7 +870,7 @@ namespace team8finalproject.Seeding
                 newUser23.Birthdate = new DateTime(1987, 10, 9);
 
 
-                newUser23 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser23, "looter");
@@ -872,6 +895,7 @@ namespace team8finalproject.Seeding
 
             if (newUser24 == null)
             {
+                newUser24 = new AppUser();
                 newUser24.Email = "cmiller@mapster.com";
                 newUser24.FirstName = "Charles";
                 newUser24.LastName = "Miller";
@@ -884,7 +908,7 @@ namespace team8finalproject.Seeding
                 newUser24.Birthdate = new DateTime(1984, 7, 21);
 
 
-                newUser24 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser24, "chucky33");
@@ -909,6 +933,7 @@ namespace team8finalproject.Seeding
 
             if (newUser25 == null)
             {
+                newUser25 = new AppUser();
                 newUser25.Email = "nelson.Kelly@aool.com";
                 newUser25.FirstName = "Kelly";
                 newUser25.LastName = "Nelson";
@@ -921,7 +946,7 @@ namespace team8finalproject.Seeding
                 newUser25.Birthdate = new DateTime(1956, 7, 4);
 
 
-                newUser25 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser25, "orange");
@@ -946,6 +971,7 @@ namespace team8finalproject.Seeding
 
             if (newUser26 == null)
             {
+                newUser26 = new AppUser();
                 newUser26.Email = "jojoe@ggmail.com";
                 newUser26.FirstName = "Joe";
                 newUser26.LastName = "Nguyen";
@@ -958,7 +984,7 @@ namespace team8finalproject.Seeding
                 newUser26.Birthdate = new DateTime(1963, 1, 29);
 
 
-                newUser26 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser26, "victorious");
@@ -983,6 +1009,7 @@ namespace team8finalproject.Seeding
 
             if (newUser27 == null)
             {
+                newUser27 = new AppUser();
                 newUser27.Email = "orielly@foxnets.com";
                 newUser27.FirstName = "Bill";
                 newUser27.LastName = "O'Reilly";
@@ -995,7 +1022,7 @@ namespace team8finalproject.Seeding
                 newUser27.Birthdate = new DateTime(1983, 1, 7);
 
 
-                newUser27 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser27, "billyboy");
@@ -1020,6 +1047,7 @@ namespace team8finalproject.Seeding
 
             if (newUser28 == null)
             {
+                newUser28 = new AppUser();
                 newUser28.Email = "or@aool.com";
                 newUser28.FirstName = "Anka";
                 newUser28.LastName = "Radkovich";
@@ -1032,7 +1060,7 @@ namespace team8finalproject.Seeding
                 newUser28.Birthdate = new DateTime(1980, 3, 31);
 
 
-                newUser28 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser28, "radicalone");
@@ -1057,6 +1085,7 @@ namespace team8finalproject.Seeding
 
             if (newUser29 == null)
             {
+                newUser29 = new AppUser();
                 newUser29.Email = "megrhodes@freezing.co.uk";
                 newUser29.FirstName = "Megan";
                 newUser29.LastName = "Rhodes";
@@ -1069,7 +1098,7 @@ namespace team8finalproject.Seeding
                 newUser29.Birthdate = new DateTime(1944, 8, 12);
 
 
-                newUser29 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser29, "gohorns");
@@ -1094,6 +1123,7 @@ namespace team8finalproject.Seeding
 
             if (newUser30 == null)
             {
+                newUser30 = new AppUser();
                 newUser30.Email = "erynrice@aool.com";
                 newUser30.FirstName = "Eryn";
                 newUser30.LastName = "Rice";
@@ -1106,7 +1136,7 @@ namespace team8finalproject.Seeding
                 newUser30.Birthdate = new DateTime(1934, 8, 2);
 
 
-                newUser30 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser30, "iloveme");
@@ -1131,6 +1161,7 @@ namespace team8finalproject.Seeding
 
             if (newUser31 == null)
             {
+                newUser31 = new AppUser();
                 newUser31.Email = "jorge@hootmail.com";
                 newUser31.FirstName = "Jorge";
                 newUser31.LastName = "Rodriguez";
@@ -1143,7 +1174,7 @@ namespace team8finalproject.Seeding
                 newUser31.Birthdate = new DateTime(1989, 8, 11);
 
 
-                newUser31 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser31, "greedy");
@@ -1168,6 +1199,7 @@ namespace team8finalproject.Seeding
 
             if (newUser32 == null)
             {
+                newUser32 = new AppUser();
                 newUser32.Email = "ra@aoo.com";
                 newUser32.FirstName = "Allen";
                 newUser32.LastName = "Rogers";
@@ -1180,7 +1212,7 @@ namespace team8finalproject.Seeding
                 newUser32.Birthdate = new DateTime(1967, 8, 27);
 
 
-                newUser32 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser32, "familiar");
@@ -1205,6 +1237,7 @@ namespace team8finalproject.Seeding
 
             if (newUser33 == null)
             {
+                newUser33 = new AppUser();
                 newUser33.Email = "st-jean@home.com";
                 newUser33.FirstName = "Olivier";
                 newUser33.LastName = "Saint-Jean";
@@ -1217,7 +1250,7 @@ namespace team8finalproject.Seeding
                 newUser33.Birthdate = new DateTime(1950, 7, 8);
 
 
-                newUser33 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser33, "historical");
@@ -1242,6 +1275,7 @@ namespace team8finalproject.Seeding
 
             if (newUser34 == null)
             {
+                newUser34 = new AppUser();
                 newUser34.Email = "ss34@ggmail.com";
                 newUser34.FirstName = "Sarah";
                 newUser34.LastName = "Saunders";
@@ -1254,7 +1288,7 @@ namespace team8finalproject.Seeding
                 newUser34.Birthdate = new DateTime(1977, 10, 29);
 
 
-                newUser34 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser34, "guiltless");
@@ -1279,6 +1313,7 @@ namespace team8finalproject.Seeding
 
             if (newUser35 == null)
             {
+                newUser35 = new AppUser();
                 newUser35.Email = "willsheff@email.com";
                 newUser35.FirstName = "William";
                 newUser35.LastName = "Sewell";
@@ -1291,7 +1326,7 @@ namespace team8finalproject.Seeding
                 newUser35.Birthdate = new DateTime(1941, 4, 21);
 
 
-                newUser35 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser35, "frequent");
@@ -1315,6 +1350,7 @@ namespace team8finalproject.Seeding
 
             if (newUser36 == null)
             {
+                newUser36 = new AppUser();
                 newUser36.Email = "sheff44@ggmail.com";
                 newUser36.FirstName = "Martin";
                 newUser36.LastName = "Sheffield";
@@ -1327,7 +1363,7 @@ namespace team8finalproject.Seeding
                 newUser36.Birthdate = new DateTime(1937, 11, 10);
 
 
-                newUser36 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser36, "history");
@@ -1351,6 +1387,7 @@ namespace team8finalproject.Seeding
 
             if (newUser37 == null)
             {
+                newUser37 = new AppUser();
                 newUser37.Email = "johnsmith187@aool.com";
                 newUser37.FirstName = "John";
                 newUser37.LastName = "Smith";
@@ -1363,7 +1400,7 @@ namespace team8finalproject.Seeding
                 newUser37.Birthdate = new DateTime(1954, 10, 26);
 
 
-                newUser37 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser37, "squirrel");
@@ -1388,6 +1425,7 @@ namespace team8finalproject.Seeding
 
             if (newUser38 == null)
             {
+                newUser38 = new AppUser();
                 newUser38.Email = "dustroud@mail.com";
                 newUser38.FirstName = "Dustin";
                 newUser38.LastName = "Stroud";
@@ -1400,7 +1438,7 @@ namespace team8finalproject.Seeding
                 newUser38.Birthdate = new DateTime(1932, 9, 1);
 
 
-                newUser38 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser38, "snakes");
@@ -1425,6 +1463,7 @@ namespace team8finalproject.Seeding
 
             if (newUser39 == null)
             {
+                newUser39 = new AppUser();
                 newUser39.Email = "ericstuart@aool.com";
                 newUser39.FirstName = "Eric";
                 newUser39.LastName = "Stuart";
@@ -1437,7 +1476,7 @@ namespace team8finalproject.Seeding
                 newUser39.Birthdate = new DateTime(1930, 12, 28);
 
 
-                newUser39 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser39, "landus");
@@ -1462,6 +1501,7 @@ namespace team8finalproject.Seeding
 
             if (newUser40 == null)
             {
+                newUser40 = new AppUser();
                 newUser40.Email = "peterstump@hootmail.com";
                 newUser40.FirstName = "Peter";
                 newUser40.LastName = "Stump";
@@ -1474,7 +1514,7 @@ namespace team8finalproject.Seeding
                 newUser40.Birthdate = new DateTime(1989, 8, 13);
 
 
-                newUser40 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser40, "rhythm");
@@ -1499,6 +1539,7 @@ namespace team8finalproject.Seeding
 
             if (newUser41 == null)
             {
+                newUser41 = new AppUser();
                 newUser41.Email = "tanner@ggmail.com";
                 newUser41.FirstName = "Jeremy";
                 newUser41.LastName = "Tanner";
@@ -1511,7 +1552,7 @@ namespace team8finalproject.Seeding
                 newUser41.Birthdate = new DateTime(1982, 5, 21);
 
 
-                newUser41 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser41, "kindly");
@@ -1536,6 +1577,7 @@ namespace team8finalproject.Seeding
 
             if (newUser42 == null)
             {
+                newUser42 = new AppUser();
                 newUser42.Email = "TayTaylor@aool.com";
                 newUser42.FirstName = "Rachel";
                 newUser42.LastName = "Taylor";
@@ -1548,7 +1590,7 @@ namespace team8finalproject.Seeding
                 newUser42.Birthdate = new DateTime(1975, 7, 27);
 
 
-                newUser42 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser42, "arched");
@@ -1573,6 +1615,7 @@ namespace team8finalproject.Seeding
 
             if (newUser43 == null)
             {
+                newUser43 = new AppUser();
                 newUser43.Email = "taylordjay@aool.com";
                 newUser43.FirstName = "Allison";
                 newUser43.LastName = "Taylor";
@@ -1585,7 +1628,7 @@ namespace team8finalproject.Seeding
                 newUser43.Birthdate = new DateTime(1960, 1, 8);
 
 
-                newUser43 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser43, "instrument");
@@ -1610,6 +1653,7 @@ namespace team8finalproject.Seeding
 
             if (newUser44 == null)
             {
+                newUser44 = new AppUser();
                 newUser44.Email = "teefrank@hootmail.com";
                 newUser44.FirstName = "Frank";
                 newUser44.LastName = "Tee";
@@ -1622,7 +1666,7 @@ namespace team8finalproject.Seeding
                 newUser44.Birthdate = new DateTime(1968, 4, 6);
 
 
-                newUser44 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser44, "median");
@@ -1648,6 +1692,7 @@ namespace team8finalproject.Seeding
 
             if (newUser45 == null)
             {
+                newUser45 = new AppUser();
                 newUser45.Email = "tuck33@ggmail.com";
                 newUser45.FirstName = "Clent";
                 newUser45.LastName = "Tucker";
@@ -1660,7 +1705,7 @@ namespace team8finalproject.Seeding
                 newUser45.Birthdate = new DateTime(1978, 5, 19);
 
 
-                newUser45 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser45, "approval");
@@ -1685,6 +1730,7 @@ namespace team8finalproject.Seeding
 
             if (newUser46 == null)
             {
+                newUser46 = new AppUser();
                 newUser46.Email = "avelasco@yaho.com";
                 newUser46.FirstName = "Allen";
                 newUser46.LastName = "Valasco";
@@ -1697,7 +1743,7 @@ namespace team8finalproject.Seeding
                 newUser46.Birthdate = new DateTime(1963, 10, 6);
 
 
-                newUser46 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser46, "decorate");
@@ -1722,6 +1768,7 @@ namespace team8finalproject.Seeding
 
             if (newUser47 == null)
             {
+                newUser47 = new AppUser();
                 newUser47.Email = "westj@pioneer.net";
                 newUser47.FirstName = "Jake";
                 newUser47.LastName = "West";
@@ -1734,7 +1781,7 @@ namespace team8finalproject.Seeding
                 newUser47.Birthdate = new DateTime(1993, 10, 14);
 
 
-                newUser47 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser47, "grover");
@@ -1760,6 +1807,7 @@ namespace team8finalproject.Seeding
 
             if (newUser48 == null)
             {
+                newUser48 = new AppUser();
                 newUser48.Email = "louielouie@aool.com";
                 newUser48.FirstName = "Louis";
                 newUser48.LastName = "Winthorpe";
@@ -1772,7 +1820,7 @@ namespace team8finalproject.Seeding
                 newUser48.Birthdate = new DateTime(1952, 5, 31);
 
 
-                newUser48 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser48, "sturdy");
@@ -1797,6 +1845,7 @@ namespace team8finalproject.Seeding
 
             if (newUser49 == null)
             {
+                newUser49 = new AppUser();
                 newUser49.Email = "rwood@voyager.net";
                 newUser49.FirstName = "Regean";
                 newUser49.LastName = "Wood";
@@ -1809,7 +1858,7 @@ namespace team8finalproject.Seeding
                 newUser49.Birthdate = new DateTime(1992, 4, 24);
 
 
-                newUser49 = new AppUser();
+                
 
                 //NOTE: This creates the user - "Abc123!" is the password for this user
                 var result = await _userManager.CreateAsync(newUser49, "decorous");
