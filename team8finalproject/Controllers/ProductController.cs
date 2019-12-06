@@ -271,9 +271,19 @@ namespace team8finalproject.Controllers
             pd.AccountNumber = Utilities.GenerateAccountNumber.GetNextAccountNumber(_context);
 
             pd.Customer = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            //checks if the initial deposit is > 5000, updates the status
-            ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
+			var pt = _context.Products.Where(p => p.Customer.UserName == User.Identity.Name)
+				.Where(p => p.ProductType == ProductTypes.Portfolio).ToList();
+			if (pt.Count != 0)
+			{
+				//ViewBag.ErrorMessage = "You already have a stock portfolio account!";
+				TempData["ErrorMessage"] = "You already have a stock portfolio account!";
+			}
+			// user doesn't have a stock portfolio
+			return RedirectToAction("CreatePortfolio", "Product");
+			//checks if the initial deposit is > 5000, updates the status
+			ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
+			//checks if the initial deposit is > 5000, updates the status
+			ViewBag.StatusUpdate = "You've successfully applied for a Portfolio!";
             pd.AccountStatus = AccountStatus.Active;
 
             if (product.AccountName != null)
